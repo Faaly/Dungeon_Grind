@@ -82,11 +82,13 @@ int main(){
     //Beginning
     system("cls");
     titlescreen();
+    loading();
         getch();
 
 
     system("cls");
     //Main Menu
+    
     int MainMenuPick {};
     mainmenu();
     std::cin >> MainMenuPick;
