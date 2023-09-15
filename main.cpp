@@ -4,6 +4,8 @@
 #include <fstream> // file in and out stream
 #include <string> // string (text)
 #include <conio.h> // getch()
+#include "titlescreen.h"
+#include "mainmenu.h"
 
 /*
 class Player{
@@ -79,40 +81,14 @@ int main(){
 
     //Beginning
     system("cls");
-    std::cout << std::endl;
-    std::cout << ""<< std::endl;
-    std::cout << "     _______                                    "<< std::endl;
-    std::cout << "     |  __  |                                    "<< std::endl;
-    std::cout << "     | |  | |_   _ _ __    __ _  ___  ____ _ ___     "<< std::endl;
-    std::cout << "     | |  | | | | | '_ | / _` | / _ |/  _  || '_ |  "<< std::endl;
-    std::cout << "     | |__| | |_| | | | | (_| |/  _/ | (_) || | | | "<< std::endl;
-    std::cout << "     |_____/|__,|_|_| |_|__,  ||____||____/||_| |_| "<< std::endl;
-    std::cout << "                          __/ |                                               "<< std::endl;
-    std::cout << "                         |___/                                                "<< std::endl;
-    std::cout << "                         GRIND"<< std::endl;
-    std::cout << ""<< std::endl;
-    std::cout << std::setfill(' ') << "                       Press Start" << std::endl;
-    std::cout << ""<< std::endl;
-    std::cout << ""<< std::endl;
-    std::cout << ""<< std::endl;
-    std::cout << std::setfill(' ') << "                       By Faaly" << std::endl;
-    getch();
+    titlescreen();
+        getch();
 
 
     system("cls");
     //Main Menu
     int MainMenuPick {};
-    std::cout << "" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "(1) New Game" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "(2) Load Savefile" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "(3) Exit" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "" << std::endl;
+    mainmenu();
     std::cin >> MainMenuPick;
     switch (MainMenuPick)
     {
