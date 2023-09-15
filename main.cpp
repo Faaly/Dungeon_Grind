@@ -4,8 +4,8 @@
 #include <fstream> // file in and out stream
 #include <string> // string (text)
 #include <conio.h> // getch()
-#include "titlescreen.h"
-#include "mainmenu.h"
+#include "constants.h"
+
 
 /*
 class Player{
@@ -69,44 +69,36 @@ class Weapon{
 
 int main(){
 //MainStats
-    float playerstrength {3}; //1 strength = 2 damage(dmg)
+    float playerstrength = 3; //1 strength = 2 damage(dmg)
         float playerdamage {playerstrength * 2};
-    float playeragility {3};//1 agility = 1.75 defense(def)
+    float playeragility = 3;//1 agility = 1.75 defense(def)
         float playerdefense {playeragility * 1.5f};
-    float playerstamina {4};//1 stamina = 2 health points(hp)
+    float playerstamina = 3;//1 stamina = 2 health points(hp)
         float playerhealth {playerstamina * 2};
     std::string playername;
-    int playerlevel {1};
-    int dungeonlevel {1};
+    int playerlevel = 3;
+    int dungeonlevel = 3;
 
-    //Beginning
+    //Titlescreen
     system("cls");
-    titlescreen();
-    loading();
-        getch();
-
-
+    std::cout << c_ENTER_SCREEN << std::endl;
+    getch();
     system("cls");
     //Main Menu
     
-    int MainMenuPick {};
-    mainmenu();
+    int MainMenuPick = 0;
+    std::cout << c_MAIN_MENU << std::endl;
     std::cin >> MainMenuPick;
     switch (MainMenuPick)
     {
     case 3:
         {
-            system("exit");
+            std::exit(0);
         }
         break;
     case 2:
         {
         std::ifstream inFile;
-        //float str;
-        //float agi; 
-        //float sta;
-        //int lvl;
-        //int dlvl;
         std::string DATA;
         std::string savefile;
         std::cout << "What file should be loaded?" << std::endl;
@@ -116,12 +108,12 @@ int main(){
         inFile.open(savefile + ".dat");
         if (!inFile)
         {
-            std::cout << "Error 404" << std::endl;
+            std::cout << c_ERROR_404 << std::endl;
         }
 
         if (!inFile.is_open())
         {
-            std::cout << "Error : Failed to open " << savefile << std::endl;
+            std::cout << c_ERROR_001 << savefile << std::endl;
             return 1;
         }
 
@@ -130,9 +122,9 @@ int main(){
         {
             std::cout << DATA;
         }
-        std::cout << "Loading feature not build in.  :P" << std::endl;
+        std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
         inFile.close();
-        system("exit");
+        std::exit(0);
         }
         break;
     case 1:
@@ -144,8 +136,8 @@ int main(){
         }
         break;
     default:
-        std::cout << "Error - Wrong input" << "\n Game Over";
-            system("exit");
+        std::cout << c_ERROR_002 << "\n Game Over";
+            std::exit(0);
         
         break;
     }
@@ -219,7 +211,8 @@ switch (StarterWeaponPick) //Pick a starter-weapon and store info in savefile
     }
         break;        
     default:
-    std::cout << "Error - Wrong input" << "\n Game Over";
+    std::cout << c_ERROR_002 << "\n Game Over";
+    std::exit(0);
         break;
     }
     
