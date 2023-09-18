@@ -1,0 +1,9 @@
+
+
+-- Textpassage in main() als functionen für constant.h
+
+-- Class Member variables umwandeln. ganzen prefixe weg. WaffenName > Name weil Waffe.Name usw..
+
+-- Vererbung Video Gakwaya gucken!!
+
+-- Grobes Spielkonstrukt beginnen. Siehe documentation in good notes!!
