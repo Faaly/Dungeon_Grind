@@ -25,7 +25,6 @@ int main(){
     bool PickAgain = true;
     do
     {
-        
         std::cout << c_MAIN_MENU << std::endl;
         std::cin >> MainMenuPick;
 
@@ -70,7 +69,8 @@ int main(){
             break;
         case 1:
             {    
-            std::cout << "Please name your Adventurer :" << std::endl;
+            system("cls");
+            std::cout << "\nPlease name your Adventurer :" << std::endl;
             //std::cin.clear();
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, playername);
@@ -94,22 +94,19 @@ int main(){
     playername_savefile << Adventurer.Strength << ";" << Adventurer.Agility << ";" << Adventurer.Stamina << ";" << Adventurer.Level <<  ";" << Adventurer.DungeonLevel << std::endl;
     playername_savefile.close();
 
-    std::cout << "Welcome adventurer " << Adventurer.Name << ". Welcome to Dungeon Grind." << std::endl;
+    system("cls");
+    std::cout << "\nWelcome Adventurer " << Adventurer.Name << ". Welcome to Dungeon Grind." << std::endl;
     std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
     std::cout << "But first.." << std::endl;
     getch();
-
-
-
+    system("cls");
 
 //Starterweapons pick    
     Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
     Weapon sword ("Broken Sword", 3, 3, 3, 1);
     Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
     Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
-    system("cls");
-
-
+    
     Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
     
     std::cout << "You've equiped " << picked_weapon.Name << std::endl;
