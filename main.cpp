@@ -17,69 +17,78 @@ int main(){
     system("cls");
     std::cout << c_ENTER_SCREEN << std::endl;
     getch();
-    system("cls");
     //Main Menu
-    
+    system("cls");
     int MainMenuPick = 0;
-    std::cout << c_MAIN_MENU << std::endl;
-    std::cin >> MainMenuPick;
+    
     Player Adventurer("Name", 0, 0, 0);
-    std::string playername;
-
-    switch (MainMenuPick)
+    bool PickAgain = true;
+    do
     {
-    case 3:
+        
+        std::cout << c_MAIN_MENU << std::endl;
+        std::cin >> MainMenuPick;
+
+        std::string playername;
+        switch (MainMenuPick)
         {
+        case 3:
+            {
             std::exit(0);
-        }
-        break;
-    case 2:
-        {
-        std::ifstream inFile;
-        std::string DATA;
-        std::string savefile;
-        std::cout << "What file should be loaded?" << std::endl;
-        //std::cin.clear();
-        std::cin.ignore ( 100 , '\n' );
-        std::getline(std::cin, savefile);
-        inFile.open(savefile + ".dat");
-        if (!inFile)
-        {
-            std::cout << c_ERROR_404 << std::endl;
-        }
+            }
+            break;
+        case 2:
+            {
+            std::ifstream inFile;
+            std::string DATA;
+            std::string savefile;
+            std::cout << "What file should be loaded?" << std::endl;
+            //std::cin.clear();
+            std::cin.ignore ( 100 , '\n' );
+            std::getline(std::cin, savefile);
+            inFile.open(savefile + ".dat");
+            if (!inFile)
+            {
+                std::cout << c_ERROR_404 << std::endl;
+            }
 
-        if (!inFile.is_open())
-        {
-            std::cout << c_ERROR_001 << savefile << std::endl;
-            return 1;
-        }
+            if (!inFile.is_open())
+            {
+                std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
+                return 1;
+            }
 
-        std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
-        while (getline(inFile, DATA , ';'))
-        {
-            std::cout << DATA << " - "; //
-        }
-        std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
-        inFile.close();
-        std::exit(0);
-        }
-        break;
-    case 1:
-        {    
+            std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
+            while (getline(inFile, DATA , ';'))
+            {
+                std::cout << DATA << " - "; //
+            }
+            std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
+            inFile.close();
+            std::exit(0);
+            }
+            break;
+        case 1:
+            {    
             std::cout << "Please name your Adventurer :" << std::endl;
             //std::cin.clear();
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, playername);
             Adventurer.Name = playername;
+            PickAgain = false;
+            }
+            break;
+        default: 
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            system("cls");
+            std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+                //std::exit(0);
+            
+            //break;
         }
-        break;
-    default:
-        std::cout << c_ERROR_002 << "\n Game Over";
-            std::exit(0);
+    } while (PickAgain);
         
-        break;
-    }
-    
     std::ofstream playername_savefile(Adventurer.Name + ".dat");  //create safefile and fill it with stats. 
                                                              //Str , Agi, Sta, lvl, Dungeonlvl
     playername_savefile << Adventurer.Strength << ";" << Adventurer.Agility << ";" << Adventurer.Stamina << ";" << Adventurer.Level <<  ";" << Adventurer.DungeonLevel << std::endl;
@@ -131,9 +140,6 @@ int main(){
 */
     
 
-
-
-
     return 0;
 }
 
@@ -151,36 +157,42 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
     std::cout << std::setw(side) << polearm.Name << std::setw(side) << polearm.Strength << std::setw(side) << polearm.Agility << std::setw(side) << polearm.Stamina << std::setw(side) << sword.ItemLvl << std::endl;
 
     int pick = 0;
-    std::cout << "Which weapon do you want? \n"
-                 "If you didn't choose one of this options, you will get the polearm. ;)" << std::endl;
-    std::cout << "(1) - " << dagger.Name << std::endl
-              << "(2) - " << sword.Name << std::endl;
-    std::cout << "(3) - " << greatsword.Name << std::endl;
-    std::cout << "(4) - " << polearm.Name << std::endl;
-
-    //while (pick != 1 || pick != 2 || pick != 3 || pick != 4){
-    //    std::cin.ignore ( 100 , '\n' );
-        std::cin >> pick;
-    //}
-
-    switch (pick)
+    bool PickAgain = true;
+    do
     {
-    case 1:
-        choosed_weapon = dagger;
-        break;
-    case 2:
-        choosed_weapon = sword;
-        break;
-    case 3:
-        choosed_weapon = greatsword;
-        break;
-    case 4:
-        choosed_weapon = polearm;
-        break;
-    
-    default:
-        choosed_weapon = polearm;
-        break;
-    }
+        std::cout << "Which weapon do you want?" << std::endl;
+        std::cout << "(1) - " << dagger.Name << std::endl
+                  << "(2) - " << sword.Name << std::endl
+                  << "(3) - " << greatsword.Name << std::endl
+                  << "(4) - " << polearm.Name << std::endl;
+        std::cin >> pick;
+        switch (pick)
+        {
+        case 1:
+            choosed_weapon = dagger;
+            PickAgain = false;
+            break;
+        case 2:
+            choosed_weapon = sword;
+            PickAgain = false;
+            break;
+        case 3:
+            choosed_weapon = greatsword;
+            PickAgain = false;
+            break;
+        case 4:
+            choosed_weapon = polearm;
+            PickAgain = false;
+            break;
+        
+        default:
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            system("cls");
+            std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+       //     break;
+        }
+    } while (PickAgain);
+
     return choosed_weapon;
 }

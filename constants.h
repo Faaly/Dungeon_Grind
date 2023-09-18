@@ -38,7 +38,7 @@ const std::string c_MAIN_MENU =
 
 //Error Messages -------------------------------------------
 const std::string c_ERROR_404 = "Error 404 : File not found";
-const std::string c_ERROR_001 = "Error 001 : Failed to open file";
-const std::string c_ERROR_002 = "Error 002 : Wrong input";
+const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
+const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
 
 #endif
