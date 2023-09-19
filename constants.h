@@ -36,6 +36,21 @@ const std::string c_MAIN_MENU =
         "\n"
         "\n";
 
+
+//Hub-Menu------------------------------
+const std::string c_HUB_MENU =
+        "\n"
+        "\n"
+        "\n"
+        "What would you like to do?\n"
+        "\n"
+        "(1) Grind a Dungeon\n"
+        "(2) View my stats\n"
+        "(3) Save & Exit\n"
+        "\n"
+        "\n"
+        "\n";
+
 //Error Messages -------------------------------------------
 const std::string c_ERROR_404 = "Error 404 : File not found";
 const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";

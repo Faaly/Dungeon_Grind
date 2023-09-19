@@ -6,7 +6,7 @@ class Player{
     public:
         
         //Constructor
-        Player(std::string aName, float aStrength, float aDamage, float aAgilty);
+        Player(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina);
 
         //Functions(Methods)
         float get_Damage(); //1 strength = 2 damage(dmg)
@@ -14,6 +14,8 @@ class Player{
         float get_Health(); //1 stamina = 2 health points(hp)
 
         //Getter n Setter
+        char get_Cat();
+
         std::string get_Name();
 
         float get_Strength();
@@ -29,6 +31,7 @@ class Player{
         //int Player::get_ItemLvl();
 
         //Member Variables
+        char Cat = 'P';
         std::string Name;
         float Strength = 3; 
         float Agility = 3;     

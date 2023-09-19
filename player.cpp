@@ -1,15 +1,20 @@
 #include "player.h"
 
-Player::Player(std::string aName, float aStrength, float aAgilty, float aStamina){
+Player::Player(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina){
+            Cat = aCat;
             Name = aName;
             Strength = aStrength;
             Agility = aAgilty;
             Stamina = aStamina;
             Level = 1;
-            DungeonLevel = 0;
+            DungeonLevel = 1;
 }
 
 //getter n setter methods
+char Player::get_Cat(){
+    return Cat;
+}
+
 std::string Player::get_Name(){
    return Name;
 }

@@ -1,6 +1,7 @@
 #include "helmet.h"
 
-Helmet::Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
+Helmet::Helmet(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
+    Cat = aCat;
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;
@@ -8,7 +9,20 @@ Helmet::Helmet(std::string aName, float aStrength, float aAgility, float aStamin
     ItemLvl = aItemLvl;
 } 
 
+Helmet::Helmet(){
+    Cat = 'H';
+    Name = "None";
+    Strength = 0;
+    Agility = 0;
+    Stamina = 0;
+    ItemLvl = 0;
+}
+
 //getter n setter methods
+char Helmet::get_Cat(){
+    return Cat;
+}
+
 std::string Helmet::get_Name(){
     return Name;
 }

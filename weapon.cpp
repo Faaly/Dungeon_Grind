@@ -1,6 +1,7 @@
 #include "weapon.h"
 
-Weapon::Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl){
+Weapon::Weapon(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl){
+    Cat = aCat;
     Name = aName;
     Strength = aStrength;
     Agility = aAgilty;
@@ -9,6 +10,10 @@ Weapon::Weapon(std::string aName, float aStrength, float aAgilty, float aStamina
 }
 
 //getter n setter methods
+char Weapon::get_Cat(){
+    return Cat;
+}
+
 std::string Weapon::get_Name(){
     return Name;
 }
