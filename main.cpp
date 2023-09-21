@@ -8,13 +8,19 @@
 #include "weapon.h" // Class Weapon
 #include "helmet.h"
 #include "player.h"
+#include "bodyarmor.h"
+#include "ring.h"
+
+void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
+Bodyarmor currentArmor, Ring currentRing);
 
 Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon polearm);
 
-void showstats(Player Adventurer, Weapon currentweapon, Helmet currenthelmet);
+void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
+Bodyarmor currentArmor, Ring currentRing);
 
 
-//-------------------------------------------Anfang int main() ------------------------------------------
+//-------------------------------------------BEGIN int main() ------------------------------------------
 
 int main(){
     //Titlescreen
@@ -28,6 +34,9 @@ int main(){
     Player Adventurer('P',"Name", 3, 3, 3);
     Weapon currentWeapon;
     Helmet currentHelmet;
+    Bodyarmor currentArmor;
+    Ring currentRing;
+
     bool pickagain = true;
     do
     {
@@ -39,6 +48,7 @@ int main(){
         {
         case 3:
             {
+            system("cls"); 
             std::exit(0);
             }
             break;
@@ -94,11 +104,8 @@ int main(){
             //break;
         }
     } while (pickagain);
-        
-    std::ofstream playername_savefile(Adventurer.Name + ".dat");  //create safefile and fill it with stats. 
-                                                             //Str , Agi, Sta, lvl, Dungeonlvl
-    playername_savefile << Adventurer.Cat << ";" << Adventurer.Strength << ";" << Adventurer.Agility << ";" << Adventurer.Stamina << ";" << Adventurer.Level <<  ";" << Adventurer.DungeonLevel << std::endl;
-    playername_savefile.close();
+
+  savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
 
     system("cls");
     std::cout << "\nWelcome Adventurer " << Adventurer.Name << ". Welcome to Dungeon Grind.\n" << std::endl;
@@ -119,10 +126,7 @@ int main(){
     
     std::cout << "You've equiped " << currentWeapon.Name << std::endl;
     getch();
-    std::ofstream save_stream(Adventurer.Name + ".dat", std::ios::app);
-    save_stream << currentWeapon.Cat << ";" << currentWeapon.Strength << ";" << currentWeapon.Agility << ";" << currentWeapon.Stamina << ";" << currentWeapon.ItemLvl << ";" << currentWeapon.Name << std::endl;
-    save_stream.close();
-
+    savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
 
 //Hub-Menu - Here starts the real game
 pickagain = true;
@@ -137,8 +141,7 @@ do
     {
     case 3:
         {
-            // Saving Stuff
-            // check all items and safe to file
+            savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);            
             system("cls"); 
             std::exit(0);
         }
@@ -146,7 +149,7 @@ do
     case 2:
         {
             system("cls");
-            showstats(Adventurer, currentWeapon, currentHelmet);
+            showstats(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
             //Stats stuff
             // check if player has equip
             //show all items w/ stats
@@ -178,20 +181,20 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 
     Weapon choosed_weapon;
 
-   std::cout << "Before your adventure starts, please choose one Weapon:" << std::endl;
+   std::cout << "Before your adventure starts, please choose one Weapon:\n" << std::endl;
     int side {25};
     std::cout << std::left;
-    std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:" << std::setw(side) << "Itemlevel:" << std::endl;
-    std::cout << std::setw(side) << dagger.Name << std::setw(side) << dagger.Strength << std::setw(side) << dagger.Agility << std::setw(side) << dagger.Stamina << std::setw(side) << dagger.ItemLvl << std::endl;
-    std::cout << std::setw(side) << sword.Name << std::setw(side) << sword.Strength << std::setw(side) << sword.Agility << std::setw(side) << sword.Stamina << std::setw(side) << sword.ItemLvl << std::endl;
-    std::cout << std::setw(side) << greatsword.Name << std::setw(side) << greatsword.Strength << std::setw(side) << greatsword.Agility << std::setw(side) << greatsword.Stamina << std::setw(side) << greatsword.ItemLvl << std::endl;
-    std::cout << std::setw(side) << polearm.Name << std::setw(side) << polearm.Strength << std::setw(side) << polearm.Agility << std::setw(side) << polearm.Stamina << std::setw(side) << sword.ItemLvl << std::endl;
+    std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
+    std::cout << std::setw(side) << dagger.Name << std::setw(side) << dagger.Strength << std::setw(side) << dagger.Agility << std::setw(side) << dagger.Stamina << std::endl;
+    std::cout << std::setw(side) << sword.Name << std::setw(side) << sword.Strength << std::setw(side) << sword.Agility << std::setw(side) << sword.Stamina << std::endl;
+    std::cout << std::setw(side) << greatsword.Name << std::setw(side) << greatsword.Strength << std::setw(side) << greatsword.Agility << std::setw(side) << greatsword.Stamina << std::endl;
+    std::cout << std::setw(side) << polearm.Name << std::setw(side) << polearm.Strength << std::setw(side) << polearm.Agility << std::setw(side) << polearm.Stamina << std::endl;
 
     int pick = 0;
     bool pickagain = true;
     do
     {
-        std::cout << "Which weapon do you want?" << std::endl;
+        std::cout << "\nWhich weapon do you want?\n" << std::endl;
         std::cout << "(1) - " << dagger.Name << std::endl
                   << "(2) - " << sword.Name << std::endl
                   << "(3) - " << greatsword.Name << std::endl
@@ -228,19 +231,49 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
     return choosed_weapon;
 }
 
-void showstats(Player Adventurer, Weapon currentweapon, Helmet currenthelmet){
-    float maxstr = Adventurer.Strength + currentweapon.Strength + currenthelmet.Strength;
-    float maxagi = Adventurer.Agility + currentweapon.Agility + currenthelmet.Agility;
-    float maxsta = Adventurer.Stamina + currentweapon.Stamina + currenthelmet.Stamina;
+void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
+Bodyarmor currentArmor, Ring currentRing){
+    float maxstr = Adventurer.Strength + currentWeapon.Strength + currentHelmet.Strength +
+    currentArmor.Strength + currentRing.Strength;
+    float maxagi = Adventurer.Agility + currentWeapon.Agility + currentHelmet.Agility +
+    currentArmor.Agility + currentRing.Agility;
+    float maxsta = Adventurer.Stamina + currentWeapon.Stamina + currentHelmet.Stamina +
+    currentArmor.Stamina + currentRing.Agility;
     float maxdmg = maxstr * 2;
     float maxdef = maxagi * 1.75;
     float maxhp = maxsta * 2;
-    std::cout << "Welcome " << Adventurer.Name << "."
+    float critrate = maxagi * 0.75;
+    std::cout << std::left;
+    std::cout << "Welcome " << Adventurer.Name << ".\n"
+              << "You're currently Level " << Adventurer.Level
+              << " and you're at Sub-Level " << Adventurer.DungeonLevel << " in this Dungeon.\n\n"
               << "\nYour current Stats are: \n"
-              << "Strength : " << maxstr << "  Your maximal Damage is : " << maxdmg
-              << "\nAgility : " << maxagi << "  Your Defense is : " << maxdef
-              << "\nStamina : " << maxsta << "  Your Healthpoints are : " << maxhp << "\n\n"
-              << "Current Gear equiped: \n"
-              << "Weapon : " << currentweapon.Name
-              << "\nHelmet : " << currenthelmet.Name << std::endl;
+              << "Strength   : " << maxstr
+              << "\n>Max DMG   : " << maxdmg
+              << "\nAgility    : " << maxagi
+              << "\n>Crit-Rate : " << critrate << "%"
+              << "\n>Def       : " << maxdef
+              << "\nStamina    : " << maxsta  
+              << "\n>Max HP    : " << maxhp << "\n\n"
+              << "\nCurrent Gear equiped: \n"
+              << "Weapon     : "<< currentWeapon.Name
+              << "\nHelmet     : " << currentHelmet.Name
+              << "\nBody Armor : " << currentArmor.Name
+              << "\nRing       : " << currentRing.Name << std::endl; 
+}
+
+void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
+Bodyarmor currentArmor, Ring currentRing){
+    std::ofstream playername_savefile(Adventurer.Name + ".dat");  //create safefile and fill it with stats. 
+                                                             //Str , Agi, Sta, lvl, Dungeonlvl
+    playername_savefile << Adventurer.Cat << ";" << Adventurer.Strength << ";" << Adventurer.Agility << ";" << Adventurer.Stamina << ";" << Adventurer.Level <<  ";" << Adventurer.DungeonLevel << std::endl;
+    playername_savefile << currentWeapon.Cat << ";" << currentWeapon.Strength << ";" << currentWeapon.Agility << ";" << currentWeapon.Stamina << ";" << currentWeapon.ItemLvl << ";" << currentWeapon.Name << std::endl;
+    playername_savefile << currentHelmet.Cat << ";" << currentHelmet.Strength << ";" << currentHelmet.Agility << ";" << currentHelmet.Stamina << ";" << currentHelmet.ItemLvl << ";" << currentHelmet.Name << std::endl;
+    playername_savefile << currentArmor.Cat << ";" << currentArmor.Strength << ";" << currentArmor.Agility << ";" << currentArmor.Stamina << ";" << currentArmor.ItemLvl << ";" << currentArmor.Name << std::endl;
+    playername_savefile << currentRing.Cat << ";" << currentRing.Strength << ";" << currentRing.Agility << ";" << currentRing.Stamina << ";" << currentRing.ItemLvl << ";" << currentRing.Name << std::endl;
+    playername_savefile.close();
+
+
+
+
 }
