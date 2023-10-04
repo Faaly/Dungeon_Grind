@@ -2,14 +2,18 @@
 #include <iostream> // in and out stream
 #include <iomanip> // text formatierung
 #include <fstream> // file in and out stream
+#include <sstream>
 #include <string> // string (text)
 #include <conio.h> // getch()
 #include "constants.h" // Title, Main Menu, Errors
 #include "weapon.h" // Class Weapon
+#include <vector> //Vectoren für fstream input
 #include "helmet.h"
 #include "player.h"
 #include "bodyarmor.h"
 #include "ring.h"
+
+//std::vector<std::string> load_savegame(std::string savefile);
 
 void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing);
@@ -31,7 +35,8 @@ int main(){
     system("cls");
     int mainmenupick = 0;
     
-    Player Adventurer('P',"Name", 3, 3, 3);
+    Player Adventurer;
+    std::string player_name;
     Weapon currentWeapon;
     Helmet currentHelmet;
     Bodyarmor currentArmor;
@@ -54,6 +59,8 @@ int main(){
             break;
         case 2:
             {
+                //std::vector<std::string> voc_savegame = load_savegame(Adventurer.Name + ".dat");
+                //voc_savegame = load_savegame(Adventurer.Name + ".dat");
             std::ifstream inFile;
             std::string DATA;
             std::string savefile;
@@ -72,13 +79,59 @@ int main(){
                 std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
                 return 1;
             }
-
+            
             std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
-            while (getline(inFile, DATA , ';'))
-            {
-                std::cout << DATA << " - "; //
+            std::stringstream ss_DATA;
+            while (getline(inFile, DATA, '\n')){ 
+                //ss_DATA << DATA << std::endl;
+                //std::cout << "Content of DATA : " << DATA << std::endl;
+                std::string type = DATA.substr(0, DATA.find(';'));
+                if(type == "P") {
+                    std::istringstream tmp(DATA);
+                    std::string::size_type sz;
+                    std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_lvl, tmp_dlvl;
+                    std::getline(tmp, tmp_c, ';');
+                    std::getline(tmp, tmp_str, ';');
+                    std::getline(tmp, tmp_agi,';');
+                    std::getline(tmp, tmp_sta, ';');
+                    std::getline(tmp, tmp_lvl,';');
+                    std::getline(tmp, tmp_dlvl);
+
+                    //std::cout << tmp_str << " " << tmp_agi << " " << tmp_sta << " " << tmp_lvl << " " << tmp_dlvl << std::endl;
+                    Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz), std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz));
+                    Adventurer.show_playerstats();
+                }
+                if(type == "W"){
+                    std::istringstream tmp(DATA);
+                    std::string::size_type sz;
+                    std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_ilvl, tmp_name;
+                    std::getline(tmp, tmp_c, ';');
+                    std::getline(tmp, tmp_str, ';');
+                    std::getline(tmp, tmp_agi,';');
+                    std::getline(tmp, tmp_sta, ';');
+                    std::getline(tmp, tmp_ilvl,';');
+                    std::getline(tmp, tmp_name);
+
+                    currentWeapon = Weapon(tmp_name, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz), std::stof(tmp_agi,&sz), std::stoi(tmp_ilvl,&sz));
+                    currentWeapon.show_weaponstats();
+                }
             }
-            std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
+            /* 
+                    // zeile fertig auslesen, alles in einzelnen "string"-variablen speichern
+                    std::string first_input_string = tmp.substr(0, tmp.find(';'));
+                    ;
+
+
+                    // wenn alle "infos" vorhanden
+                    // Klasse aufrufen mittels Constructor.
+                    Player P(first_input, ...)
+                }*/
+            
+        //std::cout << Adventurer.toString();
+            //std::cout << "Cat : " << Adventurer.Cat << " . Name : " <<  Adventurer.Name << " . Str : " << Adventurer.Strength << " . Agi :  " << Adventurer.Agility << " . Sta :  " << Adventurer.Stamina << " . Lvl :  " << Adventurer.Level <<
+            //" . DLvl :  " << Adventurer.DungeonLevel << std::endl;
+            //std::cout << "Cat : " << currentWeapon.Cat << " Str : " << currentWeapon.Strength << " . Agi : " << currentWeapon.Agility <<" . Sta :  " << currentWeapon.Stamina <<" . Name :  " << currentWeapon.Name << std::endl;
+            //std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
             inFile.close();
             std::exit(0);
             }
@@ -90,7 +143,7 @@ int main(){
             //std::cin.clear();
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, playername);
-            Adventurer.Name = playername;
+            Adventurer = Player(playername);
             pickagain = false;
             }
             break;
@@ -108,17 +161,17 @@ int main(){
   savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
 
     system("cls");
-    std::cout << "\nWelcome Adventurer " << Adventurer.Name << ". Welcome to Dungeon Grind.\n" << std::endl;
+    std::cout << "\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
     std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
     std::cout << "But first.." << std::endl;
     getch();
     system("cls");
 
 //Starterweapons pick    
-    Weapon dagger ('W',"Dull Dagger", 2, 4, 3, 1);
-    Weapon sword ('W', "Broken Sword", 3, 3, 3, 1);
-    Weapon greatsword ('W', "Old Greatsword", 4, 2, 3, 1);
-    Weapon polearm ('W', "Rusty Polearm", 3, 2, 4, 1);
+    Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
+    Weapon sword ("Broken Sword", 3, 3, 3, 1);
+    Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
+    Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
     
     Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
     currentWeapon = picked_weapon;
@@ -233,20 +286,20 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 
 void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing){
-    float maxstr = Adventurer.Strength + currentWeapon.Strength + currentHelmet.Strength +
+    float maxstr = Adventurer.get_Strength() + currentWeapon.Strength + currentHelmet.Strength +
     currentArmor.Strength + currentRing.Strength;
-    float maxagi = Adventurer.Agility + currentWeapon.Agility + currentHelmet.Agility +
+    float maxagi = Adventurer.get_Agility() + currentWeapon.Agility + currentHelmet.Agility +
     currentArmor.Agility + currentRing.Agility;
-    float maxsta = Adventurer.Stamina + currentWeapon.Stamina + currentHelmet.Stamina +
+    float maxsta = Adventurer.get_Stamina() + currentWeapon.Stamina + currentHelmet.Stamina +
     currentArmor.Stamina + currentRing.Agility;
     float maxdmg = maxstr * 2;
-    float maxdef = maxagi * 1.75;
+    float maxdef = (maxagi * 1.75) * 0.9;
     float maxhp = maxsta * 2;
     float critrate = maxagi * 0.75;
     std::cout << std::left;
-    std::cout << "Welcome " << Adventurer.Name << ".\n"
-              << "You're currently Level " << Adventurer.Level
-              << " and you're at Sub-Level " << Adventurer.DungeonLevel << " in this Dungeon.\n\n"
+    std::cout << "Welcome " << Adventurer.get_Name() << ".\n"
+              << "You're currently Level " << Adventurer.get_Level()
+              << " and you're at Sub-Level " << Adventurer.get_DungeonLevel() << " in this Dungeon.\n\n"
               << "\nYour current Stats are: \n"
               << "Strength   : " << maxstr
               << "\n>Max DMG   : " << maxdmg
@@ -264,16 +317,28 @@ Bodyarmor currentArmor, Ring currentRing){
 
 void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing){
-    std::ofstream playername_savefile(Adventurer.Name + ".dat");  //create safefile and fill it with stats. 
+    std::ofstream playername_savefile(Adventurer.get_Name() + ".dat");  //create safefile and fill it with stats. 
                                                              //Str , Agi, Sta, lvl, Dungeonlvl
-    playername_savefile << Adventurer.Cat << ";" << Adventurer.Strength << ";" << Adventurer.Agility << ";" << Adventurer.Stamina << ";" << Adventurer.Level <<  ";" << Adventurer.DungeonLevel << std::endl;
-    playername_savefile << currentWeapon.Cat << ";" << currentWeapon.Strength << ";" << currentWeapon.Agility << ";" << currentWeapon.Stamina << ";" << currentWeapon.ItemLvl << ";" << currentWeapon.Name << std::endl;
-    playername_savefile << currentHelmet.Cat << ";" << currentHelmet.Strength << ";" << currentHelmet.Agility << ";" << currentHelmet.Stamina << ";" << currentHelmet.ItemLvl << ";" << currentHelmet.Name << std::endl;
-    playername_savefile << currentArmor.Cat << ";" << currentArmor.Strength << ";" << currentArmor.Agility << ";" << currentArmor.Stamina << ";" << currentArmor.ItemLvl << ";" << currentArmor.Name << std::endl;
-    playername_savefile << currentRing.Cat << ";" << currentRing.Strength << ";" << currentRing.Agility << ";" << currentRing.Stamina << ";" << currentRing.ItemLvl << ";" << currentRing.Name << std::endl;
+    playername_savefile << Adventurer.get_Cat() << ";" << Adventurer.get_Strength() << ";" << Adventurer.get_Agility() << ";" << Adventurer.get_Stamina() << ";" << Adventurer.get_Level() <<  ";" << Adventurer.get_DungeonLevel() << ";" << std::endl;
+    playername_savefile << currentWeapon.Cat << ";" << currentWeapon.Strength << ";" << currentWeapon.Agility << ";" << currentWeapon.Stamina << ";" << currentWeapon.ItemLvl << ";" << currentWeapon.Name << ";" <<std::endl;
+    playername_savefile << currentHelmet.Cat << ";" << currentHelmet.Strength << ";" << currentHelmet.Agility << ";" << currentHelmet.Stamina << ";" << currentHelmet.ItemLvl << ";" << currentHelmet.Name << ";" <<std::endl;
+    playername_savefile << currentArmor.Cat << ";" << currentArmor.Strength << ";" << currentArmor.Agility << ";" << currentArmor.Stamina << ";" << currentArmor.ItemLvl << ";" << currentArmor.Name << ";" <<std::endl;
+    playername_savefile << currentRing.Cat << ";" << currentRing.Strength << ";" << currentRing.Agility << ";" << currentRing.Stamina << ";" << currentRing.ItemLvl << ";" << currentRing.Name << ";" <<std::endl;
     playername_savefile.close();
 
 
 
 
 }
+/*
+std::vector<std::string> load_savegame(std::string savefile){
+    std::string v_infile{};
+    std::ifstream inFile(savefile);
+    std::vector<std::string> newVector;
+
+    while (std::getline(inFile, v_infile)){
+        if(v_infile.size() > 0)
+            newVector.push_back(v_infile);
+    }
+    return newVector;
+}*/

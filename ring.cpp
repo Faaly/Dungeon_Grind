@@ -10,7 +10,7 @@ Ring::Ring(char aCat, std::string aName, float aStrength, float aAgility, float 
 } 
 
 Ring::Ring(){
-    Cat = 'H';
+    Cat = 'R';
     Name = "None";
     Strength = 0;
     Agility = 0;

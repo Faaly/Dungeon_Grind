@@ -1,12 +1,13 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 #include <string>
+#include <iostream>
 
 class Weapon{
     public:
         //Constructor
         Weapon() = default;
-        Weapon(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl);
+        Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl);
         
         //Functions(Methods)
 
@@ -26,6 +27,8 @@ class Weapon{
         float Agility;
         float Stamina;
         int ItemLvl;
+
+        void show_weaponstats();
 };
 
 

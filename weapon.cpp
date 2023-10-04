@@ -1,7 +1,7 @@
 #include "weapon.h"
 
-Weapon::Weapon(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl){
-    Cat = aCat;
+Weapon::Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl){
+    Cat = 'W';
     Name = aName;
     Strength = aStrength;
     Agility = aAgilty;
@@ -32,4 +32,14 @@ float Weapon::get_Stamina(){
 
 int Weapon::get_ItemLvl(){
     return ItemLvl;
+}
+
+void Weapon::show_weaponstats(){
+    // TODO: add Level, Dungeon Level, Category
+    std::cout << "Cat : " << (this->Cat)
+             << " , Name : " << (this->Name) << "\n" 
+             << "Str : " << (this->Strength)
+             << " , Agi : " << (this->Agility)
+             << " , Sta : " << (this->Stamina)
+             << " , iLvL : " << (this->ItemLvl) << std::endl;
 }

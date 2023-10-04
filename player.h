@@ -1,12 +1,25 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <string>
+#include <iostream>
 
 class Player{
+
+    char Cat;
+    std::string Name;
+    float Strength; 
+    float Agility;     
+    float Stamina;       
+    int Level;
+    int DungeonLevel;
+
     public:
         
         //Constructor
-        Player(char aCat, std::string aName, float aStrength, float aAgilty, float aStamina);
+        Player() = default;
+        Player(std::string aName, float aStrength, float aAgilty, float aStamina, int aLevel, int aDungeonLevel);
+
+        Player(std::string aName);
 
         //Functions(Methods)
         float get_Damage(); //1 strength = 2 damage(dmg)
@@ -24,20 +37,21 @@ class Player{
 
         float get_Stamina();
 
-        //int Player::get_Level();
+        int get_DungeonLevel();
 
-        //int Player::get_DungeonLevel();
+        int get_Level();
 
-        //int Player::get_ItemLvl();
+        void show_playerstats();
+
+        void set_Name(std::string n);
+
+        void set_Strength(float str);
+
+        void set_Agility(float agi);
+
+        void set_Stamina(float sta);
 
         //Member Variables
-        char Cat = 'P';
-        std::string Name;
-        float Strength = 3; 
-        float Agility = 3;     
-        float Stamina = 3;       
-        int Level = 1;
-        int DungeonLevel = 1;
 }; 
 
 
