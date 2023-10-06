@@ -9,6 +9,7 @@ Weapon::Weapon(std::string aName, float aStrength, float aAgilty, float aStamina
     ItemLvl = aItemLvl;
 }
 
+
 //getter n setter methods
 char Weapon::get_Cat(){
     return Cat;

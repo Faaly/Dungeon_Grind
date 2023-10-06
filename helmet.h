@@ -1,12 +1,22 @@
 #ifndef HELMET_H
 #define HELMET_H
 #include <string>
+#include <iostream>
 
 class Helmet{
+
+    //Member Variables
+        char Cat;
+        std::string Name;
+        float Strength;
+        float Agility;
+        float Stamina;
+        int ItemLvl;
+
     public:
         //Constructor
         Helmet();
-        Helmet(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
+        Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
 
         //Functions(Methods)
 
@@ -19,13 +29,8 @@ class Helmet{
         float get_Stamina();
         int get_ItemLvl();
 
-        //Member Variables
-        char Cat;
-        std::string Name;
-        float Strength;
-        float Agility;
-        float Stamina;
-        int ItemLvl;
+        
+        void show_helmetstats();
 
 };
 #endif

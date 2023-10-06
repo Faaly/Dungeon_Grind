@@ -1,13 +1,12 @@
 #include "bodyarmor.h"
 
-Bodyarmor::Bodyarmor(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
-    Cat = aCat;
+Bodyarmor::Bodyarmor(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;
     Stamina = aStamina;
     ItemLvl = aItemLvl;
-} 
+}
 
 Bodyarmor::Bodyarmor(){
     Cat = 'B';
@@ -41,4 +40,15 @@ float Bodyarmor::get_Stamina(){
 
 int Bodyarmor::get_ItemLvl(){
     return ItemLvl;
+}
+
+//////////////////////////////////functions
+
+void Bodyarmor::show_armorstats(){
+    std::cout << "Cat : " << (this->Cat)
+             << " , Name : " << (this->Name) << "\n" 
+             << "Str : " << (this->Strength)
+             << " , Agi : " << (this->Agility)
+             << " , Sta : " << (this->Stamina)
+             << " , iLvL : " << (this->ItemLvl) << std::endl;
 }

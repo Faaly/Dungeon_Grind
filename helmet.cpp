@@ -1,7 +1,7 @@
 #include "helmet.h"
 
-Helmet::Helmet(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
-    Cat = aCat;
+Helmet::Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
+    Cat = 'H';
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;
@@ -41,4 +41,13 @@ float Helmet::get_Stamina(){
 
 int Helmet::get_ItemLvl(){
     return ItemLvl;
+}
+
+void Helmet::show_helmetstats(){
+    std::cout << "Cat : " << (this->Cat)
+             << " , Name : " << (this->Name) << "\n" 
+             << "Str : " << (this->Strength)
+             << " , Agi : " << (this->Agility)
+             << " , Sta : " << (this->Stamina)
+             << " , iLvL : " << (this->ItemLvl) << std::endl;
 }

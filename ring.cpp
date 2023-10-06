@@ -1,13 +1,12 @@
 #include "ring.h"
 
-Ring::Ring(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
-    Cat = aCat;
+Ring::Ring(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;
     Stamina = aStamina;
     ItemLvl = aItemLvl;
-} 
+}
 
 Ring::Ring(){
     Cat = 'R';
@@ -41,4 +40,15 @@ float Ring::get_Stamina(){
 
 int Ring::get_ItemLvl(){
     return ItemLvl;
+}
+
+//////////////////////////////////functions
+
+void Ring::show_ringstats(){
+    std::cout << "Cat : " << (this->Cat)
+             << " , Name : " << (this->Name) << "\n" 
+             << "Str : " << (this->Strength)
+             << " , Agi : " << (this->Agility)
+             << " , Sta : " << (this->Stamina)
+             << " , iLvL : " << (this->ItemLvl) << std::endl;
 }

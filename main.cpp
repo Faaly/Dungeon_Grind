@@ -23,6 +23,8 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing);
 
+template <class T>
+void convert_loadfile2game(T a, std::string b);
 
 //-------------------------------------------BEGIN int main() ------------------------------------------
 
@@ -59,13 +61,10 @@ int main(){
             break;
         case 2:
             {
-                //std::vector<std::string> voc_savegame = load_savegame(Adventurer.Name + ".dat");
-                //voc_savegame = load_savegame(Adventurer.Name + ".dat");
             std::ifstream inFile;
             std::string DATA;
             std::string savefile;
             std::cout << "What file should be loaded?" << std::endl;
-            //std::cin.clear();
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, savefile);
             inFile.open(savefile + ".dat");
@@ -82,9 +81,7 @@ int main(){
             
             std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
             std::stringstream ss_DATA;
-            while (getline(inFile, DATA, '\n')){ 
-                //ss_DATA << DATA << std::endl;
-                //std::cout << "Content of DATA : " << DATA << std::endl;
+            while (getline(inFile, DATA, '\n')){
                 std::string type = DATA.substr(0, DATA.find(';'));
                 if(type == "P") {
                     std::istringstream tmp(DATA);
@@ -97,54 +94,62 @@ int main(){
                     std::getline(tmp, tmp_lvl,';');
                     std::getline(tmp, tmp_dlvl);
 
-                    //std::cout << tmp_str << " " << tmp_agi << " " << tmp_sta << " " << tmp_lvl << " " << tmp_dlvl << std::endl;
-                    Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz), std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz));
+                    Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
+                    , std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz));
                     Adventurer.show_playerstats();
                 }
                 if(type == "W"){
-                    std::istringstream tmp(DATA);
-                    std::string::size_type sz;
-                    std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_ilvl, tmp_name;
-                    std::getline(tmp, tmp_c, ';');
-                    std::getline(tmp, tmp_str, ';');
-                    std::getline(tmp, tmp_agi,';');
-                    std::getline(tmp, tmp_sta, ';');
-                    std::getline(tmp, tmp_ilvl,';');
-                    std::getline(tmp, tmp_name);
-
-                    currentWeapon = Weapon(tmp_name, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz), std::stof(tmp_agi,&sz), std::stoi(tmp_ilvl,&sz));
+                    convert_loadfile2game(currentWeapon, DATA);
                     currentWeapon.show_weaponstats();
                 }
+                if(type == "H"){
+                    convert_loadfile2game(currentHelmet, DATA);
+                    currentHelmet.show_helmetstats();
+                }
+                if(type == "B"){
+                    convert_loadfile2game(currentArmor, DATA);
+                    currentArmor.show_armorstats();
+                }
+                if(type == "R"){
+                    convert_loadfile2game(currentRing, DATA);
+                    currentRing.show_ringstats();
+                }
             }
-            /* 
-                    // zeile fertig auslesen, alles in einzelnen "string"-variablen speichern
-                    std::string first_input_string = tmp.substr(0, tmp.find(';'));
-                    ;
-
-
-                    // wenn alle "infos" vorhanden
-                    // Klasse aufrufen mittels Constructor.
-                    Player P(first_input, ...)
-                }*/
-            
-        //std::cout << Adventurer.toString();
-            //std::cout << "Cat : " << Adventurer.Cat << " . Name : " <<  Adventurer.Name << " . Str : " << Adventurer.Strength << " . Agi :  " << Adventurer.Agility << " . Sta :  " << Adventurer.Stamina << " . Lvl :  " << Adventurer.Level <<
-            //" . DLvl :  " << Adventurer.DungeonLevel << std::endl;
-            //std::cout << "Cat : " << currentWeapon.Cat << " Str : " << currentWeapon.Strength << " . Agi : " << currentWeapon.Agility <<" . Sta :  " << currentWeapon.Stamina <<" . Name :  " << currentWeapon.Name << std::endl;
-            //std::cout << "Loading feature not build in yet.  \n :P " << std::endl;
             inFile.close();
-            std::exit(0);
+            getch();
+            pickagain = false;
             }
             break;
         case 1:
             {    
             system("cls");
             std::cout << "\nPlease name your Adventurer :" << std::endl;
-            //std::cin.clear();
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, playername);
             Adventurer = Player(playername);
             pickagain = false;
+
+            system("cls");
+
+            std::cout << "\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
+            std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
+            std::cout << "But first.." << std::endl;
+            getch();
+            system("cls");
+
+        //Starterweapons pick    
+            Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
+            Weapon sword ("Broken Sword", 3, 3, 3, 1);
+            Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
+            Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
+            
+            Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
+            currentWeapon = picked_weapon;
+            
+            std::cout << "You've equiped " << currentWeapon.get_Name() << std::endl;
+            getch();
+            savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
+
             }
             break;
         default: 
@@ -152,34 +157,8 @@ int main(){
             std::cin.ignore(INT_MAX, '\n');
             system("cls");
             std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
-                //std::exit(0);
-            
-            //break;
         }
     } while (pickagain);
-
-  savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
-
-    system("cls");
-    std::cout << "\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
-    std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
-    std::cout << "But first.." << std::endl;
-    getch();
-    system("cls");
-
-//Starterweapons pick    
-    Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
-    Weapon sword ("Broken Sword", 3, 3, 3, 1);
-    Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
-    Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
-    
-    Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
-    currentWeapon = picked_weapon;
-    
-    
-    std::cout << "You've equiped " << currentWeapon.Name << std::endl;
-    getch();
-    savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
 
 //Hub-Menu - Here starts the real game
 pickagain = true;
@@ -238,20 +217,20 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
     int side {25};
     std::cout << std::left;
     std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
-    std::cout << std::setw(side) << dagger.Name << std::setw(side) << dagger.Strength << std::setw(side) << dagger.Agility << std::setw(side) << dagger.Stamina << std::endl;
-    std::cout << std::setw(side) << sword.Name << std::setw(side) << sword.Strength << std::setw(side) << sword.Agility << std::setw(side) << sword.Stamina << std::endl;
-    std::cout << std::setw(side) << greatsword.Name << std::setw(side) << greatsword.Strength << std::setw(side) << greatsword.Agility << std::setw(side) << greatsword.Stamina << std::endl;
-    std::cout << std::setw(side) << polearm.Name << std::setw(side) << polearm.Strength << std::setw(side) << polearm.Agility << std::setw(side) << polearm.Stamina << std::endl;
+    std::cout << std::setw(side) << dagger.get_Name() << std::setw(side) << dagger.get_Strength() << std::setw(side) << dagger.get_Agility() << std::setw(side) << dagger.get_Stamina() << std::endl;
+    std::cout << std::setw(side) << sword.get_Name() << std::setw(side) << sword.get_Strength() << std::setw(side) << sword.get_Agility() << std::setw(side) << sword.get_Stamina() << std::endl;
+    std::cout << std::setw(side) << greatsword.get_Name() << std::setw(side) << greatsword.get_Strength() << std::setw(side) << greatsword.get_Agility() << std::setw(side) << greatsword.get_Stamina() << std::endl;
+    std::cout << std::setw(side) << polearm.get_Name() << std::setw(side) << polearm.get_Strength() << std::setw(side) << polearm.get_Agility() << std::setw(side) << polearm.get_Stamina() << std::endl;
 
     int pick = 0;
     bool pickagain = true;
     do
     {
         std::cout << "\nWhich weapon do you want?\n" << std::endl;
-        std::cout << "(1) - " << dagger.Name << std::endl
-                  << "(2) - " << sword.Name << std::endl
-                  << "(3) - " << greatsword.Name << std::endl
-                  << "(4) - " << polearm.Name << std::endl;
+        std::cout << "(1) - " << dagger.get_Name() << std::endl
+                  << "(2) - " << sword.get_Name() << std::endl
+                  << "(3) - " << greatsword.get_Name() << std::endl
+                  << "(4) - " << polearm.get_Name() << std::endl;
         std::cin >> pick;
         switch (pick)
         {
@@ -286,12 +265,12 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 
 void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing){
-    float maxstr = Adventurer.get_Strength() + currentWeapon.Strength + currentHelmet.Strength +
-    currentArmor.Strength + currentRing.Strength;
-    float maxagi = Adventurer.get_Agility() + currentWeapon.Agility + currentHelmet.Agility +
-    currentArmor.Agility + currentRing.Agility;
-    float maxsta = Adventurer.get_Stamina() + currentWeapon.Stamina + currentHelmet.Stamina +
-    currentArmor.Stamina + currentRing.Agility;
+    float maxstr = Adventurer.get_Strength() + currentWeapon.get_Strength() + currentHelmet.get_Strength() +
+    currentArmor.get_Strength() + currentRing.get_Strength();
+    float maxagi = Adventurer.get_Agility() + currentWeapon.get_Agility() + currentHelmet.get_Agility() +
+    currentArmor.get_Agility() + currentRing.get_Agility();
+    float maxsta = Adventurer.get_Stamina() + currentWeapon.get_Stamina() + currentHelmet.get_Stamina() +
+    currentArmor.get_Stamina() + currentRing.get_Stamina();
     float maxdmg = maxstr * 2;
     float maxdef = (maxagi * 1.75) * 0.9;
     float maxhp = maxsta * 2;
@@ -309,10 +288,10 @@ Bodyarmor currentArmor, Ring currentRing){
               << "\nStamina    : " << maxsta  
               << "\n>Max HP    : " << maxhp << "\n\n"
               << "\nCurrent Gear equiped: \n"
-              << "Weapon     : "<< currentWeapon.Name
-              << "\nHelmet     : " << currentHelmet.Name
-              << "\nBody Armor : " << currentArmor.Name
-              << "\nRing       : " << currentRing.Name << std::endl; 
+              << "Weapon     : "<< currentWeapon.get_Name()
+              << "\nHelmet     : " << currentHelmet.get_Name()
+              << "\nBody Armor : " << currentArmor.get_Name()
+              << "\nRing       : " << currentRing.get_Name() << std::endl; 
 }
 
 void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
@@ -320,25 +299,28 @@ Bodyarmor currentArmor, Ring currentRing){
     std::ofstream playername_savefile(Adventurer.get_Name() + ".dat");  //create safefile and fill it with stats. 
                                                              //Str , Agi, Sta, lvl, Dungeonlvl
     playername_savefile << Adventurer.get_Cat() << ";" << Adventurer.get_Strength() << ";" << Adventurer.get_Agility() << ";" << Adventurer.get_Stamina() << ";" << Adventurer.get_Level() <<  ";" << Adventurer.get_DungeonLevel() << ";" << std::endl;
-    playername_savefile << currentWeapon.Cat << ";" << currentWeapon.Strength << ";" << currentWeapon.Agility << ";" << currentWeapon.Stamina << ";" << currentWeapon.ItemLvl << ";" << currentWeapon.Name << ";" <<std::endl;
-    playername_savefile << currentHelmet.Cat << ";" << currentHelmet.Strength << ";" << currentHelmet.Agility << ";" << currentHelmet.Stamina << ";" << currentHelmet.ItemLvl << ";" << currentHelmet.Name << ";" <<std::endl;
-    playername_savefile << currentArmor.Cat << ";" << currentArmor.Strength << ";" << currentArmor.Agility << ";" << currentArmor.Stamina << ";" << currentArmor.ItemLvl << ";" << currentArmor.Name << ";" <<std::endl;
-    playername_savefile << currentRing.Cat << ";" << currentRing.Strength << ";" << currentRing.Agility << ";" << currentRing.Stamina << ";" << currentRing.ItemLvl << ";" << currentRing.Name << ";" <<std::endl;
+    playername_savefile << currentWeapon.get_Cat() << ";" << currentWeapon.get_Strength() << ";" << currentWeapon.get_Agility() << ";" << currentWeapon.get_Stamina() << ";" << currentWeapon.get_ItemLvl() << ";" << currentWeapon.get_Name() << ";" <<std::endl;
+    playername_savefile << currentHelmet.get_Cat() << ";" << currentHelmet.get_Strength() << ";" << currentHelmet.get_Agility() << ";" << currentHelmet.get_Stamina() << ";" << currentHelmet.get_ItemLvl() << ";" << currentHelmet.get_Name() << ";" <<std::endl;
+    playername_savefile << currentArmor.get_Cat() << ";" << currentArmor.get_Strength() << ";" << currentArmor.get_Agility() << ";" << currentArmor.get_Stamina() << ";" << currentArmor.get_ItemLvl() << ";" << currentArmor.get_Name() << ";" <<std::endl;
+    playername_savefile << currentRing.get_Cat() << ";" << currentRing.get_Strength() << ";" << currentRing.get_Agility() << ";" << currentRing.get_Stamina() << ";" << currentRing.get_ItemLvl() << ";" << currentRing.get_Name() << ";" <<std::endl;
     playername_savefile.close();
 
+}
 
+template <class T>
+void convert_loadfile2game(T a, std::string b){
+                    std::istringstream tmp(b);     // b works!
+                    std::string::size_type sz;     // tmp_* works!
+                    std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_ilvl, tmp_name;
+                    std::getline(tmp, tmp_c, ';');
+                    std::getline(tmp, tmp_str, ';');
+                    std::getline(tmp, tmp_agi,';');
+                    std::getline(tmp, tmp_sta, ';');
+                    std::getline(tmp, tmp_ilvl,';');
+                    std::getline(tmp, tmp_name);
 
+                    T obj(tmp_name, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
+                    , std::stof(tmp_sta,&sz), std::stoi(tmp_ilvl,&sz));
+                
 
 }
-/*
-std::vector<std::string> load_savegame(std::string savefile){
-    std::string v_infile{};
-    std::ifstream inFile(savefile);
-    std::vector<std::string> newVector;
-
-    while (std::getline(inFile, v_infile)){
-        if(v_infile.size() > 0)
-            newVector.push_back(v_infile);
-    }
-    return newVector;
-}*/

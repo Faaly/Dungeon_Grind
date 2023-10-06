@@ -4,7 +4,7 @@
 #include <iostream>
 
 class Player{
-
+    //Private Member Variables
     char Cat;
     std::string Name;
     float Strength; 
@@ -26,6 +26,8 @@ class Player{
         float get_Defense(); //1 agility = 1.75 defense(def)
         float get_Health(); //1 stamina = 2 health points(hp)
 
+        void show_playerstats(); 
+
         //Getter n Setter
         char get_Cat();
 
@@ -41,8 +43,6 @@ class Player{
 
         int get_Level();
 
-        void show_playerstats();
-
         void set_Name(std::string n);
 
         void set_Strength(float str);
@@ -50,8 +50,6 @@ class Player{
         void set_Agility(float agi);
 
         void set_Stamina(float sta);
-
-        //Member Variables
 }; 
 
 

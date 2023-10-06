@@ -4,6 +4,15 @@
 #include <iostream>
 
 class Weapon{
+
+    //Member Variables 
+        char Cat;
+        std::string Name;
+        float Strength;
+        float Agility;
+        float Stamina;
+        int ItemLvl;
+
     public:
         //Constructor
         Weapon() = default;
@@ -20,13 +29,7 @@ class Weapon{
         float get_Stamina();
         int get_ItemLvl();
 
-        //Member Variables 
-        char Cat;
-        std::string Name;
-        float Strength;
-        float Agility;
-        float Stamina;
-        int ItemLvl;
+        
 
         void show_weaponstats();
 };

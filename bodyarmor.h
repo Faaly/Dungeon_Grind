@@ -1,15 +1,27 @@
 #ifndef BODYARMOR_H
 #define BODYARMOR_H
 #include <string>
+#include <iostream>
 
 class Bodyarmor{
+
+//Member Variables
+        char Cat;
+        std::string Name;
+        float Strength;
+        float Agility;
+        float Stamina;
+        int ItemLvl;
+
     public:
         //Constructor
         Bodyarmor();
-        Bodyarmor(char aCat, std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
+        Bodyarmor(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
+        
 
         //Functions(Methods)
 
+        void show_armorstats();
 
         //Getter n Setters
         char get_Cat();
@@ -19,13 +31,7 @@ class Bodyarmor{
         float get_Stamina();
         int get_ItemLvl();
 
-        //Member Variables
-        char Cat;
-        std::string Name;
-        float Strength;
-        float Agility;
-        float Stamina;
-        int ItemLvl;
+        
 
 };
 #endif
