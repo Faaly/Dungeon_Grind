@@ -1,6 +1,7 @@
 #include "bodyarmor.h"
 
 Bodyarmor::Bodyarmor(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
+    Cat = 'B';
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;

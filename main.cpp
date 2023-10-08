@@ -24,7 +24,10 @@ void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
 Bodyarmor currentArmor, Ring currentRing);
 
 template <class T>
-void convert_loadfile2game(T a, std::string b);
+T convert_loadfile2game(T a, std::string b);
+
+std::string Enter_Dungeon_dlvl_chest(Player Adventurer);
+std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
 
 //-------------------------------------------BEGIN int main() ------------------------------------------
 
@@ -99,19 +102,19 @@ int main(){
                     Adventurer.show_playerstats();
                 }
                 if(type == "W"){
-                    convert_loadfile2game(currentWeapon, DATA);
+                    currentWeapon = convert_loadfile2game(currentWeapon, DATA);
                     currentWeapon.show_weaponstats();
                 }
                 if(type == "H"){
-                    convert_loadfile2game(currentHelmet, DATA);
+                    currentHelmet = convert_loadfile2game(currentHelmet, DATA);
                     currentHelmet.show_helmetstats();
                 }
                 if(type == "B"){
-                    convert_loadfile2game(currentArmor, DATA);
+                    currentArmor = convert_loadfile2game(currentArmor, DATA);
                     currentArmor.show_armorstats();
                 }
                 if(type == "R"){
-                    convert_loadfile2game(currentRing, DATA);
+                    currentRing = convert_loadfile2game(currentRing, DATA);
                     currentRing.show_ringstats();
                 }
             }
@@ -123,15 +126,14 @@ int main(){
         case 1:
             {    
             system("cls");
-            std::cout << "\nPlease name your Adventurer :" << std::endl;
+            std::cout << c_TUTORIALHELPER_01 << "\nPlease name your Adventurer :" << std::endl;
             std::cin.ignore ( 100 , '\n' );
             std::getline(std::cin, playername);
             Adventurer = Player(playername);
             pickagain = false;
 
             system("cls");
-
-            std::cout << "\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
+            std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
             std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
             std::cout << "But first.." << std::endl;
             getch();
@@ -166,7 +168,7 @@ int hubmenu = 0;
 do
 {
     system("cls");
-    std::cout << c_HUB_MENU << std::endl;
+    std::cout << c_TUTORIALHELPER_01 << c_HUB_MENU << std::endl;
     std::cin >> hubmenu;
 
     switch (hubmenu)
@@ -192,7 +194,11 @@ do
         break;
     case 1:
         {
-            //code GAME! function stuff ect
+            system("cls");
+            std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
+                      << c_ENTER_DUNGEON_pt2 << Enter_Dungeon_dlvl_npc(Adventurer) << "\n" 
+                      << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4;
+                      getch();
         }
         break;
     default:
@@ -213,7 +219,7 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 
     Weapon choosed_weapon;
 
-   std::cout << "Before your adventure starts, please choose one Weapon:\n" << std::endl;
+   std::cout << c_TUTORIALHELPER_05 << "Before your adventure starts, please choose one Weapon:\n" << std::endl;
     int side {25};
     std::cout << std::left;
     std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
@@ -276,7 +282,7 @@ Bodyarmor currentArmor, Ring currentRing){
     float maxhp = maxsta * 2;
     float critrate = maxagi * 0.75;
     std::cout << std::left;
-    std::cout << "Welcome " << Adventurer.get_Name() << ".\n"
+    std::cout << c_TUTORIALHELPER_03 << "Welcome " << Adventurer.get_Name() << ".\n"
               << "You're currently Level " << Adventurer.get_Level()
               << " and you're at Sub-Level " << Adventurer.get_DungeonLevel() << " in this Dungeon.\n\n"
               << "\nYour current Stats are: \n"
@@ -308,7 +314,7 @@ Bodyarmor currentArmor, Ring currentRing){
 }
 
 template <class T>
-void convert_loadfile2game(T a, std::string b){
+T convert_loadfile2game(T a, std::string b){
                     std::istringstream tmp(b);     // b works!
                     std::string::size_type sz;     // tmp_* works!
                     std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_ilvl, tmp_name;
@@ -317,10 +323,67 @@ void convert_loadfile2game(T a, std::string b){
                     std::getline(tmp, tmp_agi,';');
                     std::getline(tmp, tmp_sta, ';');
                     std::getline(tmp, tmp_ilvl,';');
-                    std::getline(tmp, tmp_name);
+                    std::getline(tmp, tmp_name, ';');
 
-                    T obj(tmp_name, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
-                    , std::stof(tmp_sta,&sz), std::stoi(tmp_ilvl,&sz));
+                    char cat = tmp_c[0];
+                    float str = std::stof(tmp_str);
+                    float agi = std::stof(tmp_agi);
+                    float sta = std::stof(tmp_sta);
+                    int ilvl = std::stoi(tmp_ilvl);
+
+                    T obj(tmp_name, str, agi, sta, ilvl);
                 
+return obj;
+}
 
+std::string Enter_Dungeon_dlvl_chest(Player Adventurer){
+    std::string result;
+    if (Adventurer.get_DungeonLevel() < 6){
+        result = c_1_5Chest;
+    }
+    else if (Adventurer.get_DungeonLevel()< 11)
+    {
+        result = c_6_10Chest;
+    }
+    else if (Adventurer.get_DungeonLevel()< 16)
+    {
+        result = c_11_15Chest;
+    }
+    else if (Adventurer.get_DungeonLevel()< 21)
+    {
+        result = c_16_20Chest;
+    }
+    else
+    {
+        result = c_21_25Chest;
+    }
+
+    return result;
+}
+
+std::string Enter_Dungeon_dlvl_npc(Player Adventurer){
+    std::string result;
+    if (Adventurer.get_DungeonLevel() < 6)
+    {
+        result = c_1_5NPC;
+    }
+    else if (Adventurer.get_DungeonLevel() < 11)
+    {
+        result = c_6_10NPC;
+    }
+    else if (Adventurer.get_DungeonLevel() < 16)
+    {
+        result = c_11_15NPC;
+    }
+    else if (Adventurer.get_DungeonLevel() < 21)
+    {
+        result = c_16_20NPC;
+    }
+    else
+    {
+        result = c_21_25NPC;
+    }
+
+
+    return result;
 }

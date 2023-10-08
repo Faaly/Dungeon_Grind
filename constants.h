@@ -1,5 +1,6 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
+#include "player.h"
 
 //Title Screen -------------------------------------------
 const std::string c_ENTER_SCREEN = 
@@ -48,6 +49,73 @@ const std::string c_HUB_MENU =
         "(2) View my stats\n"
         "(3) Save & Exit\n"
         "\n"
+        "\n"
+        "\n";
+
+//Enter-Dungeon Level-------------------------------
+const std::string c_ENTER_DUNGEON_pt1 =  
+        "                     You have entered Dungeonlevel ";
+
+const std::string c_ENTER_DUNGEON_pt2 = 
+        "                  While you go deeper into the darkness\n"
+        "                 of this floor, you see a ";
+
+const std::string c_ENTER_DUNGEON_pt3 = 
+        "                 in front of a ";
+
+const std::string c_ENTER_DUNGEON_pt4 = 
+        " treasure chest. \n" 
+        "           It seems the creature want to defend their belongings.\n\n"
+        "                            Prepare to fight!";
+
+
+
+
+const std::string c_1_5Chest = "old and dirty";
+const std::string c_6_10Chest = "aged and shabby";
+const std::string c_11_15Chest = "rusty and ancient";
+const std::string c_16_20Chest = "forgotten and dusty";
+const std::string c_21_25Chest = "moldering and fossilized";
+
+const std::string c_1_5NPC = "feeble Goblin";
+const std::string c_6_10NPC = "scrawny Imp";
+const std::string c_11_15NPC = "tiny and frail Gnoll";
+const std::string c_16_20NPC = "underdeveloped Gremlin";
+const std::string c_21_25NPC = "weak Kobold";
+
+//Tutorial Helper -----------------------------------------------------
+const std::string c_TUTORIALHELPER_01 =
+        "  ______\n"
+        "<| o  o |>\n"
+        " |______| \n"
+        "\n"
+        "\n";
+
+const std::string c_TUTORIALHELPER_02 =
+        "  ______\n"
+        "<| >  < |>\n"
+        " |__~~__| \n"
+        "\n"
+        "\n";
+
+const std::string c_TUTORIALHELPER_03 =
+        "  ______\n"
+        "<| ^  ^ |>\n"
+        " |______| \n"
+        "\n"
+        "\n";
+
+const std::string c_TUTORIALHELPER_04 =
+        "  ______\n"
+        "<| x  x |>\n"
+        " |__ww__| \n"
+        "\n"
+        "\n";
+
+const std::string c_TUTORIALHELPER_05 =
+        "  ______\n"
+        "<| U  U |>\n"
+        " |__--__| \n"
         "\n"
         "\n";
 

@@ -1,6 +1,7 @@
 #include "ring.h"
 
 Ring::Ring(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
+    Cat = 'R';
     Name = aName;
     Strength = aStrength;
     Agility = aAgility;
