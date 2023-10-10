@@ -12,12 +12,17 @@ class Player{
     float Stamina;       
     int Level;
     int DungeonLevel;
+    float Exp;
+    float BaseExp = 100;
+    float ExpScaleFactor = 1.5f;
+
+    void LevelUp();
 
     public:
         
         //Constructor
         Player() = default;
-        Player(std::string aName, float aStrength, float aAgilty, float aStamina, int aLevel, int aDungeonLevel);
+        Player(std::string aName, float aStrength, float aAgilty, float aStamina, int aLevel, int aDungeonLevel, float aExp);
 
         Player(std::string aName);
 
@@ -43,6 +48,14 @@ class Player{
 
         int get_Level();
 
+        float get_Exp();
+
+        float get_BaseExp();
+
+        float get_Exp2lvl();
+
+        float get_ExpScaleFactor();
+
         void set_Name(std::string n);
 
         void set_Strength(float str);
@@ -50,6 +63,10 @@ class Player{
         void set_Agility(float agi);
 
         void set_Stamina(float sta);
+
+        void set_Level(int lvl);
+
+        void gainExp(int exp);
 }; 
 
 

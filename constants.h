@@ -17,7 +17,7 @@ const std::string c_ENTER_SCREEN =
         "                         GRIND \n"
         "\n"
         ""
-        "                       Press Start \n"
+        "                      Press Any Key \n"
         "\n"
         "\n"
         "\n"
@@ -83,6 +83,17 @@ const std::string c_11_15NPC = "tiny and frail Gnoll";
 const std::string c_16_20NPC = "underdeveloped Gremlin";
 const std::string c_21_25NPC = "weak Kobold";
 
+//Fight ----------------------------------------------------------
+
+const std::string c_FIGHT_WINDOW_ABOVE =
+        "#####################################################\n"
+        "#                                                   #\n";
+
+const std::string c_FIGHT_WINDOW_DOWN =
+        "#                                                   #\n"
+        "#####################################################\n";
+
+
 //Tutorial Helper -----------------------------------------------------
 const std::string c_TUTORIALHELPER_01 =
         "  ______\n"
@@ -123,5 +134,8 @@ const std::string c_TUTORIALHELPER_05 =
 const std::string c_ERROR_404 = "Error 404 : File not found";
 const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
 const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
+
+//Any Key -------------------------------------------------
+const std::string c_ANY_KEY = "                      Press Any Key \n";
 
 #endif
