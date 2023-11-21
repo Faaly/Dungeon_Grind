@@ -2,6 +2,30 @@
 #define TITLESCREEN_H
 #include "player.h"
 
+//Chest and NPC Names --------------------------------------
+const std::string c_1_5Chest = "old and dirty";
+const std::string c_6_10Chest = "aged and shabby";
+const std::string c_11_15Chest = "rusty and ancient";
+const std::string c_16_20Chest = "forgotten and dusty";
+const std::string c_21_25Chest = "moldering and fossilized";
+
+const std::string c_1_5NPC = "feeble Goblin";
+const std::string c_6_10NPC = "scrawny Imp";
+const std::string c_11_15NPC = "tiny and frail Gnoll";
+const std::string c_16_20NPC = "underdeveloped Gremlin";
+const std::string c_21_25NPC = "weak Kobold";        
+
+
+//Error Messages -------------------------------------------
+const std::string c_ERROR_404 = "Error 404 : File not found";
+const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
+const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
+
+
+//Any Key -------------------------------------------------
+const std::string c_ANY_KEY = "                      Press Any Key \n";
+
+
 //Title Screen -------------------------------------------
 const std::string c_ENTER_SCREEN = 
         "\n"
@@ -22,6 +46,7 @@ const std::string c_ENTER_SCREEN =
         "\n"
         "\n"
         "                       By Faaly \n";
+
 
 //MainMenu Screen -------------------------------------------
 const std::string c_MAIN_MENU =
@@ -52,6 +77,7 @@ const std::string c_HUB_MENU =
         "\n"
         "\n";
 
+
 //Enter-Dungeon Level-------------------------------
 const std::string c_ENTER_DUNGEON_pt1 =  
         "                     You have entered Dungeonlevel ";
@@ -68,20 +94,6 @@ const std::string c_ENTER_DUNGEON_pt4 =
         "           It seems the creature want to defend their belongings.\n\n"
         "                            Prepare to fight!";
 
-
-
-
-const std::string c_1_5Chest = "old and dirty";
-const std::string c_6_10Chest = "aged and shabby";
-const std::string c_11_15Chest = "rusty and ancient";
-const std::string c_16_20Chest = "forgotten and dusty";
-const std::string c_21_25Chest = "moldering and fossilized";
-
-const std::string c_1_5NPC = "feeble Goblin";
-const std::string c_6_10NPC = "scrawny Imp";
-const std::string c_11_15NPC = "tiny and frail Gnoll";
-const std::string c_16_20NPC = "underdeveloped Gremlin";
-const std::string c_21_25NPC = "weak Kobold";
 
 //Fight ----------------------------------------------------------
 
@@ -130,12 +142,5 @@ const std::string c_TUTORIALHELPER_05 =
         "\n"
         "\n";
 
-//Error Messages -------------------------------------------
-const std::string c_ERROR_404 = "Error 404 : File not found";
-const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
-const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
-
-//Any Key -------------------------------------------------
-const std::string c_ANY_KEY = "                      Press Any Key \n";
 
 #endif

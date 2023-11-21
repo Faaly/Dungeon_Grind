@@ -2,6 +2,8 @@
 #define ENEMY_H
 #include <string>
 #include <iostream>
+#include "player.h"
+#include "weapon.h"
 
 class Enemy{
 
@@ -14,9 +16,12 @@ class Enemy{
     public:
         //Constructor
         Enemy() = default;
-        Enemy(std::string aName, float aStrength, float aAgilty, float aStamina);
+        Enemy(Player& Player);
+        
         
         //Functions(Methods)
+        void show_enemystats();
+        
 
 
         //Getters n Setters
@@ -25,7 +30,6 @@ class Enemy{
         float get_Agility();
         float get_Stamina();
         int get_ItemLvl();
-
     
         
 };

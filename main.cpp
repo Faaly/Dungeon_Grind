@@ -14,15 +14,13 @@
 #include "ring.h" // Class Ring
 #include "enemy.h" // Class Enemy
 
-//std::vector<std::string> load_savegame(std::string savefile);
 
-void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
-Bodyarmor currentArmor, Ring currentRing);
+
+
+
+void savegame(Player Adventurer);
 
 Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon polearm);
-
-void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
-Bodyarmor currentArmor, Ring currentRing);
 
 template <class T>
 T convert_loadfile2game(T a, std::string b);
@@ -86,7 +84,7 @@ int main(){
                 return 1;
             }
             
-            std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
+            //std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
             std::stringstream ss_DATA;
             while (getline(inFile, DATA, '\n')){
                 std::string type = DATA.substr(0, DATA.find(';'));
@@ -109,22 +107,27 @@ int main(){
                 if(type == "W"){
                     currentWeapon = convert_loadfile2game(currentWeapon, DATA);
                     currentWeapon.show_weaponstats();
+                    Adventurer.set_weapon(currentWeapon);
                 }
                 if(type == "H"){
                     currentHelmet = convert_loadfile2game(currentHelmet, DATA);
                     currentHelmet.show_helmetstats();
+                    Adventurer.set_helmet(currentHelmet);
                 }
                 if(type == "B"){
                     currentArmor = convert_loadfile2game(currentArmor, DATA);
                     currentArmor.show_armorstats();
+                    Adventurer.set_bodyarmor(currentArmor);
                 }
                 if(type == "R"){
                     currentRing = convert_loadfile2game(currentRing, DATA);
                     currentRing.show_ringstats();
+                    Adventurer.set_ring(currentRing);
                 }
             }
             inFile.close();
-            std::cout << c_ANY_KEY << std::endl;
+            std::cout << "Savefile successfully loaded.\n\n"
+                      << c_ANY_KEY << std::endl;
             getch();
             pickagain = false;
             }
@@ -153,11 +156,11 @@ int main(){
             Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
             
             Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
-            currentWeapon = picked_weapon;
+            Adventurer.set_weapon(picked_weapon);
             
-            std::cout << "You've equiped " << currentWeapon.get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
+            std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
             getch();
-            savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
+            savegame(Adventurer);
 
             }
             break;
@@ -182,7 +185,7 @@ do
     {
     case 3:
         {
-            savegame(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);            
+            savegame(Adventurer);            
             system("cls"); 
             std::exit(0);
         }
@@ -190,7 +193,7 @@ do
     case 2:
         {
             system("cls");
-            showstats(Adventurer, currentWeapon, currentHelmet, currentArmor, currentRing);
+            Adventurer.showstats();
             //Stats stuff
             // check if player has equip
             //show all items w/ stats
@@ -202,21 +205,31 @@ do
         break;
     case 1:
         {
+            //Create Enemy
+            Enemy Enemy1(Adventurer);
+
+
             system("cls");
             std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
-                      << c_ENTER_DUNGEON_pt2 << Enter_Dungeon_dlvl_npc(Adventurer) << "\n" 
+                      << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
                       << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
                       << "\n\n\n         " << c_ANY_KEY;
+            Enemy1.show_enemystats();
             getch();
-            // gegner besiegt, und der Gegner gibt dir 101 erfahrung
-            int erfahrung = 251;
-            // erfahrung weitergeben an den spieler
-            Adventurer.gainExp(erfahrung);
-            
-        
-            
 
             
+            
+                // ToDo
+                //  Funktion erstellen, die Gegner baut.
+                //  Kampf UI erstellen
+            
+                // gegner besiegt, und der Gegner gibt dir 101 erfahrung
+            //int erfahrung = 251;
+                // erfahrung weitergeben an den spieler
+            //Adventurer.gainExp(erfahrung);
+            
+        
+            //Loot
         }
         break;
     default:
@@ -226,6 +239,8 @@ do
         std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
     }
 } while (pickagain);
+
+
 
 
     return 0;
@@ -288,47 +303,16 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
     return choosed_weapon;
 }
 
-void showstats(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
-Bodyarmor currentArmor, Ring currentRing){
-    float maxstr = Adventurer.get_Strength() + currentWeapon.get_Strength() + currentHelmet.get_Strength() +
-    currentArmor.get_Strength() + currentRing.get_Strength();
-    float maxagi = Adventurer.get_Agility() + currentWeapon.get_Agility() + currentHelmet.get_Agility() +
-    currentArmor.get_Agility() + currentRing.get_Agility();
-    float maxsta = Adventurer.get_Stamina() + currentWeapon.get_Stamina() + currentHelmet.get_Stamina() +
-    currentArmor.get_Stamina() + currentRing.get_Stamina();
-    float maxdmg = maxstr * 2;
-    float maxdef = (maxagi * 1.75) * 0.9;
-    float maxhp = maxsta * 2;
-    float critrate = maxagi * 0.75;
-    std::cout << std::left;
-    std::cout << c_TUTORIALHELPER_03 << "Welcome " << Adventurer.get_Name() << ".\n"
-              << "You're currently Level " << Adventurer.get_Level()
-              << "\nExp        : " << Adventurer.get_Exp() << ". Exp needed for next Level : " << Adventurer.get_Exp2lvl()  
-              << "\nYou're at Sub-Level " << Adventurer.get_DungeonLevel() << " in this Dungeon.\n\n"
-              << "\nYour current Stats are: \n"
-              << "Strength   : " << maxstr
-              << "\n>Max DMG   : " << maxdmg
-              << "\nAgility    : " << maxagi
-              << "\n>Crit-Rate : " << critrate << "%"
-              << "\n>Def       : " << maxdef
-              << "\nStamina    : " << maxsta  
-              << "\n>Max HP    : " << maxhp << "\n\n"
-              << "\nCurrent Gear equiped: \n"
-              << "Weapon     : "<< currentWeapon.get_Name()
-              << "\nHelmet     : " << currentHelmet.get_Name()
-              << "\nBody Armor : " << currentArmor.get_Name()
-              << "\nRing       : " << currentRing.get_Name() << std::endl; 
-}
 
-void savegame(Player Adventurer, Weapon currentWeapon, Helmet currentHelmet,
-Bodyarmor currentArmor, Ring currentRing){
+
+void savegame(Player Adventurer){
     std::ofstream playername_savefile(Adventurer.get_Name() + ".dat");  //create safefile and fill it with stats. 
                                                              //Str , Agi, Sta, lvl, Dungeonlvl
     playername_savefile << Adventurer.get_Cat() << ";" << Adventurer.get_Strength() << ";" << Adventurer.get_Agility() << ";" << Adventurer.get_Stamina() << ";" << Adventurer.get_Level() <<  ";" << Adventurer.get_DungeonLevel() << ";" << Adventurer.get_Exp() << ";" << std::endl;
-    playername_savefile << currentWeapon.get_Cat() << ";" << currentWeapon.get_Strength() << ";" << currentWeapon.get_Agility() << ";" << currentWeapon.get_Stamina() << ";" << currentWeapon.get_ItemLvl() << ";" << currentWeapon.get_Name() << ";" <<std::endl;
-    playername_savefile << currentHelmet.get_Cat() << ";" << currentHelmet.get_Strength() << ";" << currentHelmet.get_Agility() << ";" << currentHelmet.get_Stamina() << ";" << currentHelmet.get_ItemLvl() << ";" << currentHelmet.get_Name() << ";" <<std::endl;
-    playername_savefile << currentArmor.get_Cat() << ";" << currentArmor.get_Strength() << ";" << currentArmor.get_Agility() << ";" << currentArmor.get_Stamina() << ";" << currentArmor.get_ItemLvl() << ";" << currentArmor.get_Name() << ";" <<std::endl;
-    playername_savefile << currentRing.get_Cat() << ";" << currentRing.get_Strength() << ";" << currentRing.get_Agility() << ";" << currentRing.get_Stamina() << ";" << currentRing.get_ItemLvl() << ";" << currentRing.get_Name() << ";" <<std::endl;
+    playername_savefile << Adventurer.get_weapon().get_Cat() << ";" << Adventurer.get_weapon().get_Strength() << ";" << Adventurer.get_weapon().get_Agility() << ";" << Adventurer.get_weapon().get_Stamina() << ";" << Adventurer.get_weapon().get_ItemLvl() << ";" << Adventurer.get_weapon().get_Name() << ";" <<std::endl;
+    playername_savefile << Adventurer.get_helmet().get_Cat() << ";" << Adventurer.get_helmet().get_Strength() << ";" << Adventurer.get_helmet().get_Agility() << ";" << Adventurer.get_helmet().get_Stamina() << ";" << Adventurer.get_helmet().get_ItemLvl() << ";" << Adventurer.get_helmet().get_Name() << ";" <<std::endl;
+    playername_savefile << Adventurer.get_bodyarmor().get_Cat() << ";" << Adventurer.get_bodyarmor().get_Strength() << ";" << Adventurer.get_bodyarmor().get_Agility() << ";" << Adventurer.get_bodyarmor().get_Stamina() << ";" << Adventurer.get_bodyarmor().get_ItemLvl() << ";" << Adventurer.get_bodyarmor().get_Name() << ";" <<std::endl;
+    playername_savefile << Adventurer.get_ring().get_Cat() << ";" << Adventurer.get_ring().get_Strength() << ";" << Adventurer.get_ring().get_Agility() << ";" << Adventurer.get_ring().get_Stamina() << ";" << Adventurer.get_ring().get_ItemLvl() << ";" << Adventurer.get_ring().get_Name() << ";" <<std::endl;
     playername_savefile.close();
 
 }
@@ -358,18 +342,19 @@ return obj;
 
 std::string Enter_Dungeon_dlvl_chest(Player Adventurer){
     std::string result;
-    if (Adventurer.get_DungeonLevel() < 6){
+    int dlevel = Adventurer.get_DungeonLevel();
+    if (dlevel < 6){
         result = c_1_5Chest;
     }
-    else if (Adventurer.get_DungeonLevel()< 11)
+    else if (dlevel< 11)
     {
         result = c_6_10Chest;
     }
-    else if (Adventurer.get_DungeonLevel()< 16)
+    else if (dlevel< 16)
     {
         result = c_11_15Chest;
     }
-    else if (Adventurer.get_DungeonLevel()< 21)
+    else if (dlevel< 21)
     {
         result = c_16_20Chest;
     }
@@ -377,33 +362,6 @@ std::string Enter_Dungeon_dlvl_chest(Player Adventurer){
     {
         result = c_21_25Chest;
     }
-
-    return result;
-}
-
-std::string Enter_Dungeon_dlvl_npc(Player Adventurer){
-    std::string result;
-    if (Adventurer.get_DungeonLevel() < 6)
-    {
-        result = c_1_5NPC;
-    }
-    else if (Adventurer.get_DungeonLevel() < 11)
-    {
-        result = c_6_10NPC;
-    }
-    else if (Adventurer.get_DungeonLevel() < 16)
-    {
-        result = c_11_15NPC;
-    }
-    else if (Adventurer.get_DungeonLevel() < 21)
-    {
-        result = c_16_20NPC;
-    }
-    else
-    {
-        result = c_21_25NPC;
-    }
-
 
     return result;
 }

@@ -2,6 +2,10 @@
 #define PLAYER_H
 #include <string>
 #include <iostream>
+#include "bodyarmor.h"
+#include "helmet.h"
+#include "ring.h"
+#include "weapon.h"
 
 class Player{
     //Private Member Variables
@@ -15,6 +19,20 @@ class Player{
     float Exp;
     float BaseExp = 100;
     float ExpScaleFactor = 1.5f;
+
+    float dmgScaleFactor = 2;
+    float hpScaleFactor = 2;
+    float defScaleFactor1 = 1.75;
+    float defScaleFactor2 = 0.9;
+    float critrateScaleFactor = 0.75;
+
+    Weapon p_currentWeapon;
+    Helmet p_currentHelmet;
+    Bodyarmor p_currentArmor;
+    Ring p_currentRing;
+    
+    
+
 
     void LevelUp();
 
@@ -56,6 +74,31 @@ class Player{
 
         float get_ExpScaleFactor();
 
+        float DmgScaleFactor();
+
+        float HPScaleFactor();
+
+        float DefScaleFactor1();
+
+        float DefScaleFactor2();
+
+        float CritrateScaleFactor();
+
+        float maxstr();
+
+        float maxagi();
+
+        float maxsta();
+
+        float maxdmg();
+
+        float maxdef();
+
+        float critrate();
+
+        float maxhp();
+
+
         void set_Name(std::string n);
 
         void set_Strength(float str);
@@ -67,6 +110,27 @@ class Player{
         void set_Level(int lvl);
 
         void gainExp(int exp);
+
+        void showstats();
+
+        void set_weapon(Weapon currentWeapon);
+        void set_helmet(Helmet currentHelmet);
+        void set_bodyarmor(Bodyarmor currentArmor);
+        void set_ring(Ring currentRing);
+
+        Weapon get_weapon();
+        Helmet get_helmet();
+        Bodyarmor get_bodyarmor();
+        Ring get_ring();
+
+//func schreiben, set weapon(Weapon w). can be void
+    //weapon = w;
+    // main.cpp Adventurer.set_weapon(currentWeapon)
+    // in main.cpp change all from currentWeapon
+    
+//func schreiben, Weapon get_weapon()
+// return currentWeapon
+
 }; 
 
 

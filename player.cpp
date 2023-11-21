@@ -76,8 +76,68 @@ float Player::get_Exp2lvl(){
     return Exp2lvl;
 }
 
+float Player::DmgScaleFactor(){
+    return dmgScaleFactor;
+}
+
+float Player::HPScaleFactor(){
+    return hpScaleFactor;
+}
+
+
+float Player::DefScaleFactor1(){
+    return defScaleFactor1;
+}
+
+float Player::DefScaleFactor2(){
+    return defScaleFactor2;
+}
+
+float Player::CritrateScaleFactor(){
+    return critrateScaleFactor;
+}
+
+float Player::maxstr(){
+    float maxstr;
+    return maxstr = this->get_Strength() + p_currentWeapon.get_Strength() + p_currentHelmet.get_Strength() +
+    p_currentArmor.get_Strength() + p_currentRing.get_Strength();
+}
+
+float Player::maxagi(){
+    float maxagi;
+    return maxagi = this->get_Agility() + p_currentWeapon.get_Agility() + p_currentHelmet.get_Agility() +
+    p_currentArmor.get_Agility() + p_currentRing.get_Agility();
+}
+
+float Player::maxsta(){
+    float maxsta;
+    return maxsta = this->get_Stamina() + p_currentWeapon.get_Stamina() + p_currentHelmet.get_Stamina() +
+    p_currentArmor.get_Stamina() + p_currentRing.get_Stamina();
+}
+
+float Player::maxdmg(){
+    float maxdmg;
+    return maxdmg = this->maxstr() * this->DmgScaleFactor();
+}
+
+float Player::maxdef(){
+    float maxdef;
+    return maxdef = (this->maxagi() * this->DefScaleFactor1()) * this->DefScaleFactor2();   
+}
+
+float Player::critrate(){
+    float critrate;
+    return critrate = this->maxagi() * this->CritrateScaleFactor();
+}
+
+float Player::maxhp(){
+    float maxhp;
+    return maxhp = this->maxsta() * this->HPScaleFactor();
+     
+
+}
+
 void Player::show_playerstats() {
-    // TODO: add Level, Dungeon Level, Category
     std::cout << "Cat : " << (this->Cat)
              << " , Name : " << (this->Name) << "\n" 
              << "Str : " << (this->Strength)
@@ -122,9 +182,62 @@ void Player::LevelUp() {
     getch();
 }
 
+void Player::showstats(){
+    std::cout << std::left;
+    std::cout << c_TUTORIALHELPER_03 << "Welcome " << this->get_Name() << ".\n"
+              << "You're currently Level " << this->get_Level()
+              << "\nExp        : " << this->get_Exp() << ". Exp needed for next Level : " << this->get_Exp2lvl()  
+              << "\nYou're at Sub-Level " << this->get_DungeonLevel() << " in this Dungeon.\n\n"
+              << "\nYour current Stats are: \n"
+              << "Strength   : " << this->maxstr()
+              << "\n>Max DMG   : " << this->maxdmg()
+              << "\nAgility    : " << this->maxagi()
+              << "\n>Crit-Rate : " << this->critrate() << "%"
+              << "\n>Def       : " << this->maxdef()
+              << "\nStamina    : " << this->maxsta()  
+              << "\n>Max HP    : " << this->maxhp() << "\n\n"
+              << "\nCurrent Gear equiped: \n"
+              << "Weapon     : "<< p_currentWeapon.get_Name()
+              << "\nHelmet     : " << p_currentHelmet.get_Name()
+              << "\nBody Armor : " << p_currentArmor.get_Name()
+              << "\nRing       : " << p_currentRing.get_Name() << std::endl; 
+}
 
 
-/*void Player::set_Name(std::string n){
+void Player::set_weapon(Weapon currentWeapon){
+    this->p_currentWeapon = currentWeapon;
+}
+
+void Player::set_helmet(Helmet currentHelmet){
+    this->p_currentHelmet = currentHelmet;
+}
+
+void Player::set_bodyarmor(Bodyarmor currentArmor){
+    this->p_currentArmor = currentArmor;
+}
+
+void Player::set_ring(Ring currentRing){
+    this->p_currentRing = currentRing;
+}
+
+Weapon Player::get_weapon(){
+    return p_currentWeapon;
+}
+
+Helmet Player::get_helmet(){
+    return p_currentHelmet;
+}
+
+Bodyarmor Player::get_bodyarmor(){
+    return p_currentArmor;
+}
+
+Ring Player::get_ring(){
+    return p_currentRing;
+}
+
+                                                                            /*
+void Player::set_Name(std::string n){
     Name = n;
 }
 
@@ -138,8 +251,8 @@ void Player::set_Agility(float agi){
 
 void Player::set_Stamina(float sta){
     Stamina = sta;
-}*/
-                                                                            /*
+}
+
 float Player::get_Damage(){
     Damage = (Strength * 2);
     return Damage;
