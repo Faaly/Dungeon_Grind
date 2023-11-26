@@ -26,13 +26,12 @@ class Player{
     float defScaleFactor2 = 0.9;
     float critrateScaleFactor = 0.75;
 
+    float currentHP = 0;
+
     Weapon p_currentWeapon;
     Helmet p_currentHelmet;
     Bodyarmor p_currentArmor;
     Ring p_currentRing;
-    
-    
-
 
     void LevelUp();
 
@@ -45,9 +44,9 @@ class Player{
         Player(std::string aName);
 
         //Functions(Methods)
-        float get_Damage(); //1 strength = 2 damage(dmg)
-        float get_Defense(); //1 agility = 1.75 defense(def)
-        float get_Health(); //1 stamina = 2 health points(hp)
+        float get_Damage(); 
+        float get_Defense();
+        float get_Health(); 
 
         void show_playerstats(); 
 
@@ -98,6 +97,9 @@ class Player{
 
         float maxhp();
 
+        float get_currentHP();
+
+        void set_currentHP(float currentHP);
 
         void set_Name(std::string n);
 
@@ -123,13 +125,11 @@ class Player{
         Bodyarmor get_bodyarmor();
         Ring get_ring();
 
-//func schreiben, set weapon(Weapon w). can be void
-    //weapon = w;
-    // main.cpp Adventurer.set_weapon(currentWeapon)
-    // in main.cpp change all from currentWeapon
-    
-//func schreiben, Weapon get_weapon()
-// return currentWeapon
+        void attack();
+
+// Fight Functions -----------------------------------------------
+
+
 
 }; 
 

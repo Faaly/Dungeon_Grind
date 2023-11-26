@@ -3,8 +3,6 @@
 #include <random>
 #include <cctype> // for std::toupper
 
-
-
 Enemy::Enemy(Player& Player){
 
     //Randomizer 
@@ -12,6 +10,7 @@ Enemy::Enemy(Player& Player){
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> randomModifier(-2, 2);
 
+    this->player = Player;
     Strength = Player.maxstr() + randomModifier(gen);
     Agility = Player.maxagi() + randomModifier(gen);
     Stamina = Player.maxsta() + randomModifier(gen);
@@ -41,8 +40,8 @@ Enemy::Enemy(Player& Player){
 
 }
 
-//functions (Methods)
-std::string enemy_name_capitalizer(std::string a){
+//functions (Methods)-----------------------------------------------
+std::string Enemy::enemy_name_capitalizer(std::string a){
      if (a.empty()) {
         return a;            // Return the original string if it's empty
     }
@@ -52,19 +51,34 @@ std::string enemy_name_capitalizer(std::string a){
     return result;
 }
 
-
-
 void Enemy::show_enemystats(){
     std::string a = (this->Name);
-    std::string result = enemy_name_capitalizer(a);
-    std::cout << "Name : " << result << "\n" 
-             << "Str : " << (this->Strength)<< "\n"
-             << "Agi : " << (this->Agility)<< "\n"
-             << "Sta : " << (this->Stamina) << std::endl;
+    std::string enemy_name = enemy_name_capitalizer(a);
+    std::cout << "Name : " << enemy_name << "\n" 
+             << "Str : " << (this->Strength)<< ", Max Dmg:" << this->get_maxdmg() << "\n"
+             << "Agi : " << (this->Agility)<< ", Max Def:" << this->get_maxdef() << "\n"
+             << "Sta : " << (this->Stamina)<< ", Max Hp:" << this->get_maxhp() << std::endl;
 }
 
-//getter n setter methods
+float Enemy::get_maxhp(){
+    float maxhp;
+    return maxhp = this->Stamina * player.HPScaleFactor();
+}
 
+
+
+float Enemy::get_maxdmg(){
+    float maxdmg;
+    return maxdmg = this->Strength * player.DmgScaleFactor();
+}
+
+float Enemy::get_maxdef(){
+    float maxdef;
+    return maxdef = (this->Agility * player.DefScaleFactor1()) * player.DefScaleFactor2();
+}
+
+
+//getter n setter methods--------------------------------------------------------
 std::string Enemy::get_Name(){
     return Name;
 }
@@ -81,4 +95,11 @@ float Enemy::get_Stamina(){
     return Stamina;
 }
 
+float Enemy::get_currentHP(){
+    float currentHP;
+    return currentHP = this->currentHP;
+}
 
+void Enemy::set_currentHP(float currentHP){
+    this->currentHP = currentHP;
+}

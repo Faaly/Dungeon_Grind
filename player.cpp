@@ -133,8 +133,15 @@ float Player::critrate(){
 float Player::maxhp(){
     float maxhp;
     return maxhp = this->maxsta() * this->HPScaleFactor();
-     
+}
 
+float Player::get_currentHP(){
+    float currentHP;
+    return currentHP = this->currentHP;
+}
+
+void Player::set_currentHP(float currentHP){
+    this->currentHP = currentHP;
 }
 
 void Player::show_playerstats() {
@@ -149,9 +156,9 @@ void Player::show_playerstats() {
 }
 
 // löschen, brauchst du nicht mehr
-void Player::set_Level(int lvl){
-    Level = lvl;
-}
+//void Player::set_Level(int lvl){
+//    Level = lvl;
+//}
 
 
 void Player::gainExp(int gained_exp){
@@ -236,37 +243,6 @@ Ring Player::get_ring(){
     return p_currentRing;
 }
 
-                                                                            /*
-void Player::set_Name(std::string n){
-    Name = n;
+void Player::attack(){
+    
 }
-
-void Player::set_Strength(float str){
-    Strength = str;
-}
-
-void Player::set_Agility(float agi){
-    Agility = agi;
-}
-
-void Player::set_Stamina(float sta){
-    Stamina = sta;
-}
-
-float Player::get_Damage(){
-    Damage = (Strength * 2);
-    return Damage;
-}
-
-float Player::get_Defense(){
-    return Defense;
-}
-
-float Player::get_Health(){
-    return Health;
-}
-
-int Player::get_ItemLvl(){
-    return ItemLvl;
-}
-                                                                            */     

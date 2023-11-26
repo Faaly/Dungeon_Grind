@@ -12,6 +12,7 @@ class Enemy{
         float Strength;
         float Agility;
         float Stamina;
+        float currentHP = 0;
 
     public:
         //Constructor
@@ -20,8 +21,14 @@ class Enemy{
         
         
         //Functions(Methods)
+        std::string enemy_name_capitalizer(std::string a);
         void show_enemystats();
         
+        float get_maxhp();
+        float get_maxdmg();
+        float get_maxdef();
+
+        //void attack;
 
 
         //Getters n Setters
@@ -29,7 +36,9 @@ class Enemy{
         float get_Strength();
         float get_Agility();
         float get_Stamina();
-        int get_ItemLvl();
+        float get_currentHP();
+        void set_currentHP(float currentHP);
+        Player player;  
     
         
 };

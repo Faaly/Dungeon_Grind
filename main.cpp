@@ -13,6 +13,7 @@
 #include "bodyarmor.h" // Class Bodyarmor
 #include "ring.h" // Class Ring
 #include "enemy.h" // Class Enemy
+#include "fight.h" // Fight function
 
 
 
@@ -27,6 +28,9 @@ T convert_loadfile2game(T a, std::string b);
 
 std::string Enter_Dungeon_dlvl_chest(Player Adventurer);
 std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
+
+
+
 
 
 
@@ -207,29 +211,26 @@ do
         {
             //Create Enemy
             Enemy Enemy1(Adventurer);
-
-
             system("cls");
             std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
                       << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
                       << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
                       << "\n\n\n         " << c_ANY_KEY;
-            Enemy1.show_enemystats();
             getch();
 
+            Enemy1.show_enemystats();
+            getch();
+            fight(Adventurer, Enemy1); // Bug #1
+            if (Adventurer.get_Level() == 1)
+            {
+                int erfahrung = 101;
+                Adventurer.gainExp(erfahrung);
+            }
             
-            
-                // ToDo
-                //  Funktion erstellen, die Gegner baut.
-                //  Kampf UI erstellen
-            
-                // gegner besiegt, und der Gegner gibt dir 101 erfahrung
-            //int erfahrung = 251;
-                // erfahrung weitergeben an den spieler
-            //Adventurer.gainExp(erfahrung);
+    //  Kampf UI erstellen 
             
         
-            //Loot
+    //Loot
         }
         break;
     default:
@@ -365,3 +366,6 @@ std::string Enter_Dungeon_dlvl_chest(Player Adventurer){
 
     return result;
 }
+
+
+

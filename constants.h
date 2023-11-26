@@ -48,7 +48,6 @@ const std::string c_ENTER_SCREEN =
         "                       By Faaly \n";
 
 
-
 //MainMenu Screen -------------------------------------------
 const std::string c_MAIN_MENU =
         "\n"
@@ -102,6 +101,11 @@ const std::string c_FIGHT_WINDOW_ABOVE =
         "#####################################################\n"
         "#                                                   #\n";
 
+const std::string c_FIGHT_WINDOW_MID =
+        "#                                                   #\n"
+        "#####################################################\n"
+        "#                                                   #\n";
+
 const std::string c_FIGHT_WINDOW_DOWN =
         "#                                                   #\n"
         "#####################################################\n";
@@ -140,6 +144,14 @@ const std::string c_TUTORIALHELPER_05 =
         "  ______\n"
         "<| U  U |>\n"
         " |__--__| \n"
+        "\n"
+        "\n";
+
+//Fight Menu ---------------------------------------------------------
+const std::string c_FIGHT_MENU1 =
+        "(1) Attack\n"
+        "(3) Block\n" 
+        "(9) Run Away\n"
         "\n"
         "\n";
 
