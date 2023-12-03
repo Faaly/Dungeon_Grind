@@ -38,212 +38,218 @@ std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
 //------------------------------------------------------------------------------------------------------
 
 int main(){
-    //Titlescreen
-    system("cls");
-    std::cout << c_ENTER_SCREEN << std::endl;
-    getch();
-    //Main Menu
-    system("cls");
-    int mainmenupick = 0;
-    
-    Player Adventurer;
-    std::string player_name;
-    Weapon currentWeapon;
-    Helmet currentHelmet;
-    Bodyarmor currentArmor;
-    Ring currentRing;
-
-    bool pickagain = true;
-    do
-    {
-        std::cout << c_MAIN_MENU << std::endl;
-        std::cin >> mainmenupick;
-
-        std::string playername;
-        switch (mainmenupick)
-        {
-        case 3:
-            {
-            system("cls"); 
-            std::exit(0);
-            }
-            break;
-        case 2:
-            {
-            std::ifstream inFile;
-            std::string DATA;
-            std::string savefile;
-            std::cout << "What file should be loaded?" << std::endl;
-            std::cin.ignore ( 100 , '\n' );
-            std::getline(std::cin, savefile);
-            inFile.open(savefile + ".dat");
-            if (!inFile)
-            {
-                std::cout << c_ERROR_404 << std::endl;
-            }
-
-            if (!inFile.is_open())
-            {
-                std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
-                return 1;
-            }
-            
-            //std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
-            std::stringstream ss_DATA;
-            while (getline(inFile, DATA, '\n')){
-                std::string type = DATA.substr(0, DATA.find(';'));
-                if(type == "P") {
-                    std::istringstream tmp(DATA);
-                    std::string::size_type sz;
-                    std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_lvl, tmp_dlvl, tmp_exp;
-                    std::getline(tmp, tmp_c, ';');
-                    std::getline(tmp, tmp_str, ';');
-                    std::getline(tmp, tmp_agi,';');
-                    std::getline(tmp, tmp_sta, ';');
-                    std::getline(tmp, tmp_lvl,';');
-                    std::getline(tmp, tmp_dlvl,';');
-                    std::getline(tmp, tmp_exp);
-
-                    Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
-                    , std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz), std::stof(tmp_exp,&sz));
-                    Adventurer.show_playerstats();
-                }
-                if(type == "W"){
-                    currentWeapon = convert_loadfile2game(currentWeapon, DATA);
-                    currentWeapon.show_weaponstats();
-                    Adventurer.set_weapon(currentWeapon);
-                }
-                if(type == "H"){
-                    currentHelmet = convert_loadfile2game(currentHelmet, DATA);
-                    currentHelmet.show_helmetstats();
-                    Adventurer.set_helmet(currentHelmet);
-                }
-                if(type == "B"){
-                    currentArmor = convert_loadfile2game(currentArmor, DATA);
-                    currentArmor.show_armorstats();
-                    Adventurer.set_bodyarmor(currentArmor);
-                }
-                if(type == "R"){
-                    currentRing = convert_loadfile2game(currentRing, DATA);
-                    currentRing.show_ringstats();
-                    Adventurer.set_ring(currentRing);
-                }
-            }
-            inFile.close();
-            std::cout << "Savefile successfully loaded.\n\n"
-                      << c_ANY_KEY << std::endl;
-            getch();
-            pickagain = false;
-            }
-            break;
-        case 1:
-            {    
-            system("cls");
-            std::cout << c_TUTORIALHELPER_01 << "\nPlease name your Adventurer :" << std::endl;
-            std::cin.ignore ( 100 , '\n' );
-            std::getline(std::cin, playername);
-            Adventurer = Player(playername);
-            pickagain = false;
-
-            system("cls");
-            std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
-            std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
-            std::cout << "But first..\n\n\n" << std::endl;
-            std::cout << c_ANY_KEY;
-            getch();
-            system("cls");
-
-        //Starterweapons pick    
-            Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
-            Weapon sword ("Broken Sword", 3, 3, 3, 1);
-            Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
-            Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
-            
-            Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
-            Adventurer.set_weapon(picked_weapon);
-            
-            std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
-            getch();
-            savegame(Adventurer);
-
-            }
-            break;
-        default: 
-            std::cin.clear();
-            std::cin.ignore(INT_MAX, '\n');
-            system("cls");
-            std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
-        }
-    } while (pickagain);
-
-//Hub-Menu - Here starts the real game
-pickagain = true;
-int hubmenu = 0;
-do
-{
-    system("cls");
-    std::cout << c_TUTORIALHELPER_01 << c_HUB_MENU << std::endl;
-    std::cin >> hubmenu;
-
-    switch (hubmenu)
-    {
-    case 3:
-        {
-            savegame(Adventurer);            
-            system("cls"); 
-            std::exit(0);
-        }
-        break;
-    case 2:
-        {
-            system("cls");
-            Adventurer.showstats();
-            //Stats stuff
-            // check if player has equip
-            //show all items w/ stats
-
-            //count all stats together and show. Show damage, Hp and defense too
-            std::cout << "\n" << c_ANY_KEY << std::endl;
-            getch();
-        }
-        break;
-    case 1:
-        {
-            //Create Enemy
-            Enemy Enemy1(Adventurer);
-            system("cls");
-            std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
-                      << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
-                      << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
-                      << "\n\n\n         " << c_ANY_KEY;
-            getch();
-
-            Enemy1.show_enemystats();
-            getch();
-            fight(Adventurer, Enemy1); // Bug #1
-            if (Adventurer.get_Level() == 1)
-            {
-                int erfahrung = 101;
-                Adventurer.gainExp(erfahrung);
-            }
-            
-    //  Kampf UI erstellen 
-            
-        
-    //Loot
-        }
-        break;
-    default:
-        std::cin.clear();
-        std::cin.ignore(INT_MAX, '\n');
+    //Game Over loop do{  
+        //Titlescreen
         system("cls");
-        std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
-    }
-} while (pickagain);
+        std::cout << c_ENTER_SCREEN << std::endl;
+        getch();
+        //Main Menu
+        system("cls");
+        int mainmenupick = 0;
+        
+        Player Adventurer;
+        std::string player_name;
+        Weapon currentWeapon;
+        Helmet currentHelmet;
+        Bodyarmor currentArmor;
+        Ring currentRing;
+
+        bool pickagain = true;
+        do
+        {
+            std::cout << c_MAIN_MENU << std::endl;
+            std::cin >> mainmenupick;
+
+            std::string playername;
+            switch (mainmenupick)
+            {
+            case 3:
+                {
+                system("cls"); 
+                std::exit(0);
+                }
+                break;
+            case 2:
+                {
+                std::ifstream inFile;
+                std::string DATA;
+                std::string savefile;
+                std::cout << "What file should be loaded?" << std::endl;
+                std::cin.ignore ( 100 , '\n' );
+                std::getline(std::cin, savefile);
+                inFile.open(savefile + ".dat");
+                if (!inFile)
+                {
+                    std::cout << c_ERROR_404 << std::endl;
+                }
+
+                if (!inFile.is_open())
+                {
+                    std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
+                    return 1;
+                }
+                
+                //std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
+                std::stringstream ss_DATA;
+                while (getline(inFile, DATA, '\n')){
+                    std::string type = DATA.substr(0, DATA.find(';'));
+                    if(type == "P") {
+                        std::istringstream tmp(DATA);
+                        std::string::size_type sz;
+                        std::string tmp_c,tmp_str, tmp_agi, tmp_sta, tmp_lvl, tmp_dlvl, tmp_exp;
+                        std::getline(tmp, tmp_c, ';');
+                        std::getline(tmp, tmp_str, ';');
+                        std::getline(tmp, tmp_agi,';');
+                        std::getline(tmp, tmp_sta, ';');
+                        std::getline(tmp, tmp_lvl,';');
+                        std::getline(tmp, tmp_dlvl,';');
+                        std::getline(tmp, tmp_exp);
+
+                        Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
+                        , std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz), std::stof(tmp_exp,&sz));
+                        Adventurer.show_playerstats();
+                    }
+                    if(type == "W"){
+                        currentWeapon = convert_loadfile2game(currentWeapon, DATA);
+                        currentWeapon.show_weaponstats();
+                        Adventurer.set_weapon(currentWeapon);
+                    }
+                    if(type == "H"){
+                        currentHelmet = convert_loadfile2game(currentHelmet, DATA);
+                        currentHelmet.show_helmetstats();
+                        Adventurer.set_helmet(currentHelmet);
+                    }
+                    if(type == "B"){
+                        currentArmor = convert_loadfile2game(currentArmor, DATA);
+                        currentArmor.show_armorstats();
+                        Adventurer.set_bodyarmor(currentArmor);
+                    }
+                    if(type == "R"){
+                        currentRing = convert_loadfile2game(currentRing, DATA);
+                        currentRing.show_ringstats();
+                        Adventurer.set_ring(currentRing);
+                    }
+                }
+                inFile.close();
+                std::cout << "Savefile successfully loaded.\n\n"
+                        << c_ANY_KEY << std::endl;
+                getch();
+                pickagain = false;
+                }
+                break;
+            case 1:
+                {    
+                system("cls");
+                std::cout << c_TUTORIALHELPER_01 << "\nPlease name your Adventurer :" << std::endl;
+                std::cin.ignore ( 100 , '\n' );
+                std::getline(std::cin, playername);
+                Adventurer = Player(playername);
+                pickagain = false;
+
+                system("cls");
+                std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
+                std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
+                std::cout << "But first..\n\n\n" << std::endl;
+                std::cout << c_ANY_KEY;
+                getch();
+                system("cls");
+
+            //Starterweapons pick    
+                Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
+                Weapon sword ("Broken Sword", 3, 3, 3, 1);
+                Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
+                Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
+                
+                Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
+                Adventurer.set_weapon(picked_weapon);
+                
+                std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
+                getch();
+                savegame(Adventurer);
+
+                }
+                break;
+            default: 
+                std::cin.clear();
+                std::cin.ignore(INT_MAX, '\n');
+                system("cls");
+                std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+            }
+        } while (pickagain);
+
+        //Hub-Menu - Here starts the real game
+        pickagain = true;
+        int hubmenu = 0;
+        do
+        {
+            system("cls");
+            std::cout << c_TUTORIALHELPER_01 << c_HUB_MENU << std::endl;
+            std::cin >> hubmenu;
+
+            switch (hubmenu)
+            {
+            case 3:
+                {
+                    savegame(Adventurer);            
+                    system("cls"); 
+                    std::exit(0);
+                }
+                break;
+            case 2:
+                {
+                    system("cls");
+                    Adventurer.showstats();
+                    //Stats stuff
+                    // check if player has equip
+                    //show all items w/ stats
+
+                    //count all stats together and show. Show damage, Hp and defense too
+                    std::cout << "\n" << c_ANY_KEY << std::endl;
+                    getch();
+                }
+                break;
+            case 1:
+                {
+                    //Create Enemy
+                    Enemy Enemy1(Adventurer);
+                    system("cls");
+                    std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
+                            << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
+                            << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
+                            << "\n\n\n         " << c_ANY_KEY;
+                    getch();
+
+                    Enemy1.show_enemystats();
+                    fight(Adventurer, Enemy1);
+                     // insert const text here
+    
+                    if (Adventurer.get_Level() == 1)
+                    {
+                        int erfahrung = 101;
+                        Adventurer.gainExp(erfahrung);
+                    }
+                    
+
+
+                    
+                    
 
 
 
-
+            //  Kampf UI erstelle 
+                    
+                
+            //Loot
+                }
+                break;
+            default:
+                std::cin.clear();
+                std::cin.ignore(INT_MAX, '\n');
+                system("cls");
+                std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+            }
+        } while (pickagain);   
+    //} while (1 == 1);
     return 0;
 }
 
