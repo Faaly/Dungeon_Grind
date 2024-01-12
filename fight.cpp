@@ -4,6 +4,7 @@
 #include <cstdlib> // rand() function
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 /*
 float player_attack(Player& Player, Enemy& Enemy, bool a){
     float p_result;
@@ -20,7 +21,7 @@ void Menu_UP(Player& Player, Enemy& Enemy){
     system("cls");
     std::cout << c_FIGHT_WINDOW_ABOVE
     << std::right << std::setw(53)  << Enemy.get_Name() << "\n"
-    << std::setw(45) << std::right << "HP: " << std::left << Enemy.get_currentHP() << std::right << " / " << std::left << Enemy.get_maxhp() << std::right << "\n\n\n\n" << std::endl; 
+    << std::setw(43) << std::right << "HP: " << std::left << Enemy.get_currentHP() << std::right << " / " << std::left << Enemy.get_maxhp() << std::right << "\n\n\n\n" << std::endl; 
     std::cout << Player.get_Name() << "\nHP: " << Player.get_currentHP() << " / " << Player.maxhp() << "\n"
     << c_FIGHT_WINDOW_MID << std::endl;
 }
@@ -130,6 +131,7 @@ void fight(Player& Player, Enemy& Enemy){
                 Menu_UP(Player, Enemy);
                 p_result = (Player.maxdmg() - Enemy.get_maxdef()) * 0.10 ; // Block reduces dmg via 90%
                 p_result = std::max(0.0f, p_result);
+                p_result = std::round(p_result * 100.0) / 100.0;
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
                 std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. You still do " << p_result << " Damage." << std::endl;
                 e_block = false;
@@ -143,6 +145,7 @@ void fight(Player& Player, Enemy& Enemy){
                 Menu_UP(Player, Enemy);
                 p_result = Player.maxdmg() - Enemy.get_maxdef();
                 p_result = std::max(0.0f, p_result);
+                p_result = std::round(p_result * 100.0) / 100.0;
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
                 std::cout << "You attack the " << Enemy.get_Name() << " for " << p_result << " Damage." << std::endl;
                 std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
@@ -161,6 +164,7 @@ void fight(Player& Player, Enemy& Enemy){
                 Menu_UP(Player, Enemy);
                 p_result = Player.maxdmg() - Enemy.get_maxdef(); // Both attack
                 p_result = std::max(0.0f, p_result);
+                p_result = std::round(p_result * 100.0) / 100.0;
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
                 std::cout << "You attack the " << Enemy.get_Name() << " for " << p_result << " Damage." << std::endl;
                 std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
@@ -190,6 +194,7 @@ void fight(Player& Player, Enemy& Enemy){
                 Menu_UP(Player, Enemy);
                 e_result = (Enemy.get_maxdmg() - Player.maxdef()) * 0.10; // Block reduces dmg via 90%
                 e_result = std::max(0.0f, e_result);
+                e_result = std::round(e_result * 100.0) / 100.0;
                 Player.set_currentHP(Player.get_currentHP() - e_result);
                 std::cout << "The " << Enemy.get_Name() << " attacks you.\nWhile you block the attack, " << Enemy.get_Name() << " still do " << e_result << " Damage." << std::endl;
                 std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
@@ -199,6 +204,7 @@ void fight(Player& Player, Enemy& Enemy){
                 Menu_UP(Player, Enemy);
                 e_result = Enemy.get_maxdmg() - Player.maxdef();
                 e_result = std::max(0.0f, e_result);
+                e_result = std::round(e_result * 100.0) / 100.0;
                 Player.set_currentHP(Player.get_currentHP() - e_result);
                 std::cout << "The " << Enemy.get_Name() << " attacks you for " << e_result << " Damage." << std::endl;
                 std::cout << c_FIGHT_WINDOW_DOWN << std::endl;

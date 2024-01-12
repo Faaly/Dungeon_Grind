@@ -264,6 +264,7 @@ int main(){
                         system("cls");
                         pickagain = false;
                         std::cout << "                    You died" << std::endl;
+                        //Pimp this You died stuff like in dark souls.
                         getch();      
                         break;
                     }
@@ -274,14 +275,6 @@ int main(){
             //Bug#1 solving via put Exp recieving here
                      // insert const text here
     
-                    
-                    
-
-
-                    
-                    
-
-
 
             //  Kampf UI erstelle 
                     
