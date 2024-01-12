@@ -18,35 +18,32 @@
 
 
 
-
+//create safefile and fill it with stats of the player
 void savegame(Player Adventurer);
 
+//Module to pick starter weapon for new player
 Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon polearm);
 
+//Template for Module to loadfile into game
 template <class T>
 T convert_loadfile2game(T a, std::string b);
 
+//Function that checks Dungeonlevel of Player to generate chest
 std::string Enter_Dungeon_dlvl_chest(Player Adventurer);
 std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
-
-
-
-
-
-
 //-------------------------------------------BEGIN int main() ------------------------------------------
 //------------------------------------------------------------------------------------------------------
 
 int main(){
-    //Game Over loop do{  
+    do{ 
         //Titlescreen
         system("cls");
         std::cout << c_ENTER_SCREEN << std::endl;
         getch();
-        //Main Menu
+
+        //Main Menu - Player can pick out of 3 options. Start new Game - Load game - exit game
         system("cls");
-        int mainmenupick = 0;
-        
+        int mainmenupick = 0; //Variable for std::cin
         Player Adventurer;
         std::string player_name;
         Weapon currentWeapon;
@@ -54,7 +51,7 @@ int main(){
         Bodyarmor currentArmor;
         Ring currentRing;
 
-        bool pickagain = true;
+        bool pickagain = true; //failsafe if insert wrong input
         do
         {
             std::cout << c_MAIN_MENU << std::endl;
@@ -63,13 +60,15 @@ int main(){
             std::string playername;
             switch (mainmenupick)
             {
-            case 3:
+            //Player decides to exit game
+            case 3: 
                 {
                 system("cls"); 
                 std::exit(0);
                 }
                 break;
-            case 2:
+            //Player decides to load gamefile. He inserts his charname via std::cin
+            case 2: 
                 {
                 std::ifstream inFile;
                 std::string DATA;
@@ -78,18 +77,20 @@ int main(){
                 std::cin.ignore ( 100 , '\n' );
                 std::getline(std::cin, savefile);
                 inFile.open(savefile + ".dat");
+                //File doesn't exist - Error 404
                 if (!inFile)
                 {
                     std::cout << c_ERROR_404 << std::endl;
                 }
-
+                
+                //File is open due reasons - Error 001
                 if (!inFile.is_open())
                 {
                     std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
                     return 1;
                 }
                 
-                //std::cout << "Print Data from file : " << savefile << ".dat" << std::endl;
+                //File is found and data is loaded into stringstream. Loaded in dedicated parts of the Player.
                 std::stringstream ss_DATA;
                 while (getline(inFile, DATA, '\n')){
                     std::string type = DATA.substr(0, DATA.find(';'));
@@ -130,6 +131,8 @@ int main(){
                         Adventurer.set_ring(currentRing);
                     }
                 }
+
+                //File is getting closed and Player is moved into Camp-Menu
                 inFile.close();
                 std::cout << "Savefile successfully loaded.\n\n"
                         << c_ANY_KEY << std::endl;
@@ -137,6 +140,7 @@ int main(){
                 pickagain = false;
                 }
                 break;
+            //Player starts a new game and needs to name his character via std::cin
             case 1:
                 {    
                 system("cls");
@@ -146,6 +150,7 @@ int main(){
                 Adventurer = Player(playername);
                 pickagain = false;
 
+                //Short Story Part
                 system("cls");
                 std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
                 std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
@@ -154,7 +159,7 @@ int main(){
                 getch();
                 system("cls");
 
-            //Starterweapons pick    
+            //Player has to pick one out of four starter-weapons   
                 Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
                 Weapon sword ("Broken Sword", 3, 3, 3, 1);
                 Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
@@ -163,6 +168,7 @@ int main(){
                 Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm);
                 Adventurer.set_weapon(picked_weapon);
                 
+                //Player has picked a weapon. The Game saves and player is put into Camp-Menu
                 std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
                 getch();
                 savegame(Adventurer);
@@ -170,6 +176,7 @@ int main(){
                 }
                 break;
             default: 
+            //Players input is garbage and the menu is reloaded.
                 std::cin.clear();
                 std::cin.ignore(INT_MAX, '\n');
                 system("cls");
@@ -177,7 +184,9 @@ int main(){
             }
         } while (pickagain);
 
-        //Hub-Menu - Here starts the real game
+        //Camp-Menu
+        //Player has to pick out of three options: To save and exit the game, 
+        // to view his stats of his character or to start a dungeon (Play the actual game)
         pickagain = true;
         int hubmenu = 0;
         do
@@ -188,7 +197,7 @@ int main(){
 
             switch (hubmenu)
             {
-            case 3:
+            case 3: //save the game and exit the game
                 {
                     savegame(Adventurer);            
                     system("cls"); 
@@ -200,7 +209,7 @@ int main(){
                     system("cls");
                     Adventurer.showstats();
                     //Stats stuff
-                    // check if player has equip
+                    //check if player has equip
                     //show all items w/ stats
 
                     //count all stats together and show. Show damage, Hp and defense too
@@ -208,26 +217,64 @@ int main(){
                     getch();
                 }
                 break;
-            case 1:
+            case 1: // Play the game
                 {
                     //Create Enemy
                     Enemy Enemy1(Adventurer);
                     system("cls");
+                    //Storypart - Telling the player which level they are and what enemy they can expect,
+                    // also what kind of treasure chest they can expect.
                     std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
                             << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
                             << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
                             << "\n\n\n         " << c_ANY_KEY;
                     getch();
 
-                    Enemy1.show_enemystats();
+
+                    //Enemy1.show_enemystats();
                     fight(Adventurer, Enemy1);
+                     
+                    if (Enemy1.get_currentHP() <= 0 )  // YOU WIN
+                    {
+                        system("cls");
+                        Adventurer.set_DungeonLevel(Adventurer.get_DungeonLevel() + 1); // Player DungeonLevel increase
+                        std::cout << c_TUTORIALHELPER_01 << "         You have beat the " << Enemy1.get_Name() << ".\n"
+                        << "                CONGRATULATIONS!\n\n\n" 
+                        << "         You are entering Sub-Level " << Adventurer.get_DungeonLevel() <<
+                           "\n              in this Dungeon." <<  std::endl; // 
+                        getch();
+
+                        //if player is Level 1, they need 100 XP to get level 2. Level 1 will be tutorial level.
+                        if (Adventurer.get_Level() == 1)
+                        {
+                            int erfahrung = 101;
+                            Adventurer.gainExp(erfahrung);
+                        }   
+                        else 
+                        {
+                            int erfahrung = 75 * (Adventurer.get_DungeonLevel() -1 ) * 1.25;
+                            std::cout << "       You'll receive " << erfahrung << " Experience" << std::endl;
+                            getch();
+                            Adventurer.gainExp(erfahrung);
+                            
+                        }
+                    } 
+                    else if (Adventurer.get_currentHP() <= 0) //YOU LOSE
+                    {
+                        system("cls");
+                        pickagain = false;
+                        std::cout << "                    You died" << std::endl;
+                        getch();      
+                        break;
+                    }
+                    
+                    //you win
+
+             
+            //Bug#1 solving via put Exp recieving here
                      // insert const text here
     
-                    if (Adventurer.get_Level() == 1)
-                    {
-                        int erfahrung = 101;
-                        Adventurer.gainExp(erfahrung);
-                    }
+                    
                     
 
 
@@ -239,7 +286,7 @@ int main(){
             //  Kampf UI erstelle 
                     
                 
-            //Loot
+            //Loot erstellen
                 }
                 break;
             default:
@@ -249,13 +296,15 @@ int main(){
                 std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
             }
         } while (pickagain);   
-    //} while (1 == 1);
+    } while (1 == 1);
     return 0;
 }
 
 //----------------------------------------ENDE int main() -------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------
 
+
+//Module to pick starter weapon for new player
 Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon polearm){
 
     Weapon choosed_weapon;
@@ -263,7 +312,7 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
    std::cout << c_TUTORIALHELPER_05 << "Before your adventure starts, please choose one Weapon:\n" << std::endl;
     int side {25};
     std::cout << std::left;
-    std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
+    std::cout << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
     std::cout << std::setw(side) << dagger.get_Name() << std::setw(side) << dagger.get_Strength() << std::setw(side) << dagger.get_Agility() << std::setw(side) << dagger.get_Stamina() << std::endl;
     std::cout << std::setw(side) << sword.get_Name() << std::setw(side) << sword.get_Strength() << std::setw(side) << sword.get_Agility() << std::setw(side) << sword.get_Stamina() << std::endl;
     std::cout << std::setw(side) << greatsword.get_Name() << std::setw(side) << greatsword.get_Strength() << std::setw(side) << greatsword.get_Agility() << std::setw(side) << greatsword.get_Stamina() << std::endl;
@@ -311,10 +360,9 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 }
 
 
-
+//create safefile and fill it with stats of the player
 void savegame(Player Adventurer){
-    std::ofstream playername_savefile(Adventurer.get_Name() + ".dat");  //create safefile and fill it with stats. 
-                                                             //Str , Agi, Sta, lvl, Dungeonlvl
+    std::ofstream playername_savefile(Adventurer.get_Name() + ".dat");  
     playername_savefile << Adventurer.get_Cat() << ";" << Adventurer.get_Strength() << ";" << Adventurer.get_Agility() << ";" << Adventurer.get_Stamina() << ";" << Adventurer.get_Level() <<  ";" << Adventurer.get_DungeonLevel() << ";" << Adventurer.get_Exp() << ";" << std::endl;
     playername_savefile << Adventurer.get_weapon().get_Cat() << ";" << Adventurer.get_weapon().get_Strength() << ";" << Adventurer.get_weapon().get_Agility() << ";" << Adventurer.get_weapon().get_Stamina() << ";" << Adventurer.get_weapon().get_ItemLvl() << ";" << Adventurer.get_weapon().get_Name() << ";" <<std::endl;
     playername_savefile << Adventurer.get_helmet().get_Cat() << ";" << Adventurer.get_helmet().get_Strength() << ";" << Adventurer.get_helmet().get_Agility() << ";" << Adventurer.get_helmet().get_Stamina() << ";" << Adventurer.get_helmet().get_ItemLvl() << ";" << Adventurer.get_helmet().get_Name() << ";" <<std::endl;
@@ -324,6 +372,7 @@ void savegame(Player Adventurer){
 
 }
 
+//Template for Module to loadfile into game
 template <class T>
 T convert_loadfile2game(T a, std::string b){
                     std::istringstream tmp(b);     // b works!
@@ -347,6 +396,7 @@ T convert_loadfile2game(T a, std::string b){
 return obj;
 }
 
+//Function that checks Dungeonlevel of Player to generate chest
 std::string Enter_Dungeon_dlvl_chest(Player Adventurer){
     std::string result;
     int dlevel = Adventurer.get_DungeonLevel();

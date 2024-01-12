@@ -5,7 +5,7 @@
 #include "player.h"
 #include "enemy.h"
 
-
+void Menu_UP(Player& Player, Enemy& Enemy);
 
 void fight(Player& Player, Enemy& Enemy);
 

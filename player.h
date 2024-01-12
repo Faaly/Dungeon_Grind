@@ -111,6 +111,8 @@ class Player{
 
         void set_Level(int lvl);
 
+        void set_DungeonLevel(int dlvl);
+
         void gainExp(int exp);
 
         void showstats();

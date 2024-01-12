@@ -2,7 +2,28 @@
 #include <conio.h> // getch()
 #include "constants.h"
 #include <cstdlib> // rand() function
+#include <iostream>
+#include <iomanip>
+/*
+float player_attack(Player& Player, Enemy& Enemy, bool a){
+    float p_result;
+    p_result = (Player.maxdmg() - Enemy.get_maxdef()) * 0.10 ; // Block reduces dmg via 90%
+    p_result = std::max(0.0f, p_result);
+    std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. You still do " << p_result << " Damage." << std::endl;
+    a = false;
+    std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
+    return p_result;
+}           */
+//Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
 
+void Menu_UP(Player& Player, Enemy& Enemy){
+    system("cls");
+    std::cout << c_FIGHT_WINDOW_ABOVE
+    << std::right << std::setw(53)  << Enemy.get_Name() << "\n"
+    << std::setw(45) << std::right << "HP: " << std::left << Enemy.get_currentHP() << std::right << " / " << std::left << Enemy.get_maxhp() << std::right << "\n\n\n\n" << std::endl; 
+    std::cout << Player.get_Name() << "\nHP: " << Player.get_currentHP() << " / " << Player.maxhp() << "\n"
+    << c_FIGHT_WINDOW_MID << std::endl;
+}
 
 int enemy_action(Player& Player, Enemy& Enemy){
     int action;
@@ -41,31 +62,24 @@ void fight(Player& Player, Enemy& Enemy){
         do
         {
             system("cls");
-            Enemy.show_enemystats();
-            std::cout << "Enemy HP: " << Enemy.get_currentHP() << " / " << Enemy.get_maxhp() << std::endl;
-            std::cout << "Player HP: " << Player.get_currentHP() << " / " << Player.maxhp() << std::endl;
+            //Enemy.show_enemystats();
+            Menu_UP(Player, Enemy);
             //If Potion later available >> add (5) for Potion option
-            std::cout << "\nWhat do you want to do?\n" << std::endl;
-            std::cout << "(1) - " << "Attack" << std::endl
-                    << "(3) - " << "Block (Not working)"<< std::endl
-                    << "(9) - " << "Run Away (bugged)" << std::endl;
+            std::cout << "What do you want to do?\n" << std::endl;
+            std::cout << c_FIGHT_MENU1 
+                    << c_FIGHT_WINDOW_DOWN << std::endl;
             std::cin >> pick;
             playeraction = pick;
             
             switch (pick)
             {
             case 1:
-                //std::cout << "Result: " << result << std::endl;
-                std::cout << "player choose attack" << std::endl;
-                //std::cout << "Enemy HP: " << Enemy.get_currentHP() << std::endl;
                 pickagain = false;
-                getch();
+                
                 break;
             case 3:
                 pickagain = false;
-                std::cout << "player choose block" << std::endl;
                 p_block = true;
-                getch();
                 break;
             //case 5: 
             //  Potion Placeholder
@@ -109,43 +123,47 @@ void fight(Player& Player, Enemy& Enemy){
                     //enemy block
                 }
         }
-        std::cout << "Enemy choose " << enemyaction << "." << std::endl;
-        getch(); 
-        //fight comparison
-
         if (playeraction == 1)
         {
             if (e_block) // enemy blocks while player attacks
             {
+                Menu_UP(Player, Enemy);
                 p_result = (Player.maxdmg() - Enemy.get_maxdef()) * 0.10 ; // Block reduces dmg via 90%
                 p_result = std::max(0.0f, p_result);
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
-                std::cout << "You attack the " << Enemy.get_Name() << "." << "But " << Enemy.get_Name() << " blocks your attack. You still do " << p_result << " Damage." << std::endl;
+                std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. You still do " << p_result << " Damage." << std::endl;
                 e_block = false;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 getch();
                 if (Enemy.get_currentHP() < 0)// if enemy dead, stop
                 {
                     break;
                 } 
             } else if(enemyaction == 4){
+                Menu_UP(Player, Enemy);
                 p_result = Player.maxdmg() - Enemy.get_maxdef();
                 p_result = std::max(0.0f, p_result);
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
                 std::cout << "You attack the " << Enemy.get_Name() << " for " << p_result << " Damage." << std::endl;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 getch();
                 if (Enemy.get_currentHP() < 0)// if enemy dead, stop
                 {
                     break;
                 }
-                std::cout << "Enemy uses special attack" << std::endl;
+                Menu_UP(Player, Enemy);
+                std::cout << "The " << Enemy.get_Name() << " uses his special attack." << std::endl;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 special_attack = false;
                 //enemy special attack
                 getch();
             } else {
+                Menu_UP(Player, Enemy);
                 p_result = Player.maxdmg() - Enemy.get_maxdef(); // Both attack
                 p_result = std::max(0.0f, p_result);
                 Enemy.set_currentHP(Enemy.get_currentHP() - p_result);
                 std::cout << "You attack the " << Enemy.get_Name() << " for " << p_result << " Damage." << std::endl;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 getch();
                 if (Enemy.get_currentHP() < 0)// if enemy dead, stop
                 {
@@ -158,7 +176,9 @@ void fight(Player& Player, Enemy& Enemy){
 
         if (p_block && enemyaction == 4)
         {
+            Menu_UP(Player, Enemy);
             std::cout << "Player blocks special attack from enemy" << std::endl;
+            std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
             special_attack = false;
             getch();
         }
@@ -167,23 +187,29 @@ void fight(Player& Player, Enemy& Enemy){
         {
             if (p_block)
             {
+                Menu_UP(Player, Enemy);
                 e_result = (Enemy.get_maxdmg() - Player.maxdef()) * 0.10; // Block reduces dmg via 90%
                 e_result = std::max(0.0f, e_result);
                 Player.set_currentHP(Player.get_currentHP() - e_result);
-                std::cout << "The " << Enemy.get_Name() << " attacks you. While you block the attack, " << Enemy.get_Name() << " still do " << e_result << " Damage." << std::endl;
+                std::cout << "The " << Enemy.get_Name() << " attacks you.\nWhile you block the attack, " << Enemy.get_Name() << " still do " << e_result << " Damage." << std::endl;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 getch();
                 p_block = false;
             } else {
+                Menu_UP(Player, Enemy);
                 e_result = Enemy.get_maxdmg() - Player.maxdef();
                 e_result = std::max(0.0f, e_result);
                 Player.set_currentHP(Player.get_currentHP() - e_result);
                 std::cout << "The " << Enemy.get_Name() << " attacks you for " << e_result << " Damage." << std::endl;
+                std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
                 getch();
             }
 
         } else if (p_block && e_block) // both parties block
         {
-            std::cout << "Both opponents are very defensive against each other. Nobody attacks."<< std::endl;
+            Menu_UP(Player, Enemy);
+            std::cout << "Both opponents are very defensive against each other. \nNobody attacks."<< std::endl;
+            std::cout << c_FIGHT_WINDOW_DOWN << std::endl;
             p_block = false;
             e_block = false;
             getch();
@@ -191,11 +217,7 @@ void fight(Player& Player, Enemy& Enemy){
         
         if (Enemy.get_currentHP() < 0)
         {
-            //you win
-
-            std::cout << "You have beat the " << Enemy.get_Name() << ".\n"
-                      << "           CONGRATULATIONS!" << std::endl; // insert const text here
-            //Bug#1 solving via put Exp recieving here
+            
             getch();
             break;
         }

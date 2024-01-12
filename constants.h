@@ -104,9 +104,10 @@ const std::string c_FIGHT_WINDOW_ABOVE =
 const std::string c_FIGHT_WINDOW_MID =
         "#                                                   #\n"
         "#####################################################\n"
-        "#                                                   #\n";
+        "#                                                   #";
 
 const std::string c_FIGHT_WINDOW_DOWN =
+        "\n"
         "#                                                   #\n"
         "#####################################################\n";
 
@@ -151,9 +152,7 @@ const std::string c_TUTORIALHELPER_05 =
 const std::string c_FIGHT_MENU1 =
         "(1) Attack\n"
         "(3) Block\n" 
-        "(9) Run Away\n"
-        "\n"
-        "\n";
+        "(9) Run Away";
 
 
 #endif

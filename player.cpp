@@ -1,6 +1,8 @@
 #include "player.h"
 #include <conio.h> // getch()
 #include "constants.h"
+#include <iomanip> // text formatierung
+#include <iostream>
 
 Player::Player(std::string aName, float aStrength, float aAgilty, float aStamina, int aLevel, int aDungeonLevel, float aExp){
             Cat = 'P';
@@ -172,6 +174,10 @@ void Player::gainExp(int gained_exp){
     }
 }
 
+void Player::set_DungeonLevel(int dlvl){
+    this->DungeonLevel = dlvl;
+}
+
 void Player::LevelUp() {    
     system("cls");
     this->Level += 1;
@@ -190,6 +196,7 @@ void Player::LevelUp() {
 }
 
 void Player::showstats(){
+    int side = 15;
     std::cout << std::left;
     std::cout << c_TUTORIALHELPER_03 << "Welcome " << this->get_Name() << ".\n"
               << "You're currently Level " << this->get_Level()
@@ -203,11 +210,13 @@ void Player::showstats(){
               << "\n>Def       : " << this->maxdef()
               << "\nStamina    : " << this->maxsta()  
               << "\n>Max HP    : " << this->maxhp() << "\n\n"
-              << "\nCurrent Gear equiped: \n"
-              << "Weapon     : "<< p_currentWeapon.get_Name()
-              << "\nHelmet     : " << p_currentHelmet.get_Name()
-              << "\nBody Armor : " << p_currentArmor.get_Name()
-              << "\nRing       : " << p_currentRing.get_Name() << std::endl; 
+              << "\nCurrent Gear equiped: \n\n"
+              << "             " << std::setw(25) << "Name:" << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:" << std::setw(side) << "Item Level:"
+              << "\nWeapon     : " << std::setw(25) << p_currentWeapon.get_Name() << std::setw(side) << p_currentWeapon.get_Strength() << std::setw(side) << p_currentWeapon.get_Agility() << std::setw(side) << p_currentWeapon.get_Stamina() << std::setw(side) << p_currentWeapon.get_ItemLvl()
+              << "\nHelmet     : " << std::setw(25) << p_currentHelmet.get_Name() << std::setw(side) << p_currentHelmet.get_Strength() << std::setw(side) << p_currentHelmet.get_Agility() << std::setw(side) << p_currentHelmet.get_Stamina() << std::setw(side) << p_currentHelmet.get_ItemLvl()
+              << "\nBody Armor : " << std::setw(25) << p_currentArmor.get_Name() << std::setw(side) << p_currentArmor.get_Strength() << std::setw(side) << p_currentArmor.get_Agility() << std::setw(side) << p_currentArmor.get_Stamina() << std::setw(side) << p_currentArmor.get_ItemLvl()
+              << "\nRing       : " << std::setw(25) << p_currentRing.get_Name() << std::setw(side) << p_currentRing.get_Strength() << std::setw(side) << p_currentRing.get_Agility() << std::setw(side) << p_currentRing.get_Stamina() << std::setw(side) << p_currentRing.get_ItemLvl() << std::endl; 
+
 }
 
 
