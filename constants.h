@@ -22,8 +22,9 @@ const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
 const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
 
 
-//Any Key -------------------------------------------------
-const std::string c_ANY_KEY = "                      Press Any Key \n";
+//Any Key & other input -------------------------------------------------
+const std::string c_ANY_KEY = "                      Press any key \n";
+const std::string c_PLAYER_INPUT_NUMBER = "What do you want to do? \n";
 
 
 //Title Screen -------------------------------------------
@@ -53,6 +54,8 @@ const std::string c_MAIN_MENU =
         "\n"
         "\n"
         "\n"
+        "What would you like to do?\n"
+        "\n"
         "(1) New Game\n"
         "\n"
         "(2) Load Savefile\n"
@@ -70,9 +73,9 @@ const std::string c_HUB_MENU =
         "\n"
         "What would you like to do?\n"
         "\n"
-        "(1) Grind a Dungeon\n"
-        "(2) View my stats\n"
-        "(3) Save & Exit\n"
+        "(1) Grind a Dungeon\n\n"
+        "(2) View my stats\n\n"
+        "(3) Save & Exit\n\n"
         "\n"
         "\n"
         "\n";

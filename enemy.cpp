@@ -10,12 +10,40 @@ Enemy::Enemy(Player& Player){
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> randomModifier(-2, 2);
 
-    this->player = Player;
-    Strength = Player.maxstr() + randomModifier(gen);
-    Agility = Player.maxagi() + randomModifier(gen);
-    Stamina = Player.maxsta() + randomModifier(gen);
-    std::string result;
+    this->player = Player;  // Enemy getting data from Player to create stats.
     int dlevel = Player.get_DungeonLevel();
+    float result_float;
+    std::string result;
+    if (dlevel < 6) // strength calc
+    {
+        result_float = (Player.maxstr() + randomModifier(gen)) - 2; 
+    }
+    else {
+        result_float = Player.maxstr() + randomModifier(gen);
+    } Strength = result_float;
+    //Strength = Player.maxstr() + randomModifier(gen);
+
+
+    if (dlevel < 6) // Agility Calc
+    {
+        result_float = (Player.maxagi() + randomModifier(gen)) - 2; 
+    }
+    else {
+        result_float = Player.maxagi() + randomModifier(gen);
+    } Agility = result_float;
+    //Agility = Player.maxagi() + randomModifier(gen);
+
+
+    if (dlevel < 6) //Stamina calc
+    {
+        result_float = (Player.maxsta() + randomModifier(gen)) + 4; 
+    }
+    else {
+        result_float = Player.maxsta() + randomModifier(gen);
+    } Stamina = result_float;
+    //Stamina = Player.maxsta() + randomModifier(gen); 
+
+
     if (dlevel < 6)
         {
             result = c_1_5NPC;

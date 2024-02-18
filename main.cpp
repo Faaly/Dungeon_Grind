@@ -108,7 +108,7 @@ int main(){
 
                         Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
                         , std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz), std::stof(tmp_exp,&sz));
-                        Adventurer.show_playerstats();
+                        //Adventurer.show_playerstats();
                     }
                     if(type == "W"){
                         currentWeapon = convert_loadfile2game(currentWeapon, DATA);
@@ -134,7 +134,7 @@ int main(){
 
                 //File is getting closed and Player is moved into Camp-Menu
                 inFile.close();
-                std::cout << "Savefile successfully loaded.\n\n"
+                std::cout << "\nSavefile successfully loaded.\n\n"
                         << c_ANY_KEY << std::endl;
                 getch();
                 pickagain = false;
@@ -231,7 +231,8 @@ int main(){
                     getch();
 
 
-                    //Enemy1.show_enemystats();
+                    Enemy1.show_enemystats();
+                    getch();
                     fight(Adventurer, Enemy1);
                      
                     if (Enemy1.get_currentHP() <= 0 )  // YOU WIN
@@ -305,7 +306,7 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
    std::cout << c_TUTORIALHELPER_05 << "Before your adventure starts, please choose one Weapon:\n" << std::endl;
     int side {25};
     std::cout << std::left;
-    std::cout << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
+    std::cout << std::setw(side) << "Item: " << std::setw(side) << "Strength:" << std::setw(side) << "Agility:" << std::setw(side) << "Stamina:\n" << std::endl;
     std::cout << std::setw(side) << dagger.get_Name() << std::setw(side) << dagger.get_Strength() << std::setw(side) << dagger.get_Agility() << std::setw(side) << dagger.get_Stamina() << std::endl;
     std::cout << std::setw(side) << sword.get_Name() << std::setw(side) << sword.get_Strength() << std::setw(side) << sword.get_Agility() << std::setw(side) << sword.get_Stamina() << std::endl;
     std::cout << std::setw(side) << greatsword.get_Name() << std::setw(side) << greatsword.get_Strength() << std::setw(side) << greatsword.get_Agility() << std::setw(side) << greatsword.get_Stamina() << std::endl;
