@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <ctime>
 
 int action_8bit_calc(int a, int b); 
 // Adds two values into one for switch case solution.
@@ -14,6 +15,12 @@ void Menu_UP(Player& Player, Enemy& Enemy);
 
 int enemy_action(Player& Player, Enemy& Enemy);
 // Enemy Pick function, defined by HP of Enemy
+
+void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold);
+//float enemy_triple_attack(Player& Player, Enemy& Enemy, float mDT);
+
+void enemy_choose_special_attack(Player& Player, Enemy& Enemy, float mDT);
+// Checks out Player Dungeon Level and decides what special attack player will have to encounter
 
 bool p_crit(Player& Player);
 // Checks if player will do hit critical
@@ -207,12 +214,11 @@ void fight(Player& Player, Enemy& Enemy){
             getch();
             if (Enemy.get_currentHP() > 0)// if enemy isn't dead, do:
             {
-                //Insert special attack
                 Menu_UP(Player, Enemy);
                 std::cout << "The  "<< Enemy.get_Name() << " does his special attack!\n" << c_ANY_KEY << std::endl;
                 c_FWD();
-                special_attack = false;
                 getch();
+                enemy_choose_special_attack(Player,Enemy,minDamageThreshold);
             }
             
             break;
@@ -256,6 +262,48 @@ int enemy_action(Player& Player, Enemy& Enemy){
     return action;
 }
 
+
+void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold){
+    float triple_attack_value = 0.50;
+    int max_damage;
+    float e_result;
+    max_damage = std::max(1.0, (Enemy.get_maxdmg() - Player.maxdef()) * triple_attack_value); 
+    std::srand(static_cast<float>(std::time(nullptr)));
+    system("cls");
+    Menu_UP(Player, Enemy);
+    std::cout << "The " << Enemy.get_Name() <<  " hits you three times in a row as a special attack!\n" << c_ANY_KEY << std::endl;
+    c_FWD();
+    getch();
+    for (size_t i = 0; i < 3; i++)
+    {
+        system("cls");
+        Menu_UP(Player, Enemy);
+        e_result = (rand() % max_damage) + 1; 
+        e_result = std::round(std::max(minDamageThreshold, e_result) * 100.0) / 100.0;
+        Player.set_currentHP(Player.get_currentHP() - e_result);
+        std::cout << "The " << Enemy.get_Name() << " attacks you for " << e_result << " Damage.\n" << c_ANY_KEY << std::endl;
+        c_FWD();
+        getch();
+    }   
+                        
+}
+
+
+void enemy_choose_special_attack(Player& Player, Enemy& Enemy, float mDT){
+    if (Player.get_DungeonLevel() < 6){
+        enemy_triple_attack(Player, Enemy, mDT);
+    } else if (Player.get_DungeonLevel() < 11){
+        // enemy_heal
+    } else if (Player.get_DungeonLevel() < 15){
+        // enemy_double_damage 
+    }
+}
+
+
+
+
+
+
 bool p_crit(Player& Player){
     bool isCriticalHit = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) < (Player.critrate() / 100.0);
     return isCriticalHit;  
@@ -279,14 +327,14 @@ float p_attack_b(Player& Player, Enemy& Enemy, float mDT, double b, bool iCH){
 
 float e_attack(Player& Player, Enemy& Enemy, float mDT){
     float e_result;
-    e_result = Player.maxdmg() - Enemy.get_maxdef(); 
+    e_result =  Enemy.get_maxdmg() - Player.maxdef(); 
     e_result = std::round(std::max(mDT, e_result) * 100.0) / 100.0;
     return e_result;
 }
 
 float e_attack_b(Player& Player, Enemy& Enemy, float mDT, double b){
     float e_result;
-    e_result = (Player.maxdmg() - Enemy.get_maxdef()) * b; 
+    e_result = (Enemy.get_maxdmg() - Player.maxdef()) * b; 
     e_result = std::round(std::max(mDT, e_result) * 100.0) / 100.0;
     return e_result;
 }

@@ -9,6 +9,10 @@ void Menu_UP(Player& Player, Enemy& Enemy);
 
 void fight(Player& Player, Enemy& Enemy);
 
+/// @brief get the enemy action
+/// @param Player 
+/// @param Enemy 
+/// @return 
 int enemy_action(Player& Player, Enemy& Enemy);
 
 
