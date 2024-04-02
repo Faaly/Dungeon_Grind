@@ -7,41 +7,6 @@
 #include <cmath>
 #include <ctime>
 
-int action_8bit_calc(int a, int b); 
-// Adds two values into one for switch case solution.
-
-void Menu_UP(Player& Player, Enemy& Enemy);
-// UI for Combat
-
-int enemy_action(Player& Player, Enemy& Enemy);
-// Enemy Pick function, defined by HP of Enemy
-
-void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold);
-//float enemy_triple_attack(Player& Player, Enemy& Enemy, float mDT);
-
-void enemy_choose_special_attack(Player& Player, Enemy& Enemy, float mDT);
-// Checks out Player Dungeon Level and decides what special attack player will have to encounter
-
-bool p_crit(Player& Player);
-// Checks if player will do hit critical
-
-float p_attack(Player& Player, Enemy& Enemy, float mDT, bool iCH);
-// Player attac function
-
-float p_attack_b(Player& Player, Enemy& Enemy, float mDT, double b, bool iCH);
-// Player attack function with enemy block modify
-
-float e_attack(Player& Player, Enemy& Enemy, float mDT);
-// Enemy attack function
-
-float e_attack_b(Player& Player, Enemy& Enemy, float mDT, double b);
-
-void c_FWD();
-
-void p_attack_message(Enemy& Enemy, float a, bool iCH);
-
-void p_attack_b_message(Enemy& Enemy, float a, bool iCH);
-
 void fight(Player& Player, Enemy& Enemy){
     Player.set_currentHP(Player.maxhp()); // playerHP will be current hp. So we have current hp and max hp
     Enemy.set_currentHP(Enemy.get_maxhp()); //enemyHP will be current hp. So we have current hp and max hp
@@ -119,11 +84,11 @@ void fight(Player& Player, Enemy& Enemy){
                 if (enemyaction == 1)
                 {
                     enemyaction_8bit = 16; //Enemy Attack
-                } else if (enemyaction == 2)
+                } else if (enemyaction == 3)
                 {
                     special_attack = true;
                     enemyaction_8bit = 32; //Enemy Special Attack preparation
-                } else if (enemyaction == 3)
+                } else if (enemyaction == 2)
                 {
                     enemyaction_8bit = 64; //Enemy Block
                 }
@@ -183,7 +148,7 @@ void fight(Player& Player, Enemy& Enemy){
 
         case 34: //Player blocks, enemy PREPARES his special attack
             Menu_UP(Player, Enemy);
-            std::cout << "You are blocking,\nbut the " << Enemy.get_Name() << "still prepare his special attack.\n" << c_ANY_KEY  << std::endl;
+            std::cout << "You are blocking,\nbut the " << Enemy.get_Name() << " still prepare his special attack.\n" << c_ANY_KEY  << std::endl;
             c_FWD();
             getch();
             break;
@@ -197,6 +162,7 @@ void fight(Player& Player, Enemy& Enemy){
             c_FWD();
             getch();
             break;
+
         case 66: // Player blocks, enemy blocks
             Menu_UP(Player, Enemy);
             std::cout << "Both opponents are very defensive against each other. \nNobody attacks.\n" << c_ANY_KEY << std::endl;
@@ -215,7 +181,7 @@ void fight(Player& Player, Enemy& Enemy){
             if (Enemy.get_currentHP() > 0)// if enemy isn't dead, do:
             {
                 Menu_UP(Player, Enemy);
-                std::cout << "The  "<< Enemy.get_Name() << " does his special attack!\n" << c_ANY_KEY << std::endl;
+                std::cout << "The "<< Enemy.get_Name() << " does his special attack!\n" << c_ANY_KEY << std::endl;
                 c_FWD();
                 getch();
                 enemy_choose_special_attack(Player,Enemy,minDamageThreshold);
@@ -262,9 +228,9 @@ int enemy_action(Player& Player, Enemy& Enemy){
     return action;
 }
 
-
+//Enemy Special Attack #1 Enemy hits three times a row with 1/2 of his damage.
 void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold){
-    float triple_attack_value = 0.50;
+    double triple_attack_value = 0.50;
     int max_damage;
     float e_result;
     max_damage = std::max(1.0, (Enemy.get_maxdmg() - Player.maxdef()) * triple_attack_value); 
@@ -288,22 +254,57 @@ void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold)
                         
 }
 
+//Enemy Special Attack #2 Enemy heals itself a short amount of HP
+void enemy_heal(Player& Player, Enemy& Enemy){
+    double heal_value_percent = 0.35; // 20% Heal of current hp
+    system("cls");
+    Menu_UP(Player, Enemy);
+    double heal_sum = Enemy.get_currentHP() * heal_value_percent;
+    heal_sum = std::round(heal_sum * 100) / 100;
+    Enemy.set_currentHP(Enemy.get_currentHP() + heal_sum);
+    std::cout << "The " << Enemy.get_Name() << " heals itself for " << heal_sum << ".\n" << c_ANY_KEY << std::endl;
+    c_FWD();
+    getch();
+}
 
+//Enemy Special Attack #3 Enemy does double damage with one hit
+void enemy_double_damage_attack(Player& Player, Enemy& Enemy, float mDT){
+    Menu_UP(Player, Enemy);
+    float e_result;
+    e_result = e_attack(Player, Enemy, mDT) * 2;
+    Player.set_currentHP(Player.get_currentHP() - e_result);
+    std::cout << "The " << Enemy.get_Name() << " attacks you with\nhis special move for " << e_result << " Damage.\n" << c_ANY_KEY << std::endl;
+    c_FWD();
+    getch();
+}
+
+
+//Function that checks player Dlvl and choose enemy special attack
 void enemy_choose_special_attack(Player& Player, Enemy& Enemy, float mDT){
     if (Player.get_DungeonLevel() < 6){
         enemy_triple_attack(Player, Enemy, mDT);
     } else if (Player.get_DungeonLevel() < 11){
-        // enemy_heal
-    } else if (Player.get_DungeonLevel() < 15){
-        // enemy_double_damage 
+        enemy_heal(Player, Enemy);
+    } else if (Player.get_DungeonLevel() < 16){ 
+        enemy_double_damage_attack(Player, Enemy, mDT);
+    } else { 
+        int a = (rand() % 3) + 1;
+        switch (a)
+        {
+        case 1:
+        enemy_triple_attack(Player, Enemy, mDT);
+            break;
+        case 2:
+        enemy_heal(Player, Enemy);
+            break;
+        case 3:
+        enemy_double_damage_attack(Player, Enemy, mDT);
+            break;
+        }
     }
 }
 
-
-
-
-
-
+//checks if player is doing critical hit
 bool p_crit(Player& Player){
     bool isCriticalHit = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) < (Player.critrate() / 100.0);
     return isCriticalHit;  
@@ -360,7 +361,7 @@ void p_attack_b_message(Enemy& Enemy, float a, bool iCH){
         std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. \nYou still do " << a << " CRITICAL Damage.\n" << c_ANY_KEY <<  std::endl;
     } else
     {
-        std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. \nYou still do " << a << " Damage." << c_ANY_KEY << std::endl;
+    std::cout << "You attack the " << Enemy.get_Name() << "." << "\nBut " << Enemy.get_Name() << " blocks your attack. \nYou still do " << a << " Damage.\n" << c_ANY_KEY << std::endl;
     }
     
 }
