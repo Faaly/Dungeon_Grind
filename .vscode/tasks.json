@@ -13,7 +13,7 @@
           "${workspaceFolder}\\src\\*.cpp",
           "-I ${workspaceFolder}\\header",
           "-o",
-          "${fileDirname}\\${fileBasenameNoExtension}.exe"
+          "${fileDirname}\\Dungeon Grind.exe"
         ],
         "options": {
           "cwd": "${workspaceFolder}"

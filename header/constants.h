@@ -93,7 +93,7 @@ const std::string c_ENTER_SCREEN =
         "\n"
         "\n"
         "\n"
-        "                       By Faaly \n (Playable Alpha Version)";
+        "                       By Faaly \n                  (Playable Pre-Alpha Version)";
 
 
 //MainMenu Screen -------------------------------------------
