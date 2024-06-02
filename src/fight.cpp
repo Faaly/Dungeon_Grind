@@ -1,6 +1,6 @@
-#include "fight.h"
+#include "../header/fight.h"
 #include <conio.h> // getch()
-#include "constants.h"
+#include "../header/constants.h"
 #include <cstdlib> // rand() function
 #include <iostream>
 #include <iomanip>
@@ -14,7 +14,6 @@ void fight(Player& Player, Enemy& Enemy){
     bool special_attack = false; //enemyspecial attack bool
     float p_result; // Result of player dmg vs enemy def
     float e_result; // Result of enemy dmg vs player def
-    int playeraction = 0; //picked action-save for later fight-comparison
     int playeraction_8bit = 0;
     int enemyaction = 0; // enemy picked action-save for later fight-comp
     int enemyaction_8bit = 0;
@@ -39,7 +38,7 @@ void fight(Player& Player, Enemy& Enemy){
             std::cout << c_FIGHT_MENU1 
                     << c_FIGHT_WINDOW_DOWN << std::endl;
             std::cin >> pick;
-            playeraction = pick;
+            
             
             switch (pick)
             {

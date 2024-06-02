@@ -1,4 +1,5 @@
-#include "bodyarmor.h"
+#include "../header/bodyarmor.h"
+#include <iomanip> // text formatierung
 
 Bodyarmor::Bodyarmor(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
     Cat = 'B';
@@ -53,3 +54,10 @@ void Bodyarmor::show_armorstats(){
              << " , Sta : " << (this->Stamina)
              << " , iLvL : " << (this->ItemLvl) << std::endl;
 }
+
+void Bodyarmor::show_compare(){
+    int side {20};
+    std::cout << std::left;
+    std::cout << std::setw(side) << "Name of Armor :" << (this->Name)
+              << "             " << "\nStr : " << std::setw(side) << (this->Strength) <<  " Agi :" << std::setw(side) << (this->Agility) << " Sta : " << (this->Stamina) << std::endl;
+    }

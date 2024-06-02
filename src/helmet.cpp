@@ -1,4 +1,5 @@
-#include "helmet.h"
+#include "../header/helmet.h"
+#include <iomanip> // text formatierung
 
 Helmet::Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
     Cat = 'H';
@@ -51,3 +52,10 @@ void Helmet::show_helmetstats(){
              << " , Sta : " << (this->Stamina)
              << " , iLvL : " << (this->ItemLvl) << std::endl;
 }
+
+void Helmet::show_compare(){
+    int side {20};
+    std::cout << std::left;
+    std::cout << std::setw(side) << "Name of Helmet :" << (this->Name)
+              << "             " << "\nStr : " << std::setw(side) << (this->Strength) <<  " Agi :" << std::setw(side) << (this->Agility) << " Sta : " << (this->Stamina) << std::endl;
+    }

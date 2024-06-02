@@ -1,9 +1,9 @@
-#ifndef RING_H
-#define RING_H
+#ifndef HELMET_H
+#define HELMET_H
 #include <string>
 #include <iostream>
 
-class Ring{
+class Helmet{
 
     //Member Variables
         char Cat;
@@ -15,12 +15,11 @@ class Ring{
 
     public:
         //Constructor
-        Ring();
-        Ring(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
-        
+        Helmet();
+        Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
+
         //Functions(Methods)
 
-        void show_ringstats();
 
         //Getter n Setters
         char get_Cat();
@@ -31,6 +30,8 @@ class Ring{
         int get_ItemLvl();
 
         
+        void show_helmetstats();
+        void show_compare();
 
 };
 #endif

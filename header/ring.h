@@ -1,11 +1,11 @@
-#ifndef WEAPON_H
-#define WEAPON_H
+#ifndef RING_H
+#define RING_H
 #include <string>
 #include <iostream>
 
-class Weapon{
+class Ring{
 
-    //Member Variables 
+    //Member Variables
         char Cat;
         std::string Name;
         float Strength;
@@ -15,13 +15,15 @@ class Weapon{
 
     public:
         //Constructor
-        Weapon() = default;
-        Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl);
+        Ring();
+        Ring(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
         
         //Functions(Methods)
 
+        void show_ringstats();
+        void show_compare();
 
-        //Getters n Setters
+        //Getter n Setters
         char get_Cat();
         std::string get_Name();
         float get_Strength();
@@ -31,9 +33,5 @@ class Weapon{
 
         
 
-        void show_weaponstats();
 };
-
-
-
 #endif

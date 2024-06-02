@@ -22,6 +22,7 @@ class Bodyarmor{
         //Functions(Methods)
 
         void show_armorstats();
+        void show_compare();
 
         //Getter n Setters
         char get_Cat();

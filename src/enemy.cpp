@@ -1,5 +1,5 @@
-#include "enemy.h"
-#include "constants.h"
+#include "../header/enemy.h"
+#include "../header/constants.h"
 #include <random>
 #include <cctype> // for std::toupper
 
@@ -43,29 +43,136 @@ Enemy::Enemy(Player& Player){
     } Stamina = result_float;
     //Stamina = Player.maxsta() + randomModifier(gen); 
 
-
     if (dlevel < 6)
-        {
-            result = c_1_5NPC;
-        }
-    else if (dlevel < 11)
-        {
-            result = c_6_10NPC;
-        }
-    else if (dlevel < 16)
-        {
-            result = c_11_15NPC;
-        }
-    else if (dlevel < 21)
-        {
-            result = c_16_20NPC;
-        }
-    else
-        {
-            result = c_21_25NPC;
+    {
+        result = c_1_5NPC;
     }
-    Name = result;
+    else if (dlevel < 11)
+    {
+        result = c_6_10NPC;
+    }
+    else if (dlevel < 16)
+    {
+        result = c_11_15NPC;
+    }
+    else if (dlevel < 21)
+    {
+        result = c_16_20NPC;
+    }
+    else if (dlevel < 26)
+    {
+        result = c_21_25NPC;
+    }
+    else if (dlevel < 31)
+    {
+        result = c_26_30NPC;
+    }
+    else if (dlevel < 36)
+    {
+        result = c_31_35NPC;
+    }
+    else if (dlevel < 41)
+    {
+        result = c_36_40NPC;
+    }
+    else if (dlevel < 46)
+    {
+        result = c_41_45NPC; 
+    }
+    else if (dlevel < 51)
+    {
+        result = c_46_50NPC;
+    }
+    else if (dlevel < 56)
+    {
+        result = c_51_55NPC;
+    }
+    else if (dlevel < 61)
+    {
+        result = c_56_60NPC;
+    }
+    else if (dlevel < 63)
+    {
+        result = c_61_62NPC;
+    }
+    else if (dlevel < 65)
+    {
+        result = c_63_64NPC;
+    }
+    else if (dlevel < 67)
+    {
+        result = c_65_66NPC;
+    }
+    else if (dlevel < 69)
+    {
+        result = c_67_68NPC;
+    }
+    else if (dlevel < 71)
+    {
+        result = c_69_70NPC; 
+    }
+    else if (dlevel < 73)
+    {
+        result = c_71_72NPC;
+    }
+    else if (dlevel < 75)
+    {
+        result = c_73_74NPC;
+    }
+    else if (dlevel < 77)
+    {
+        result = c_75_76NPC;
+    }
+    else if (dlevel < 79)
+    {
+        result = c_77_78NPC;
+    }
+    else if (dlevel < 81)
+    {
+        result = c_79_80NPC; 
+    }
+    else if (dlevel < 83)
+    {
+        result = c_81_82NPC;
+    }
+    else if (dlevel < 85)
+    {
+        result = c_83_84NPC;
+    }
+    else if (dlevel < 87)
+    {
+        result = c_85_86NPC;
+    }
+    else if (dlevel < 89)
+    {
+        result = c_87_88NPC;
+    }
+    else if (dlevel < 91)
+    {
+        result = c_89_90NPC; 
+    }
+    else if (dlevel < 93)
+    {
+        result = c_91_92NPC;
+    }
+    else if (dlevel < 95)
+    {
+        result = c_93_94NPC;
+    }
+    else if (dlevel < 97)
+    {
+        result = c_95_96NPC;
+    }
+    else if (dlevel < 99)
+    {
+        result = c_97_98NPC;
+    }
+    else
+    {
+        result = c_99_100NPC;
+    }
 
+    Name = result;
 }
 
 //functions (Methods)-----------------------------------------------

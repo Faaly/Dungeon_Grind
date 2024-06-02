@@ -1,11 +1,11 @@
-#ifndef HELMET_H
-#define HELMET_H
+#ifndef WEAPON_H
+#define WEAPON_H
 #include <string>
 #include <iostream>
 
-class Helmet{
+class Weapon{
 
-    //Member Variables
+    //Member Variables 
         char Cat;
         std::string Name;
         float Strength;
@@ -15,13 +15,13 @@ class Helmet{
 
     public:
         //Constructor
-        Helmet();
-        Helmet(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl);
-
+        Weapon() = default;
+        Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl);
+        
         //Functions(Methods)
 
 
-        //Getter n Setters
+        //Getters n Setters
         char get_Cat();
         std::string get_Name();
         float get_Strength();
@@ -30,7 +30,12 @@ class Helmet{
         int get_ItemLvl();
 
         
-        void show_helmetstats();
 
+        void show_weaponstats();
+
+        void show_compare();
 };
+
+
+
 #endif

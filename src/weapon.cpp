@@ -1,4 +1,5 @@
-#include "weapon.h"
+#include "../header/weapon.h"
+#include <iomanip> // text formatierung
 
 Weapon::Weapon(std::string aName, float aStrength, float aAgilty, float aStamina, int aItemLvl){
     Cat = 'W';
@@ -44,3 +45,10 @@ void Weapon::show_weaponstats(){
              << " , Sta : " << (this->Stamina)
              << " , iLvL : " << (this->ItemLvl) << std::endl;
 }
+
+void Weapon::show_compare(){
+    int side {20};
+    std::cout << std::left;
+    std::cout << std::setw(side) << "Name of Weapon :" << (this->Name)
+              << "             " << "\nStr : " << std::setw(side) << (this->Strength) <<  " Agi :" << std::setw(side) << (this->Agility) << " Sta : " << (this->Stamina) << std::endl;
+    }

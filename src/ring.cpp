@@ -1,4 +1,5 @@
-#include "ring.h"
+#include "../header/ring.h"
+#include <iomanip> // text formatierung
 
 Ring::Ring(std::string aName, float aStrength, float aAgility, float aStamina, int aItemLvl){
     Cat = 'R';
@@ -53,3 +54,11 @@ void Ring::show_ringstats(){
              << " , Sta : " << (this->Stamina)
              << " , iLvL : " << (this->ItemLvl) << std::endl;
 }
+
+
+void Ring::show_compare(){
+    int side {15};
+    std::cout << std::left;
+    std::cout << std::setw(side) << "Name of Ring :" << (this->Name)
+              << "             " << "\nStr : " << std::setw(side) << (this->Strength) <<  " Agi :" << std::setw(side) << (this->Agility) << " Sta : " << (this->Stamina) << std::endl;
+              }
