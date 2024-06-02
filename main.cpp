@@ -147,21 +147,22 @@ int main(){
                     } // Check Category. Sort attributes and names.
                     if(type == "W"){
                         currentWeapon = convert_loadfile2game(currentWeapon, DATA);
-                        currentWeapon.show_weaponstats();
+                        //currentWeapon.show_weaponstats();
                         Adventurer.set_weapon(currentWeapon);
                     }
                     if(type == "H"){
                         currentHelmet = convert_loadfile2game(currentHelmet, DATA);
-                        currentHelmet.show_helmetstats();
+                        //currentHelmet.show_helmetstats();
                         Adventurer.set_helmet(currentHelmet);
                     }
                     if(type == "B"){
                         currentArmor = convert_loadfile2game(currentArmor, DATA);
-                        currentArmor.show_armorstats();
+                        //currentArmor.show_armorstats();
                         Adventurer.set_bodyarmor(currentArmor);
                     }
                     if(type == "R"){
                         currentRing = convert_loadfile2game(currentRing, DATA);
+                        //
                         currentRing.show_ringstats();
                         Adventurer.set_ring(currentRing);
                     }
