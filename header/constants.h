@@ -67,6 +67,8 @@ const std::string c_99_100NPC = "horny Succubi";
 const std::string c_ERROR_404 = "Error 404 : File not found";
 const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
 const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
+const std::string c_ERROR_003 = "Error 003 : Data folder missing.\nPlease re-install Dungeon Grind.";
+const std::string c_ERROR_004 = "Error 004 : Files in Data missing.\nPlease re-install Dungeon Grind.";
 
 
 //Any Key & other input -------------------------------------------------
@@ -93,7 +95,7 @@ const std::string c_ENTER_SCREEN =
         "\n"
         "\n"
         "\n"
-        "                       By Faaly \n                  (Playable Pre-Alpha Version)";
+        "                       By Faaly \n              (Playable Pre-Alpha Version)";
 
 
 //MainMenu Screen -------------------------------------------

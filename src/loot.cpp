@@ -237,8 +237,7 @@ bool already_equip_check(std::string itemtype, Player& Player){
         playerItemName = Player.get_ring().get_Name();
         return Player.get_ring().get_Name() != noItemEquiped;
     } 
-    else 
-    //(itemtype == "armor")
+    else if(itemtype == "armor")
     {
         playerItemName = Player.get_bodyarmor().get_Name();
         return Player.get_bodyarmor().get_Name() != noItemEquiped;

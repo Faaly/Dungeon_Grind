@@ -21,6 +21,7 @@
 
 
 
+
 /*
             ToDo
     * Change std::endl to \n  in loop
@@ -32,14 +33,13 @@
 
     * Highscore Module
 
-    * If player equip false, give item
-    else compare und cin nachfragen ob anlegen oder trash
+    * Scan for data folder (if missing, create data and fill it or show error!) 
 
-    ** Check screenshot weil bug. 
+    * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
 
-    * Scan for data folder (if missing, create data and fill it!) 
+    * balancing of enemy
 
-
+    * exe file ggf mit licensen vorbereiten
 
 
 */
@@ -66,8 +66,32 @@ std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
 //------------------------------------------------------------------------------------------------------
 int main(){
 
+    if (DataDir_Error() == 1)
+    {
+        std::cout << c_ERROR_003;
+        getch();
+        return 0;
+    }
+
+    bool files_in_data = true;
+    data_armor_check(files_in_data);
+    data_helmet_check(files_in_data);
+    data_prefix_g_check(files_in_data);
+    data_prefix_l_check(files_in_data);
+    data_prefix_m_check(files_in_data);
+    data_ring_check(files_in_data);
+    data_weapon_check(files_in_data);
+
+    if (files_in_data == false){
+        std::cout << c_ERROR_004;
+        getch();
+        return 0;
+
+    }
+
     //Checks if savegames folder does exist. If not, creates new savegames folder
     CreateDir();
+
 
     do{ 
         //Titlescreen
@@ -108,7 +132,7 @@ int main(){
                 std::ifstream inFile;
                 std::string DATA;
                 std::string savefile;
-                std::cout << "What file should be loaded?" << std::endl;
+                std::cout << "What file should be loaded?\nPlease enter the exact name of the adventurer:" << std::endl;
                 std::cin.ignore ( 100 , '\n' );
                 std::getline(std::cin, savefile);
                 inFile.open("savegames/" + savefile + ".dat");
@@ -162,8 +186,7 @@ int main(){
                     }
                     if(type == "R"){
                         currentRing = convert_loadfile2game(currentRing, DATA);
-                        //
-                        currentRing.show_ringstats();
+                        //currentRing.show_ringstats();
                         Adventurer.set_ring(currentRing);
                     }
                 }
@@ -189,7 +212,7 @@ int main(){
                 //Short Story Part
                 system("cls");
                 std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
-                std::cout << "Your Quest is simple: Fight your way deeper and deeper through the Dungeon. \nFind treasure and become stronger than ever!" << std::endl;
+                std::cout << "Your Quest is simple: Fight your way deeper and deeper through the dungeon. \nFind treasure and become stronger than ever!" << std::endl;
                 std::cout << "But first..\n\n\n" << std::endl;
                 std::cout << c_ANY_KEY;
                 getch();
@@ -335,7 +358,7 @@ int main(){
                                   << c_LOOT2 << capitalize_Item_Name(lootname) << std::endl;
                         
                         if (already_equip_check(lootclass1, Adventurer) == false){
-                           std::cout << c_TUTORIALHELPER_05 << c_LOOT4 << lootname << "\n";
+                           std::cout << c_LOOT4 << lootname << "\n";
                             //function that puts item to player and maybe show some stats of it
                             switch (loot_class_int_converter(lootclass1))
                             {
@@ -347,8 +370,10 @@ int main(){
                                 break;
                             case 4:
                                 Adventurer.set_ring(loot_ring);
+                            case 1:
+                                break;
                             }
-                            
+
                         } else {
                             bool B_Loot_Pick_again = true; //Failsafe if wront input
                             do

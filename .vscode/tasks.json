@@ -4,14 +4,21 @@
       {
         "type": "cppbuild",
         "label": "c++ build",
-        "command": "C:\\Program Files\\mingw64 Compiler\\bin\\g++.exe",
+        "command": "C:\\Program Files\\mingw64\\bin\\g++.exe", //C:\\Program Files\\mingw64\\bin //cl.exe
         "args": [
+          //"/Zi",
+          //"/EHsc",
+          //"/Fe:",
           "-fdiagnostics-color=always",
-          "-Wall",
+          //"-Wall",
           "-g",
           "${workspaceFolder}\\main.cpp",
           "${workspaceFolder}\\src\\*.cpp",
           "-I ${workspaceFolder}\\header",
+          "-I ${workspaceFolder}\\dependencies\\GLFW\\Include",
+          "-static-libgcc",
+          "-static-libstdc++",
+          "-static",
           "-o",
           "${fileDirname}\\Dungeon Grind.exe"
         ],
