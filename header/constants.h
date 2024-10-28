@@ -109,9 +109,9 @@ const std::string c_MAIN_MENU =
         "\n"
         "(2) Load Savefile\n"
         "\n"
-        "(3) Exit\n"
+        "(3) View Highscores\n"
         "\n"
-        "(4) View Highscores"
+        "(4) Exit"
         "\n";
 
 
@@ -131,7 +131,10 @@ const std::string c_HUB_MENU =
 
 //Highscore-Menu---------------------------------------
 const std::string c_HS_01 =  
-        "                     Top 10 Highscores ";
+        "                   Top 10 Highscores ";
+
+const std::string c_HS_02 = 
+        "       Name        Dungeonlevel - Playerlevel";
 
 //Enter-Dungeon Level-------------------------------
 const std::string c_ENTER_DUNGEON_pt1 =  

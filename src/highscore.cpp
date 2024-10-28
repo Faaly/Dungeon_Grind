@@ -5,6 +5,7 @@
 #include <algorithm> //for std::sort
 #include <iostream>
 #include <fstream>
+#include <iomanip> // text formatierung
 
 
 
@@ -32,9 +33,9 @@
     void Highscoretable::displayHighscores() const {
         int rank = 1;
         for (const auto& score : highscores) {
-            std::cout << rank << ". Name: " << score.hs_Name
-            << ", Dungeon Level: " << score.hs_dlvl
-            << ", Player Level: " << score.hs_plvl << "\n";
+            std::cout  << std::left <<  "  " << std::setw(2) << rank << std::setw(3) << " - " << std::setw(17) <<  score.hs_Name 
+            << std::setw(6) << score.hs_dlvl
+            << std::setw(9) << " ---  " << score.hs_plvl << "\n";
             rank++;
         }
     };
@@ -58,10 +59,22 @@
     void Highscoretable::loadFromFile(const std::string& filename) {
         std::ifstream file(filename);
         if (!file) {
-            
+            std::ofstream file(filename);
+            file << "Haneko" << " " << "20" << " " << "20" << "\n";
+            file << "Nime" << " " << "19" << " " << "19" << "\n";
+            file << "Hecki" << " " << "18" << " " << "18" << "\n";
+            file << "Bits" << " " << "17" << " " << "17" << "\n";
+            file << "Iotalion" << " " << "16" << " " << "16" << "\n";
+            file << "Lykary" << " " << "15" << " " << "15" << "\n";
+            file << "Minn" << " " << "14" << " " << "14" << "\n";
+            file << "Tikory" << " " << "13" << " " << "13" << "\n";
+            file << "Jacki" << " " << "12" << " " << "12" << "\n";
+            file << "Loranna" << " " << "11" << " " << "11" << "\n";
+
+            file.close();
+
             return;
         }
-
 
         highscores.clear();//clear current list to fill it with new data from file
 

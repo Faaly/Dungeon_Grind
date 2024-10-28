@@ -128,18 +128,17 @@ int main(){
             switch (mainmenupick)
             {
             //Player decides to exit game
-            case 3: 
+            case 4: 
                 {
                 system("cls"); 
                 std::exit(0);
                 }
                 break;
-            case 4:
+            case 3:
                 {
-
                     table.loadFromFile(highscorefile);
                     system("cls");
-                    std::cout << c_HS_01 << "\n\n";
+                    std::cout << c_HS_01 << "\n" << c_FIGHT_WINDOW_ABOVE << "\n" << c_HS_02 << "\n";
                     table.displayHighscores();
                     std::cout << "\n\n" << c_ANY_KEY;
                     getch();
