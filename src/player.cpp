@@ -255,3 +255,4 @@ Ring Player::get_ring(){
 void Player::attack(){
     
 }
+

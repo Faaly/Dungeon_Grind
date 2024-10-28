@@ -104,3 +104,14 @@ bool data_weapon_check(bool &a)
     }
     return a = true;
 }
+
+bool highscore_check(bool &a)
+{
+    std::ifstream hsfile;
+    hsfile.open("highscore.dat");
+    if (!hsfile)
+    {
+            return a = false;
+    }
+    return a = true;
+}

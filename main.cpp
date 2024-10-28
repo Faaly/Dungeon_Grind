@@ -16,6 +16,7 @@
 #include "header/fight.h" // Fight function
 #include "header/loot.h" // Loot function#
 #include "header/check.h" // check for savegames Dir
+#include "header/highscore.h" //highscore
 #include <map>
 
 
@@ -26,22 +27,25 @@
             ToDo
     * Change std::endl to \n  in loop
         # because std::endl flushes the buffer which takes extra time
-
-    * Finish Loot Module
+        //note by faaly: done in main.cpp
 
     * failed savegame load error leads to gamecrash. fix it!
 
-    * Highscore Module
-
-    * Scan for data folder (if missing, create data and fill it or show error!) 
+    * Highscore Module (maybe in binary)
 
     * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
 
-    * balancing of enemy
+    * balancing of enemy, exp and stats of loot
 
-    * exe file ggf mit licensen vorbereiten
+    * exe file ggf mit licensen vorbereiten oder sonst wie anti-virus und defender block sicher machen
+
+    * hash code generation einfügen für save files und highscore file to prevet manipulation/cheating
+
+    * level 1 tutorial einfügen
 
 
+    *1.2 Stats in ATK, ATK%, DEF, CRIT-Rate und CRIT-DMG sowie HP and HP% ändern!
+    
 */
 
 
@@ -55,7 +59,10 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
 template <class T>
 T convert_loadfile2game(T a, std::string b);
 
+//creates highscore object
+Highscoretable table;
 
+//Template for build the item from data of loot.cpp
 template <class T>
 T create_loot(T a, std::string name, float str, float agi, float sta, int ilvl);
 
@@ -66,6 +73,7 @@ std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
 //------------------------------------------------------------------------------------------------------
 int main(){
 
+    //checks if data folder is there. if not, crash game with error
     if (DataDir_Error() == 1)
     {
         std::cout << c_ERROR_003;
@@ -73,6 +81,7 @@ int main(){
         return 0;
     }
 
+    //checks if files inside of data folder are there. --
     bool files_in_data = true;
     data_armor_check(files_in_data);
     data_helmet_check(files_in_data);
@@ -80,9 +89,8 @@ int main(){
     data_prefix_l_check(files_in_data);
     data_prefix_m_check(files_in_data);
     data_ring_check(files_in_data);
-    data_weapon_check(files_in_data);
-
-    if (files_in_data == false){
+    data_weapon_check(files_in_data); 
+    if (files_in_data == false){  // -- if not, crash game with error
         std::cout << c_ERROR_004;
         getch();
         return 0;
@@ -100,7 +108,7 @@ int main(){
         getch();
 
         //Main Menu - Player can pick out of 3 options. Start new Game - Load game - exit game
-        system("cls");
+        
         int mainmenupick = 0; //Variable for std::cin
         Player Adventurer;
         std::string player_name;
@@ -112,6 +120,7 @@ int main(){
         bool pickagain = true; //failsafe if insert wrong input
         do
         {
+            system("cls");
             std::cout << c_MAIN_MENU << std::endl;
             std::cin >> mainmenupick;
 
@@ -125,6 +134,18 @@ int main(){
                 std::exit(0);
                 }
                 break;
+            case 4:
+                {
+
+                    table.loadFromFile(highscorefile);
+                    system("cls");
+                    std::cout << c_HS_01 << "\n\n";
+                    table.displayHighscores();
+                    std::cout << "\n\n" << c_ANY_KEY;
+                    getch();
+                    break;
+                    
+                }
             //Player decides to load gamefile. He inserts his charname via std::cin
             //Charname will be also name for file in savegame folder
             case 2: 
@@ -132,7 +153,7 @@ int main(){
                 std::ifstream inFile;
                 std::string DATA;
                 std::string savefile;
-                std::cout << "What file should be loaded?\nPlease enter the exact name of the adventurer:" << std::endl;
+                std::cout << "What file should be loaded?\nPlease enter the exact name of the adventurer \nto load your game-file:" << std::endl;
                 std::cin.ignore ( 100 , '\n' );
                 std::getline(std::cin, savefile);
                 inFile.open("savegames/" + savefile + ".dat");
@@ -191,7 +212,7 @@ int main(){
                     }
                 }
 
-                //File is getting closed and Player is moved into Camp-Menu
+                //File is getting closed and Player is moved into Camp-Menu*
                 inFile.close();
                 std::cout << "\nSavefile successfully loaded.\n\n"
                         << c_ANY_KEY << std::endl;
@@ -228,7 +249,7 @@ int main(){
                 Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm); 
                 Adventurer.set_weapon(picked_weapon);
                 
-                //Player has picked a weapon. The Game saves and player is put into Camp-Menu
+                //Player has picked a weapon. The Game saves and player is put into Camp-Menu*
                 std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
                 getch();
                 savegame(Adventurer);
@@ -240,11 +261,11 @@ int main(){
                 std::cin.clear();
                 std::cin.ignore(INT_MAX, '\n');
                 system("cls");
-                std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+                std::cout << "\n" << c_ERROR_002 << "\n";
             }
         } while (pickagain);
 
-        //Camp-Menu
+        //#######  Camp-Menu ######
         //Player has to pick out of three options: To save and exit the game, 
         // to view his stats of his character or to start a dungeon (Play the actual game)
         pickagain = true;
@@ -257,7 +278,7 @@ int main(){
 
             switch (hubmenu)
             {
-            case 3: //save the game and exit the game
+            case 3: //save the game andd exit the game
                 {
                     savegame(Adventurer);            
                     system("cls"); 
@@ -314,14 +335,15 @@ int main(){
                         }   
                         else 
                         {
-                            //Player getting exp
-                            int erfahrung = 75 * (Adventurer.get_DungeonLevel() -1 ) * 1.25; 
+                            //Player getting exp if he is > level 1
+                            int erfahrung = 50 * (Adventurer.get_DungeonLevel() -1 ) * 1.25; 
                             std::cout << "       You'll receive " << erfahrung << " Experience" << std::endl;
                             Adventurer.gainExp(erfahrung);
                         }
 
                         std::cout << std::endl;
 
+                        //Create loot class items. This part generates the loot items after defeating the enemy.
                         Weapon loot_weapon;
                         Helmet loot_helmet;
                         Bodyarmor loot_armor;
@@ -339,6 +361,7 @@ int main(){
                         prefix_attributes(prefix1,loot_str, loot_agi, loot_sta, prefix_item_qual_modifer); //prefix attributes will be generated rng
                         lootname = itemname_builder(lootclass1, prefix1, suffix1); //item will be build -> loot.cpp
                         
+                        //Sorts data of item into specific class, depending on the lootclass name
                         if (lootclass1 == "weapon"){
                             loot_weapon = create_loot(loot_weapon, lootname, loot_str, loot_agi, loot_sta, loot_ilvl);
                         }
@@ -354,12 +377,14 @@ int main(){
                         
                         system("cls");
                         
+                        // asking the player what item they have found. (what item was generated)
                         std::cout << c_TUTORIALHELPER_05 <<c_LOOT1 << Dungeonchest << c_LOOT1a << "\n      "
                                   << c_LOOT2 << capitalize_Item_Name(lootname) << std::endl;
                         
+                        //checks if player has already equiped an item on specific slot.
                         if (already_equip_check(lootclass1, Adventurer) == false){
                            std::cout << c_LOOT4 << lootname << "\n";
-                            //function that puts item to player and maybe show some stats of it
+                            //if false, function puts item to player and maybe show some stats of it
                             switch (loot_class_int_converter(lootclass1))
                             {
                             case 2:
@@ -375,6 +400,9 @@ int main(){
                             }
 
                         } else {
+                            // if player has already equiped an item on specific slot--
+                            // game will show his already equiped item and new found item. --
+                            // game will show both stats for player to compare.
                             bool B_Loot_Pick_again = true; //Failsafe if wront input
                             do
                             {
@@ -403,12 +431,13 @@ int main(){
                                 Adventurer.get_ring().show_compare();
                                 }
                                 
+                                //Player gets asked what to do. take new item or keep curret gear
                                 std::cout << "\n" << c_LOOT3 << capitalize_Item_Name(lootname) << "?\n" <<
-                                //Show new item compared to current item
+                                
                                 "(1) Take new item\n" <<
                                 "(3) Keep current equipment!\n";
                                 std::cin >> Loot_Pick;
-                                switch (Loot_Pick)
+                                switch (Loot_Pick) //if player picks item, new item will set to player class
                                 {
                                     case 1:
                                     if (lootclass1 == "weapon")
@@ -430,57 +459,45 @@ int main(){
                                         std::cout << c_LOOT4a << capitalize_Item_Name(lootname) << "\n\n\n" << c_ANY_KEY << std::endl;
                                         B_Loot_Pick_again = false;
                                         break;
-                                    case 3:
+                                    case 3: //player keeps current gear
                                         std::cout << c_LOOT5 << "\n\n\n" << c_ANY_KEY << std::endl;
                                         B_Loot_Pick_again = false;
                                         break;
-                                    default:
+                                    default: //Player input was garbage, menu is reloaded
                                         std::cin.clear();
                                         std::cin.ignore(INT_MAX, '\n');
                                         system("cls");
-                                        std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+                                        std::cout << "\n" << c_ERROR_002 << "\n";
                                 }
 
                             } while (B_Loot_Pick_again);
-                            
-                            // Insert function that checks what category is required (weapon, ring etc)
-                            // and sort                            
+                                                
 
                         }
-                        
-                        
-                        // Interface googles. Methode schreiben parameter interface für compare/get infos
 
                         getch();
-                        
-                        
-
-                        
-
-                        
-                
-                        
-
-
-
                     } 
-                    else if (Adventurer.get_currentHP() <= 0) //YOU LOSE
+                    else if (Adventurer.get_currentHP() <= 0) //YOU LOSE - game ends and player will start at titlescreen
                     {
                         system("cls");
+                        table.loadFromFile(highscorefile);
+                        table.addHighscore(Highscore(Adventurer.get_Name(), Adventurer.get_DungeonLevel(), Adventurer.get_Level()));
+                        table.save2File(highscorefile);
                         pickagain = false;
                         std::cout << "                    You died" << std::endl;
                         //Pimp this You died stuff like in dark souls.
+                        //Highscore entry
                         getch();      
                         break;
                     }
                     
                 }
                 break;
-            default:
+            default: //Main menu fail safe if player input is garbage- Main Menu will be reloaded
                 std::cin.clear();
                 std::cin.ignore(INT_MAX, '\n');
                 system("cls");
-                std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
+                std::cout << "\n" << c_ERROR_002 << "\n";
             }
         } while (pickagain);   
     } while (1 == 1);

@@ -111,7 +111,7 @@ const std::string c_MAIN_MENU =
         "\n"
         "(3) Exit\n"
         "\n"
-        "\n"
+        "(4) View Highscores"
         "\n";
 
 
@@ -129,6 +129,9 @@ const std::string c_HUB_MENU =
         "\n"
         "\n";
 
+//Highscore-Menu---------------------------------------
+const std::string c_HS_01 =  
+        "                     Top 10 Highscores ";
 
 //Enter-Dungeon Level-------------------------------
 const std::string c_ENTER_DUNGEON_pt1 =  
@@ -239,5 +242,9 @@ const std::string c_FIGHT_MENU1 =
         "(3) Block\n" 
         "(9) Run Away";
 
+
+
+//Miscellaneous---------------------------------------------------------
+const std::string highscorefile = "highscore.dat";
 
 #endif

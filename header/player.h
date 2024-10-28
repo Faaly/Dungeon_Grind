@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <string>
 #include <iostream>
+#include <vector>
 #include "bodyarmor.h"
 #include "helmet.h"
 #include "ring.h"
@@ -128,6 +129,9 @@ class Player{
         Ring get_ring();
 
         void attack();
+
+        
+        
 
 // Fight Functions -----------------------------------------------
 

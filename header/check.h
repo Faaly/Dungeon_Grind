@@ -16,5 +16,6 @@ bool data_prefix_l_check(bool &a);
 bool data_prefix_m_check(bool &a);
 bool data_ring_check(bool &a);
 bool data_weapon_check(bool &a);
+bool highscore_check(bool &a);
 
 #endif
