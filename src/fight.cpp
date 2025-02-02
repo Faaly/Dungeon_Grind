@@ -105,7 +105,7 @@ void fight(Player& Player, Enemy& Enemy){
             p_attack_message(Enemy,p_result, isCriticalHit);
             c_FWD();
             getch();
-            if (Enemy.get_currentHP() > 0)// if enemy isn't dead, do:
+            if (Enemy.get_currentHP() > 0.1f)// if enemy isn't dead, do:
             {
                 Menu_UP(Player, Enemy);
                 e_result = e_attack(Player, Enemy, minDamageThreshold);
@@ -135,7 +135,7 @@ void fight(Player& Player, Enemy& Enemy){
             p_attack_message(Enemy, p_result, isCriticalHit);
             c_FWD();
             getch();
-            if (Enemy.get_currentHP() > 0)// if enemy isn't dead, do:
+            if (Enemy.get_currentHP() > 0.1f)// if enemy isn't dead, do:
             {
                 Menu_UP(Player, Enemy);
                 std::cout << "The " << Enemy.get_Name() << " prepares his special attack.\n" << c_ANY_KEY << std::endl;
@@ -177,7 +177,7 @@ void fight(Player& Player, Enemy& Enemy){
             std::cout << "You attack the " << Enemy.get_Name() << " for " << p_result << " Damage.\n" << c_ANY_KEY << std::endl;
             c_FWD();
             getch();
-            if (Enemy.get_currentHP() > 0)// if enemy isn't dead, do:
+            if (Enemy.get_currentHP() > 0.1f)// if enemy isn't dead, do:
             {
                 Menu_UP(Player, Enemy);
                 std::cout << "The "<< Enemy.get_Name() << " does his special attack!\n" << c_ANY_KEY << std::endl;
@@ -197,7 +197,7 @@ void fight(Player& Player, Enemy& Enemy){
             break;
         }
 
-    } while (Player.get_currentHP() > 0 && Enemy.get_currentHP() > 0); //Repeat while player alive
+    } while (Player.get_currentHP() > 0.1f && Enemy.get_currentHP() > 0.1f); //Repeat while player alive
 }
 
 int action_8bit_calc(int a, int b){
@@ -229,7 +229,7 @@ int enemy_action(Player& Player, Enemy& Enemy){
 
 //Enemy Special Attack #1 Enemy hits three times a row with 1/2 of his damage.
 void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold){
-    double triple_attack_value = 0.50;
+    double triple_attack_value = 0.65;
     int max_damage;
     float e_result;
     max_damage = std::max(1.0, (Enemy.get_maxdmg() - Player.maxdef()) * triple_attack_value); 
@@ -255,7 +255,7 @@ void enemy_triple_attack(Player& Player, Enemy& Enemy, float minDamageThreshold)
 
 //Enemy Special Attack #2 Enemy heals itself a short amount of HP
 void enemy_heal(Player& Player, Enemy& Enemy){
-    double heal_value_percent = 0.35; // 20% Heal of current hp
+    double heal_value_percent = 0.35; // X% Heal of current hp
     system("cls");
     Menu_UP(Player, Enemy);
     double heal_sum = Enemy.get_currentHP() * heal_value_percent;

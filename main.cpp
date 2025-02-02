@@ -19,10 +19,6 @@
 #include "header/highscore.h" //highscore
 #include <map>
 
-
-
-
-
 /*
             ToDo
     * Change std::endl to \n  in loop
@@ -30,8 +26,6 @@
         //note by faaly: done in main.cpp
 
     * failed savegame load error leads to gamecrash. fix it!
-
-    * Highscore Module (maybe in binary)
 
     * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
 
@@ -43,45 +37,51 @@
 
     * level 1 tutorial einfügen
 
+    * bessere documentation!!
+
 
     *1.2 Stats in ATK, ATK%, DEF, CRIT-Rate und CRIT-DMG sowie HP and HP% ändern!
     
 */
 
-
-//create safefile and fill it with stats of the player
+//create safefile.dat and fill it with stats of the player
 void savegame(Player Adventurer);
 
-//Module to pick starter weapon for new player
+//Class Object to pick starter weapon for new player
 Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon polearm);
 
-//Template for Module to loadfile into game
+//Template for build to be filled by loadfile.
 template <class T>
 T convert_loadfile2game(T a, std::string b);
 
-//creates highscore object
+//Creates highscore object
 Highscoretable table;
 
-//Template for build the item from data of loot.cpp
+//Template for build items objects from data of loot.cpp
 template <class T>
 T create_loot(T a, std::string name, float str, float agi, float sta, int ilvl);
 
-//Function that checks Dungeonlevel of Player to generate chest
+//Function that checks Dungeonlevel of Player Adventurer to pick chest and npc name data.
 std::string Enter_Dungeon_dlvl_chest(Player Adventurer);
 std::string Enter_Dungeon_dlvl_npc(Player Adventurer);
+
+
+
+
+
 //-------------------------------------------BEGIN int main() ------------------------------------------
 //------------------------------------------------------------------------------------------------------
 int main(){
 
-    //checks if data folder is there. if not, crash game with error
+    //Checks if data folder is there. 
     if (DataDir_Error() == 1)
     {
-        std::cout << c_ERROR_003;
+        std::cout << c_ERROR_003; // -- if not, crash game with error
         getch();
         return 0;
     }
 
-    //checks if files inside of data folder are there. --
+    //Checks if files inside of data folder are there.
     bool files_in_data = true;
     data_armor_check(files_in_data);
     data_helmet_check(files_in_data);
@@ -100,31 +100,30 @@ int main(){
     //Checks if savegames folder does exist. If not, creates new savegames folder
     CreateDir();
 
-
     do{ 
-        //Titlescreen
+        //Titlescreen after clearning screen
         system("cls");
         std::cout << c_ENTER_SCREEN << std::endl;
         getch();
 
-        //Main Menu - Player can pick out of 3 options. Start new Game - Load game - exit game
         
-        int mainmenupick = 0; //Variable for std::cin
+        //Creating Object Player Adventurer
         Player Adventurer;
-        std::string player_name;
+        std::string playername;
         Weapon currentWeapon;
         Helmet currentHelmet;
         Bodyarmor currentArmor;
         Ring currentRing;
 
+        int mainmenupick = 0;
         bool pickagain = true; //failsafe if insert wrong input
         do
-        {
+        {   //Main Menu - Player can pick out of 4 options. 
+            //Start new Game - Load game - view highscore - exit game
             system("cls");
             std::cout << c_MAIN_MENU << std::endl;
             std::cin >> mainmenupick;
-
-            std::string playername;
+            
             switch (mainmenupick)
             {
             //Player decides to exit game
@@ -133,17 +132,16 @@ int main(){
                 system("cls"); 
                 std::exit(0);
                 }
-                break;
+                //Player decides to view highscore
             case 3:
                 {
-                    table.loadFromFile(highscorefile);
+                    table.loadFromFile(highscorefile); //Load highscore data from file
                     system("cls");
-                    std::cout << c_HS_01 << "\n" << c_FIGHT_WINDOW_ABOVE << "\n" << c_HS_02 << "\n";
-                    table.displayHighscores();
+                    std::cout << c_HS_01 << "\n" << c_FIGHT_WINDOW_ABOVE << "\n" << c_HS_02 << "\n"; //Display border
+                    table.displayHighscores(); //Display highscore data
                     std::cout << "\n\n" << c_ANY_KEY;
                     getch();
                     break;
-                    
                 }
             //Player decides to load gamefile. He inserts his charname via std::cin
             //Charname will be also name for file in savegame folder
@@ -156,23 +154,27 @@ int main(){
                 std::cin.ignore ( 100 , '\n' );
                 std::getline(std::cin, savefile);
                 inFile.open("savegames/" + savefile + ".dat");
-                //File doesn't exist - Error 404
-                if (!inFile)
+                
+                if (!inFile) //File doesn't exist - Error 404
                 {
                     std::cout << c_ERROR_404 << std::endl;
                 }
                 
-                //File is open due reasons - Error 001
-                if (!inFile.is_open())
+                if (!inFile.is_open()) //File is open due reasons - Error 001
                 {
                     std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
                     return 1;
                 }
                 
-                //File is found and data is loaded into stringstream. Loaded in dedicated parts of the Player.
+                //File is found and data is loaded into stringstream ss_DATA. Loaded in dedicated parts of the Player
+                // during while loop. Data is separated by ;
+                //Example of data: P;19;19;19;17;26;2245;
+                //Example of data: R;3;3;4;1;Worn Ringlet of Vitality;
                 std::stringstream ss_DATA;
                 while (getline(inFile, DATA, '\n')){
                     std::string type = DATA.substr(0, DATA.find(';'));
+
+                    //Checks Data for category P, delivers data.
                     if(type == "P") {
                         std::istringstream tmp(DATA);
                         std::string::size_type sz;
@@ -187,31 +189,26 @@ int main(){
 
                         Adventurer = Player(savefile, std::stof(tmp_str,&sz), std::stof(tmp_agi,&sz)
                         , std::stof(tmp_sta,&sz), std::stoi(tmp_lvl,&sz), std::stoi(tmp_dlvl,&sz), std::stof(tmp_exp,&sz));
-                        //Adventurer.show_playerstats();
                     } // Check Category. Sort attributes and names.
                     if(type == "W"){
                         currentWeapon = convert_loadfile2game(currentWeapon, DATA);
-                        //currentWeapon.show_weaponstats();
                         Adventurer.set_weapon(currentWeapon);
                     }
                     if(type == "H"){
                         currentHelmet = convert_loadfile2game(currentHelmet, DATA);
-                        //currentHelmet.show_helmetstats();
                         Adventurer.set_helmet(currentHelmet);
                     }
                     if(type == "B"){
                         currentArmor = convert_loadfile2game(currentArmor, DATA);
-                        //currentArmor.show_armorstats();
                         Adventurer.set_bodyarmor(currentArmor);
                     }
                     if(type == "R"){
                         currentRing = convert_loadfile2game(currentRing, DATA);
-                        //currentRing.show_ringstats();
                         Adventurer.set_ring(currentRing);
                     }
                 }
 
-                //File is getting closed and Player is moved into Camp-Menu*
+                //File is getting closed and player is moved into Hub-menu*
                 inFile.close();
                 std::cout << "\nSavefile successfully loaded.\n\n"
                         << c_ANY_KEY << std::endl;
@@ -219,7 +216,8 @@ int main(){
                 pickagain = false;
                 }
                 break;
-            //Player starts a new game and needs to name his character via std::cin
+
+            //Player decides starts a new game and needs to name his character via std::cin
             case 1:
                 {    
                 system("cls");
@@ -238,23 +236,24 @@ int main(){
                 getch();
                 system("cls");
 
-            //Player has to pick one out of four starter-weapons   
-                Weapon dagger ("Dull Dagger", 2, 4, 3, 1);
-                Weapon sword ("Broken Sword", 3, 3, 3, 1);
-                Weapon greatsword ("Old Greatsword", 4, 2, 3, 1);
-                Weapon polearm ("Rusty Polearm", 3, 2, 4, 1);
+                //Player has to pick one out of four starter-weapons   
+                Weapon dagger ("Dull Dagger", 1, 3, 2, 1);
+                Weapon sword ("Broken Sword", 2, 2, 2, 1);
+                Weapon greatsword ("Old Greatsword", 3, 1, 2, 1);
+                Weapon polearm ("Rusty Polearm", 2, 1, 3, 1);
                 
                 //Function that shows some stats of the weapons. Switchcase via cin gives weapon to player
                 Weapon picked_weapon = PickStarterWeapon(dagger, sword, greatsword, polearm); 
                 Adventurer.set_weapon(picked_weapon);
                 
-                //Player has picked a weapon. The Game saves and player is put into Camp-Menu*
+                //Player has picked a weapon. The game saves and player is put into Hub-menu*
                 std::cout << "You've equiped " << Adventurer.get_weapon().get_Name() << "\n\n\n"<< c_ANY_KEY << std::endl;
                 getch();
                 savegame(Adventurer);
 
                 }
                 break;
+
             default: 
             //Players input is garbage and the menu is reloaded.
                 std::cin.clear();
@@ -264,56 +263,50 @@ int main(){
             }
         } while (pickagain);
 
-        //#######  Camp-Menu ######
+        //#######  Hub-menu ######
         //Player has to pick out of three options: To save and exit the game, 
         // to view his stats of his character or to start a dungeon (Play the actual game)
         pickagain = true;
         int hubmenu = 0;
         do
         {
-            system("cls"); //Hubmenu check
+            system("cls"); //Hub-menu check
             std::cout << c_TUTORIALHELPER_01 << c_HUB_MENU << std::endl;
             std::cin >> hubmenu;
 
             switch (hubmenu)
             {
-            case 3: //save the game andd exit the game
+            case 3: //Player decides save the game and exit the game
                 {
                     savegame(Adventurer);            
                     system("cls"); 
                     std::exit(0);
                 }
                 break;
-            case 2:
+            case 2: //Player decides to view his stats and current gear
                 {
                     system("cls");
                     Adventurer.showstats();
-                    //Stats stuff
-                    //check if player has equip
-                    //show all items w/ stats
-
-                    //count all stats together and show. Show damage, Hp and defense too
                     std::cout << "\n" << c_ANY_KEY << std::endl;
                     getch();
                 }
                 break;
-            case 1: // Play the game
+
+            case 1: //Player decides to play the game and grind a dungeon
                 {
                     //Create Enemy
                     Enemy Enemy1(Adventurer);
                     system("cls");
                     //Storypart - Telling the player which level they are and what enemy they can expect,
-                    // also what kind of treasure chest they can expect.
+                    // also what kind of treasure chest they can expect. 
                     std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
                             << c_ENTER_DUNGEON_pt2 << Enemy1.get_Name() << "\n" 
                             << c_ENTER_DUNGEON_pt3 << Enter_Dungeon_dlvl_chest(Adventurer) << c_ENTER_DUNGEON_pt4
                             << "\n\n\n         " << c_ANY_KEY;
                     getch();
                     
-                    //Function that declears the treasure chest name by player dlvl
+                    //Saving output from method into string
                     std::string Dungeonchest = Enter_Dungeon_dlvl_chest(Adventurer); 
-                    //Enemy1.show_enemystats();
-                    //getch();
                     fight(Adventurer, Enemy1); //whole fight function - > fight.cpp
                      
                     if (Enemy1.get_currentHP() <= 0 )  // YOU WIN
@@ -483,8 +476,11 @@ int main(){
                         table.addHighscore(Highscore(Adventurer.get_Name(), Adventurer.get_DungeonLevel(), Adventurer.get_Level()));
                         table.save2File(highscorefile);
                         pickagain = false;
-                        std::cout << "                    You died" << std::endl;
-                        //Pimp this You died stuff like in dark souls.
+                        //Game Over Text
+                        std::cout << c_YOU_DIED << std::endl; 
+                        std::cout << "           " << Adventurer.get_Name() << "'s journey ends at Dungeonlevel " << Adventurer.get_DungeonLevel() << ",\n"
+                                  << "             with his soul forged at Playerlevel " << Adventurer.get_Level() << ".\n"
+                                  << "              A legend, now lost to the abyss.  "<< std::endl;
                         //Highscore entry
                         getch();      
                         break;

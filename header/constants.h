@@ -98,6 +98,22 @@ const std::string c_ENTER_SCREEN =
         "                       By Faaly \n              (Playable Pre-Alpha Version)";
 
 
+//Title Screen -------------------------------------------
+const std::string c_YOU_DIED = 
+        "\n"
+        "\n"
+        "\n"
+        "    XX    XX  XXXXXX  XX    XX   XXXXXX  XX XXXXXXX XXXXXX  \n"
+        "     XX  XX  XX    XX XX    XX   XX   XX XX XX      XX   XX \n"
+        "      XXXX   XX    XX XX    XX   XX   XX XX XXXXX   XX   XX \n"
+        "       XX    XX    XX XX    XX   XX   XX XX XX      XX   XX \n"
+        "       XX     XXXXXX   XXXXXX    XXXXXX  XX XXXXXXX XXXXXX  \n"
+        "\n"
+        ""
+        "                        Press Any Key \n"
+        "\n";
+
+
 //MainMenu Screen -------------------------------------------
 const std::string c_MAIN_MENU =
         "\n"
