@@ -1,5 +1,17 @@
 #include "../header/check.h"
 #include <fstream>
+#include <iostream>
+
+std::string buildnumber(){
+    std::time_t t = std::time(nullptr); //grabs current date
+    std::tm now = *std::localtime(&t); //converts into local time
+    std::ostringstream datestream;
+    datestream  << (now.tm_year + 1900) //year because it starts at 1900 and counts upwards
+                << std::setw(2) << std::setfill('0') << (now.tm_mon + 1) //Month (0based thats why +1) 
+                << std::setw(2) << std::setfill('0') << now.tm_mday;
+
+    return datestream.str();
+};
 
 bool DirIsThere(const char* path) {
     struct stat info;
@@ -108,7 +120,7 @@ bool data_weapon_check(bool &a)
 bool highscore_check(bool &a)
 {
     std::ifstream hsfile;
-    hsfile.open("highscore.dat");
+    hsfile.open("data/highscore.dat");
     if (!hsfile)
     {
             return a = false;

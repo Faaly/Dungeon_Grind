@@ -42,7 +42,7 @@
 
 
     void Highscoretable::save2File(const std::string& filename) {
-        std::ofstream file(filename);
+        std::ofstream file("data/" + filename);
         if (!file) {
             std::cerr << c_ERROR_404;
             return;
@@ -57,9 +57,9 @@
 
 
     void Highscoretable::loadFromFile(const std::string& filename) {
-        std::ifstream file(filename);
+        std::ifstream file("data/" + filename);
         if (!file) {
-            std::ofstream file(filename);
+            std::ofstream file("data/" + filename);
             file << "Haneko" << " " << "20" << " " << "20" << "\n";
             file << "Nime" << " " << "19" << " " << "19" << "\n";
             file << "Hecki" << " " << "18" << " " << "18" << "\n";

@@ -95,9 +95,11 @@ const std::string c_ENTER_SCREEN =
         "\n"
         "\n"
         "\n"
-        "                       By Faaly \n              (Playable Pre-Alpha Version)";
+        "                       By Faaly \n";
 
-
+const std::string c_VERSIONNUMBER =
+        "                   v";
+                       
 //Title Screen -------------------------------------------
 const std::string c_YOU_DIED = 
         "\n"

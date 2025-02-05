@@ -2,6 +2,13 @@
 #define CHECK_H
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+std::string buildnumber();
+
+
 
 bool DirIsThere(const char* path);
 

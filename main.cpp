@@ -19,6 +19,12 @@
 #include "header/highscore.h" //highscore
 #include <map>
 
+int patch_major = 0; //major patch. 1 = done!
+int patch_minor = 4; //minor patches e.g bigger features like healpots, new mechanics
+//goals done:
+//Highscore, Save n Load, loot, error checks,
+int patch_version = 1; //small bugfixes, balacing etc.
+
 /*
             ToDo
     * Change std::endl to \n  in loop
@@ -103,7 +109,7 @@ int main(){
     do{ 
         //Titlescreen after clearning screen
         system("cls");
-        std::cout << c_ENTER_SCREEN << std::endl;
+        std::cout << c_ENTER_SCREEN << c_VERSIONNUMBER << patch_major << "."<< patch_minor << "." << patch_version << "." << buildnumber() << std::endl;
         getch();
 
         
