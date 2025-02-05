@@ -1,11 +1,56 @@
 # Dungeon_Grind
 
-The goal behind this little project is to learn the language C++ and use new learned things like classes, functions and more right away in my project. 
-Also trying out new things like Github and OpenAI.
+This game is still in development!
 
-Dungeon Grind should be done in autuumn 2024 as a text based game. But won't promise anything.
-There is still much to learn and to do. 
+The goal behind this little project is to learn the language C++ and use newly learned concepts such as classes, functions, and more right away in my project. 
 
-More informations will be available at https://bsky.app/profile/faaly.bsky.social
+---
 
--Faaly
+# Overview
+Dungeon_Grind is a turn-based dungeon crawler game, where you try to venture deeper and deeper into the dungeon. Fight monsters, gather loot, and survive as long as possible!
+
+---
+
+# Features
+- Turn-based combat
+- Enemy monsters with different special attacks
+- Highscore system
+- Save and load functionality
+- Plenty of items with RNG-based stats
+- Experience and leveling system
+
+# Upcoming Features
+- Tutorial
+- Heal potions
+- Special attacks for players
+- Anti-cheat
+- More items & monsters!
+
+---
+
+# Project Structure
+```makefile
+📦 Dungeon_Grind
+┣ 📂 src/           # Source code files
+┃ ┣ 📜 main.cpp
+┃ ┣ 📜 player.cpp
+┃ ┣ 📜 highscore.cpp
+┃ ┣ ...
+┣ 📂 header/         # Header files
+┃ ┣ 📜 player.h
+┃ ┣ 📜 highscore.h
+┃ ┣ ...
+┣ 📂 data/           # Game files (e.g. highscore.dat)
+┣ 📜 README.md       # This file
+┣ 📂 dependencies/   # Contains GLFW libraries
+```
+---
+
+# License
+This project is licensed under the **MIT License**.
+
+---
+
+More information and updates will be available at https://bsky.app/profile/faaly.bsky.social
+
+Faaly
