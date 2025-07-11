@@ -38,7 +38,6 @@ std::vector<std::string> listSaveGames(const std::string& Dir){
 std::string chooseSaveGames(const std::vector<std::string>& saveGames){
     if (saveGames.empty()) //File doesn't exist - Error 404
     {
-        std::cout << c_ERROR_404 << std::endl;
         return "";
     }
 

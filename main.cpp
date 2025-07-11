@@ -24,17 +24,13 @@ int patch_major = 0; //major patch. 1 = done!
 int patch_minor = 4; //minor patches e.g bigger features like healpots, new mechanics
 //goals done:
 //Highscore, Save n Load, loot, error checks,
-int patch_version = 2; //small bugfixes, balacing etc.
+int patch_version = 3; //small bugfixes, balacing etc.
 
 /*
             ToDo
     * Change std::endl to \n  in loop
         # because std::endl flushes the buffer which takes extra time
         //note by faaly: done in main.cpp
-
-    * failed savegame load error leads to gamecrash. fix it!
-
-    * Savegames anzeigen und player choice auswählen
     
     * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
 
@@ -160,6 +156,12 @@ int main(){
                 std::ifstream inFile;
                 std::string DATA;
                 std::string savefile = chooseSaveGames(saveGames);
+                if(savefile == ""){
+                    std::cout << "\n\n\nThere are currently no savegames available.\n" <<
+                    "Please start a new game.\n" << "\n     Press Any Key" << std::endl;
+                    getch();
+                    break;
+                }
                 // getch();
                 std::cin.ignore ( 100 , '\n' );
                 inFile.open("savegames/" + savefile + ".dat");

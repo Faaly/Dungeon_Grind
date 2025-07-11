@@ -1,6 +1,7 @@
 #include "../header/fight.h"
 #include <conio.h> // getch()
 #include "../header/constants.h"
+#include "../header/utility.h"
 #include <cstdlib> // rand() function
 #include <iostream>
 #include <iomanip>
