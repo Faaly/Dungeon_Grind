@@ -15,15 +15,16 @@
 #include "header/enemy.h" // Class Enemy
 #include "header/fight.h" // Fight function
 #include "header/loot.h" // Loot function#
-#include "header/check.h" // check for savegames Dir
+#include "header/check.h" // check for Directorys and do load n safe stuff
 #include "header/highscore.h" //highscore
+#include "header/utility.h" //clear screen
 #include <map>
 
 int patch_major = 0; //major patch. 1 = done!
 int patch_minor = 4; //minor patches e.g bigger features like healpots, new mechanics
 //goals done:
 //Highscore, Save n Load, loot, error checks,
-int patch_version = 1; //small bugfixes, balacing etc.
+int patch_version = 2; //small bugfixes, balacing etc.
 
 /*
             ToDo
@@ -33,11 +34,11 @@ int patch_version = 1; //small bugfixes, balacing etc.
 
     * failed savegame load error leads to gamecrash. fix it!
 
+    * Savegames anzeigen und player choice auswählen
+    
     * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
 
     * balancing of enemy, exp and stats of loot
-
-    * exe file ggf mit licensen vorbereiten oder sonst wie anti-virus und defender block sicher machen
 
     * hash code generation einfügen für save files und highscore file to prevet manipulation/cheating
 
@@ -45,8 +46,8 @@ int patch_version = 1; //small bugfixes, balacing etc.
 
     * bessere documentation!!
 
-
-    *1.2 Stats in ATK, ATK%, DEF, CRIT-Rate und CRIT-DMG sowie HP and HP% ändern!
+    
+    
     
 */
 
@@ -108,8 +109,8 @@ int main(){
 
     do{ 
         //Titlescreen after clearning screen
-        system("cls");
-        std::cout << c_ENTER_SCREEN << c_VERSIONNUMBER << patch_major << "."<< patch_minor << "." << patch_version << "." << buildnumber() << std::endl;
+        clearScreen();
+        std::cout << c_ENTER_SCREEN << c_VERSIONNUMBER << patch_major << "."<< patch_minor << "." << patch_version << std::endl;
         getch();
 
         
@@ -126,7 +127,7 @@ int main(){
         do
         {   //Main Menu - Player can pick out of 4 options. 
             //Start new Game - Load game - view highscore - exit game
-            system("cls");
+            clearScreen();
             std::cout << c_MAIN_MENU << std::endl;
             std::cin >> mainmenupick;
             
@@ -135,14 +136,14 @@ int main(){
             //Player decides to exit game
             case 4: 
                 {
-                system("cls"); 
+                clearScreen(); 
                 std::exit(0);
                 }
                 //Player decides to view highscore
             case 3:
                 {
                     table.loadFromFile(highscorefile); //Load highscore data from file
-                    system("cls");
+                    clearScreen();
                     std::cout << c_HS_01 << "\n" << c_FIGHT_WINDOW_ABOVE << "\n" << c_HS_02 << "\n"; //Display border
                     table.displayHighscores(); //Display highscore data
                     std::cout << "\n\n" << c_ANY_KEY;
@@ -153,22 +154,27 @@ int main(){
             //Charname will be also name for file in savegame folder
             case 2: 
                 {
+
+                std::string Dir = "savegames";
+                std::vector<std::string> saveGames = listSaveGames(Dir);
                 std::ifstream inFile;
                 std::string DATA;
-                std::string savefile;
-                std::cout << "What file should be loaded?\nPlease enter the exact name of the adventurer \nto load your game-file:" << std::endl;
+                std::string savefile = chooseSaveGames(saveGames);
+                // getch();
                 std::cin.ignore ( 100 , '\n' );
-                std::getline(std::cin, savefile);
                 inFile.open("savegames/" + savefile + ".dat");
+                
                 
                 if (!inFile) //File doesn't exist - Error 404
                 {
                     std::cout << c_ERROR_404 << std::endl;
+                    getch();
                 }
                 
                 if (!inFile.is_open()) //File is open due reasons - Error 001
                 {
                     std::cout << c_ERROR_001 << savefile << ".dat" << std::endl;
+                    getch();
                     return 1;
                 }
                 
@@ -226,7 +232,7 @@ int main(){
             //Player decides starts a new game and needs to name his character via std::cin
             case 1:
                 {    
-                system("cls");
+                clearScreen();
                 std::cout << c_TUTORIALHELPER_01 << "\nPlease name your Adventurer :" << std::endl;
                 std::cin.ignore ( 100 , '\n' );
                 std::getline(std::cin, playername);
@@ -234,13 +240,13 @@ int main(){
                 pickagain = false;
 
                 //Short Story Part
-                system("cls");
+                clearScreen();
                 std::cout << c_TUTORIALHELPER_01 << "\n\nWelcome Adventurer " << Adventurer.get_Name() << ". Welcome to Dungeon Grind.\n" << std::endl;
                 std::cout << "Your Quest is simple: Fight your way deeper and deeper through the dungeon. \nFind treasure and become stronger than ever!" << std::endl;
                 std::cout << "But first..\n\n\n" << std::endl;
                 std::cout << c_ANY_KEY;
                 getch();
-                system("cls");
+                clearScreen();
 
                 //Player has to pick one out of four starter-weapons   
                 Weapon dagger ("Dull Dagger", 1, 3, 2, 1);
@@ -264,7 +270,7 @@ int main(){
             //Players input is garbage and the menu is reloaded.
                 std::cin.clear();
                 std::cin.ignore(INT_MAX, '\n');
-                system("cls");
+                clearScreen();
                 std::cout << "\n" << c_ERROR_002 << "\n";
             }
         } while (pickagain);
@@ -276,7 +282,7 @@ int main(){
         int hubmenu = 0;
         do
         {
-            system("cls"); //Hub-menu check
+            clearScreen(); //Hub-menu check
             std::cout << c_TUTORIALHELPER_01 << c_HUB_MENU << std::endl;
             std::cin >> hubmenu;
 
@@ -285,13 +291,13 @@ int main(){
             case 3: //Player decides save the game and exit the game
                 {
                     savegame(Adventurer);            
-                    system("cls"); 
+                    clearScreen(); 
                     std::exit(0);
                 }
                 break;
             case 2: //Player decides to view his stats and current gear
                 {
-                    system("cls");
+                    clearScreen();
                     Adventurer.showstats();
                     std::cout << "\n" << c_ANY_KEY << std::endl;
                     getch();
@@ -302,7 +308,7 @@ int main(){
                 {
                     //Create Enemy
                     Enemy Enemy1(Adventurer);
-                    system("cls");
+                    clearScreen();
                     //Storypart - Telling the player which level they are and what enemy they can expect,
                     // also what kind of treasure chest they can expect. 
                     std::cout << c_TUTORIALHELPER_01 << c_ENTER_DUNGEON_pt1 << Adventurer.get_DungeonLevel() << ".\n" 
@@ -317,7 +323,7 @@ int main(){
                      
                     if (Enemy1.get_currentHP() <= 0 )  // YOU WIN
                     {
-                        system("cls");
+                        clearScreen();
                         Adventurer.set_DungeonLevel(Adventurer.get_DungeonLevel() + 1); // Player DungeonLevel increase
                         std::cout << c_TUTORIALHELPER_01 << "         You have beat the " << Enemy1.get_Name() << ".\n"
                         << "                CONGRATULATIONS!\n\n\n" 
@@ -373,7 +379,7 @@ int main(){
                             loot_ring = create_loot(loot_ring, lootname, loot_str, loot_agi, loot_sta, loot_ilvl);
                         }
                         
-                        system("cls");
+                        clearScreen();
                         
                         // asking the player what item they have found. (what item was generated)
                         std::cout << c_TUTORIALHELPER_05 <<c_LOOT1 << Dungeonchest << c_LOOT1a << "\n      "
@@ -464,7 +470,7 @@ int main(){
                                     default: //Player input was garbage, menu is reloaded
                                         std::cin.clear();
                                         std::cin.ignore(INT_MAX, '\n');
-                                        system("cls");
+                                        clearScreen();
                                         std::cout << "\n" << c_ERROR_002 << "\n";
                                 }
 
@@ -477,7 +483,7 @@ int main(){
                     } 
                     else if (Adventurer.get_currentHP() <= 0) //YOU LOSE - game ends and player will start at titlescreen
                     {
-                        system("cls");
+                        clearScreen();
                         table.loadFromFile(highscorefile);
                         table.addHighscore(Highscore(Adventurer.get_Name(), Adventurer.get_DungeonLevel(), Adventurer.get_Level()));
                         table.save2File(highscorefile);
@@ -497,7 +503,7 @@ int main(){
             default: //Main menu fail safe if player input is garbage- Main Menu will be reloaded
                 std::cin.clear();
                 std::cin.ignore(INT_MAX, '\n');
-                system("cls");
+                clearScreen();
                 std::cout << "\n" << c_ERROR_002 << "\n";
             }
         } while (pickagain);   
@@ -557,7 +563,7 @@ Weapon PickStarterWeapon(Weapon dagger, Weapon sword, Weapon greatsword, Weapon 
         default:
             std::cin.clear();
             std::cin.ignore(INT_MAX, '\n');
-            system("cls");
+            clearScreen();
             std::cout << "\n" << c_ERROR_002 << "\n" << std::endl;
        //     break;
         }

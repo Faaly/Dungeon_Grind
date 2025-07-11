@@ -5,10 +5,14 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <filesystem>
+#include <vector>
 
 std::string buildnumber();
 
+std::vector<std::string> listSaveGames(const std::string& Dir);
 
+std::string chooseSaveGames(const std::vector<std::string>& saveFiles);
 
 bool DirIsThere(const char* path);
 

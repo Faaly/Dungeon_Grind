@@ -65,6 +65,7 @@ const std::string c_99_100NPC = "horny Succubi";
 
 //Error Messages -------------------------------------------
 const std::string c_ERROR_404 = "Error 404 : File not found";
+const std::string c_ERROR_405 = "Error 204 : No save games found.\n";
 const std::string c_ERROR_001 = "Error 001 : Failed to open file : - ";
 const std::string c_ERROR_002 = "Error 002 : Wrong input - Try again.";
 const std::string c_ERROR_003 = "Error 003 : Data folder missing.\nPlease re-install Dungeon Grind.";
@@ -98,7 +99,7 @@ const std::string c_ENTER_SCREEN =
         "                       By Faaly \n";
 
 const std::string c_VERSIONNUMBER =
-        "                   v";
+        "                        v";
                        
 //Title Screen -------------------------------------------
 const std::string c_YOU_DIED = 
