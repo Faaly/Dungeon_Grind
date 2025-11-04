@@ -32,17 +32,19 @@ int patch_version = 3; //small bugfixes, balacing etc.
         # because std::endl flushes the buffer which takes extra time
         //note by faaly: done in main.cpp
     
-    * Texte nochmal fehler lesen, ggf durch deepl schicken (constants enemys a/an)
+    * Monster Icons like Pokemon (rework overview)
+
+    * Send text through deelpL. Also check names (a/an const enemy names)
 
     * balancing of enemy, exp and stats of loot
 
-    * hash code generation einfügen für save files und highscore file to prevet manipulation/cheating
+    * insert hash code generation for  save files and highscore file to prevet manipulation/cheating
 
-    * level 1 tutorial einfügen
+    * insert level 1 tutorial
 
-    * bessere documentation!!
+    * better documentation!!
 
-    
+    * write code for Healpotions    
     
     
 */
